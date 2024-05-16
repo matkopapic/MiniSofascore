@@ -1,0 +1,44 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.MiniSofascore" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/primary_default_dark</item>
+        <!-- Customize your theme here. -->
+
+        <item name="primary_default">@color/primary_default_dark</item>
+        <item name="primary_variant">@color/primary_variant_dark</item>
+        <item name="primary_highlight">@color/primary_highlight_dark</item>
+
+        <item name="secondary_default">@color/secondary_default_dark</item>
+        <item name="secondary_variant">@color/secondary_variant_dark</item>
+        <item name="secondary_highlight">@color/secondary_highlight_dark</item>
+
+        <item name="on_color_primary">@color/on_color_primary_dark</item>
+        <item name="on_color_secondary">@color/on_color_secondary_dark</item>
+
+        <item name="surface_0">@color/surface_0_dark</item>
+        <item name="surface_1">@color/surface_1_dark</item>
+        <item name="surface_2">@color/surface_2_dark</item>
+
+        <item name="on_surface_lv1">@color/on_surface_lv1_dark</item>
+        <item name="on_surface_lv2">@color/on_surface_lv2_dark</item>
+        <item name="on_surface_lv3">@color/on_surface_lv3_dark</item>
+        <item name="on_surface_lv4">@color/on_surface_lv4_dark</item>
+
+        <item name="success">@color/success</item>
+        <item name="error">@color/error</item>
+        <item name="alert">@color/alert</item>
+        <item name="live">@color/live</item>
+
+        <item name="elevation_1">@color/elevation_1</item>
+        <item name="elevation_2">@color/elevation_2</item>
+    </style>
+</resources>

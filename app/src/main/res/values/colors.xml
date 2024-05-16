@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- LIGHT THEME -->
+
+    <!-- Color Primary    -->
+    <color name="primary_default_light">#374df5</color>
+    <color name="primary_variant_light">#1327ba</color>
+    <color name="primary_highlight_light">#e1edfe</color>
+
+    <!-- Color Secondary -->
+    <color name="secondary_default_light">#f0eedf</color>
+    <color name="secondary_variant_light">#dddbc9</color>
+    <color name="secondary_highlight_light">#f7f6ef</color>
+
+    <!-- On Color -->
+    <color name="on_color_primary_light">#FFFFFF</color>
+    <color name="on_color_secondary_light">#99ffffff</color>
+
+    <!-- Surface -->
+    <color name="surface_0_light">#eff3f8</color>
+    <color name="surface_1_light">#FFFFFF</color>
+    <color name="surface_2_light">#33c0cfe4</color>
+
+    <!-- On Surface -->
+    <color name="on_surface_lv1_light">#121212</color>
+    <color name="on_surface_lv2_light">#66121212</color>
+    <color name="on_surface_lv3_light">#33121212</color>
+    <color name="on_surface_lv4_light">#19121212</color>
+
+    <!-- DARK THEME -->
+
+    <!-- Color Primary    -->
+    <color name="primary_default_dark">#849afd</color>
+    <color name="primary_variant_dark">#afbeff</color>
+    <color name="primary_highlight_dark">#2d385c</color>
+
+    <!-- Color Secondary -->
+    <color name="secondary_default_dark">#3a3a39</color>
+    <color name="secondary_variant_dark">#404039</color>
+    <color name="secondary_highlight_dark">#171616</color>
+
+    <!-- On Color -->
+    <color name="on_color_primary_dark">#FFFFFF</color>
+    <color name="on_color_secondary_dark">#99ffffff</color>
+
+    <!-- Surface -->
+    <color name="surface_0_dark">#101114</color>
+    <color name="surface_1_dark">#21242d</color>
+    <color name="surface_2_dark">#66000000</color>
+
+    <!-- On Surface -->
+    <color name="on_surface_lv1_dark">#ffffff</color>
+    <color name="on_surface_lv2_dark">#66ffffff</color>
+    <color name="on_surface_lv3_dark">#33ffffff</color>
+    <color name="on_surface_lv4_dark">#19ffffff</color>
+
+    <!-- Status -->
+    <color name="error">#ea4545</color>
+    <color name="alert">#d8b127</color>
+    <color name="success">#1da86d</color>
+
+    <!-- Specific -->
+    <color name="live">#e93030</color>
+
+    <!-- Layer Styles: Elevation -->
+    <color name="elevation_1">#FFFFFF</color>
+    <color name="elevation_2">#FFFFFF</color>
+</resources>
