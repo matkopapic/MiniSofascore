@@ -24,9 +24,9 @@ class Repository {
             }
         }
 
-    suspend fun getTeamLogoById() =
+    suspend fun getTeamLogoById(teamId: Int) =
         withContext(Dispatchers.IO) {
-            val response = api.getTeamLogoById().execute()
+            val response = api.getTeamLogoById(teamId).execute()
             var bitmap: Bitmap? = null
             if (response.isSuccessful) {
                 bitmap = BitmapFactory.decodeStream(response.body()?.byteStream())

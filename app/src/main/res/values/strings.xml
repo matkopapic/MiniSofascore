@@ -6,4 +6,12 @@
     <string name="sofascore_logo">Sofascore Logo</string>
     <string name="settings">settings</string>
     <string name="tournaments">tournaments</string>
+    <string name="fulltime">FT</string>
+    <string name="start_time">13:00</string>
+    <string name="team_home">Team Home</string>
+    <string name="team_home_score">2</string>
+    <string name="team_away">Team Away</string>
+    <string name="team_away_score">0</string>
+    <string name="team_away_logo">team away logo</string>
+    <string name="team_home_logo">team home logo</string>
 </resources>

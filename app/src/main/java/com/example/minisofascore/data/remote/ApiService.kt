@@ -5,6 +5,7 @@ import com.example.minisofascore.data.models.Sport
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -14,8 +15,8 @@ interface ApiService {
     @GET("sport/football/events/2024-05-11")
     suspend fun getEventsByDate(): List<Event>
 
-    @GET("team/3/image")
-    fun getTeamLogoById(): Call<ResponseBody>
+    @GET("team/{id}/image")
+    fun getTeamLogoById(@Path("id") teamId: Int): Call<ResponseBody>
 
 
 }
