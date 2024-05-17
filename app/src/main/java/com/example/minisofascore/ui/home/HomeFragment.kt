@@ -1,6 +1,7 @@
 package com.example.minisofascore.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,8 @@ class HomeFragment : Fragment() {
 
         homeViewModel.events.observe(viewLifecycleOwner) {
             eventAdapter.updateItems(it)
+            Log.d("aaaa", "updated recycler view")
+
         }
 
         return root

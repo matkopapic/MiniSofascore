@@ -1,5 +1,6 @@
 package com.example.minisofascore.data.models
 
+import android.graphics.Bitmap
 import java.sql.Timestamp
 
 
@@ -22,13 +23,15 @@ data class Tournament(
     val name: String,
     val slug: String,
     val sport: Sport,
-    val country: Country
+    val country: Country,
+    val logo: Bitmap? = null
 )
 
 data class Team(
     val id: Int,
     val name: String,
-    val country: Country
+    val country: Country,
+    var logo: Bitmap? = null
 )
 
 data class Score(

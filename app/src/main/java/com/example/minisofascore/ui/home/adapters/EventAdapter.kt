@@ -9,6 +9,7 @@ import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Event
 import com.example.minisofascore.databinding.EventItemLayoutBinding
 import com.google.android.material.color.MaterialColors
+import java.util.Locale
 
 class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
 
@@ -45,8 +46,21 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
     ): ViewHolder(binding.root) {
 
         private val winnerTextColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv1, Color.BLACK)
-
+        private val liveColor = MaterialColors.getColor(binding.root, R.attr.live, Color.BLACK)
         fun bind(event: Event) {
+            val startHour = event.startDate.time / (1000 * 60 * 60) % 24
+            val startMinute = event.startDate.time / (1000 * 60) % 60
+            val startTime = String.format(Locale.getDefault(),"%02d:%02d", startHour, startMinute)
+            binding.startTime.text = startTime
+
+            binding.eventTime.text = when(event.status) {
+                "notstarted" -> "-"
+                "inprogress" -> ((System.currentTimeMillis() - event.startDate.time) / (1000 * 60) % 60).toString()
+                    .also { binding.eventTime.setTextColor(liveColor) }
+                else -> "FT" // finished
+
+            }
+
             binding.teamHomeName.text = event.homeTeam.name
             val teamHomeScore = event.homeScore.period1 + event.homeScore.period2 +
                     event.homeScore.period3 + event.homeScore.period4 + event.homeScore.overtime
@@ -56,6 +70,9 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
             val teamAwayScore = event.awayScore.period1 + event.awayScore.period2 +
                     event.awayScore.period3 + event.awayScore.period4 + event.awayScore.overtime
             binding.teamAwayScore.text = teamAwayScore.toString()
+
+            event.homeTeam.logo?.let { binding.teamHomeLogo.setImageBitmap(it) }
+            event.awayTeam.logo?.let { binding.teamAwayLogo.setImageBitmap(it) }
 
             when (event.winnerCode) {
                 "home" -> {
