@@ -25,9 +25,8 @@ class HomeViewModel : ViewModel() {
                 is Result.Error -> Log.d("aaaa", "error:${response.error}")
                 is Result.Success -> {
                     // list without logos is in response.data
-                    _events.value = response.data.sortedWith(compareBy<Event>{it.tournament.id}.thenBy { it.startDate.time })
                     // retrieve all logos in parallel
-                    val deferred = response.data.map { event ->
+                    val deferredTeamLogos = response.data.map { event ->
                         async {
                             val imageBitmapHome = repo.getTeamLogoById(event.homeTeam.id)
                             val imageBitmapAway = repo.getTeamLogoById(event.awayTeam.id)
@@ -37,7 +36,15 @@ class HomeViewModel : ViewModel() {
                                 event.awayTeam.logo = imageBitmapAway
                         }
                     }
-                    deferred.awaitAll()
+                    val deferredTournamentLogos = response.data.groupBy { it.tournament }.keys.map { tournament ->
+                        async {
+                            val imageBitmap = repo.getTournamentLogoById(tournament.id)
+                            if (imageBitmap != null)
+                                tournament.logo = imageBitmap
+                        }
+                    }
+                    deferredTeamLogos.awaitAll()
+                    deferredTournamentLogos.awaitAll()
                     // after all logos are fetched update again
                     _events.value = response.data
                 }
@@ -47,3 +54,4 @@ class HomeViewModel : ViewModel() {
 
 
 }
+

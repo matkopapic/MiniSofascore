@@ -18,5 +18,7 @@ interface ApiService {
     @GET("team/{id}/image")
     fun getTeamLogoById(@Path("id") teamId: Int): Call<ResponseBody>
 
+    @GET("tournament/{id}/image")
+    fun getTournamentLogoById(@Path("id") tournamentId: Int): Call<ResponseBody>
 
 }

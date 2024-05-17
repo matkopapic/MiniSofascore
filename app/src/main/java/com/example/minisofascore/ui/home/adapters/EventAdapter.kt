@@ -7,29 +7,60 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Event
+import com.example.minisofascore.data.models.Tournament
 import com.example.minisofascore.databinding.EventItemLayoutBinding
+import com.example.minisofascore.databinding.SectionDividerBinding
+import com.example.minisofascore.databinding.TournamentHeaderLayoutBinding
 import com.google.android.material.color.MaterialColors
 import java.util.Locale
 
 class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
 
-    private var items = emptyList<Event>()
+    private var items = emptyList<EventListItem>()
 
     fun updateItems(newItems: List<Event>) {
-        items = newItems
+        // Group events by tournament ID
+        val eventsByTournament = newItems.groupBy { (it.tournament.id) }
+
+        // Create a list of EventListItem objects
+        val eventListItems = mutableListOf<EventListItem>()
+        val numOfTournaments = eventsByTournament.keys.size
+        var sectionCounter = 0
+        // Iterate over the grouped events
+        for ((tournamentId, tournamentEvents) in eventsByTournament) {
+            sectionCounter++
+            // Add a tournament header item
+            val tournament = newItems.map { it.tournament }.find { it.id == tournamentId }
+            tournament?.let { eventListItems.add(EventListItem.TournamentHeaderItem(it)) }
+
+
+            // Sort events by date
+            val sortedEvents = tournamentEvents.sortedBy { it.startDate }
+
+            // Add event items
+            eventListItems.addAll(sortedEvents.map { EventListItem.EventItem(it) })
+
+            if (sectionCounter != numOfTournaments) {
+                eventListItems.add(EventListItem.SectionDivider)
+            }
+        }
+        items = eventListItems
         notifyDataSetChanged()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
             0 -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            1 -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            2 -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when(items[position]) {
-            is Event -> 0
-            else -> 1
+            is EventListItem.EventItem -> 0
+            is EventListItem.TournamentHeaderItem -> 1
+            is EventListItem.SectionDivider -> 2
         }
     }
 
@@ -37,7 +68,9 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val item = items[position]) {
-            is Event -> (holder as EventInfoViewHolder).bind(item)
+            is EventListItem.EventItem -> (holder as EventInfoViewHolder).bind(item.event)
+            is EventListItem.TournamentHeaderItem -> (holder as TournamentHeaderViewHolder).bind(item.tournament)
+            is EventListItem.SectionDivider -> (holder as SectionDividerViewHolder).bind()
         }
     }
 
@@ -88,5 +121,23 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
         }
     }
 
+    class TournamentHeaderViewHolder(
+        private val binding: TournamentHeaderLayoutBinding
+    ): ViewHolder(binding.root) {
 
+        fun bind(tournament: Tournament) {
+            binding.countryName.text = tournament.country.name
+            binding.tournamentName.text = tournament.name
+            tournament.logo?.let { binding.tournamentLogo.setImageBitmap(it) }
+        }
+    }
+
+    class SectionDividerViewHolder(
+        binding: SectionDividerBinding
+    ): ViewHolder(binding.root) {
+
+        fun bind(){
+
+        }
+    }
 }

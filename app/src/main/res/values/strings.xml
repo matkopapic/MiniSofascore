@@ -14,4 +14,8 @@
     <string name="team_away_score">0</string>
     <string name="team_away_logo">team away logo</string>
     <string name="team_home_logo">team home logo</string>
+    <string name="tournament_logo">tournament logo</string>
+    <string name="tournament">Tournament</string>
+    <string name="country">Country</string>
+    <string name="pointer_right">pointer right</string>
 </resources>

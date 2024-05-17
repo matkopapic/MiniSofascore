@@ -33,4 +33,14 @@ class Repository {
             }
             bitmap
         }
+
+    suspend fun getTournamentLogoById(tournamentId: Int) =
+        withContext(Dispatchers.IO) {
+            val response = api.getTournamentLogoById(tournamentId).execute()
+            var bitmap: Bitmap? = null
+            if (response.isSuccessful) {
+                bitmap = BitmapFactory.decodeStream(response.body()?.byteStream())
+            }
+            bitmap
+        }
 }

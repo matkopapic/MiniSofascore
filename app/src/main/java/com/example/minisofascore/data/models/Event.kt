@@ -24,7 +24,7 @@ data class Tournament(
     val slug: String,
     val sport: Sport,
     val country: Country,
-    val logo: Bitmap? = null
+    var logo: Bitmap? = null
 )
 
 data class Team(
