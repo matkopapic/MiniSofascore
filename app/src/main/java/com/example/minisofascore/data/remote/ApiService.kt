@@ -12,8 +12,8 @@ interface ApiService {
     @GET("sports")
     suspend fun getAllSports(): List<Sport>
 
-    @GET("sport/football/events/2024-05-11")
-    suspend fun getEventsByDate(): List<Event>
+    @GET("sport/football/events/{dateString}")
+    suspend fun getEventsByDate(@Path("dateString") dateString: String): List<Event>
 
     @GET("team/{id}/image")
     fun getTeamLogoById(@Path("id") teamId: Int): Call<ResponseBody>

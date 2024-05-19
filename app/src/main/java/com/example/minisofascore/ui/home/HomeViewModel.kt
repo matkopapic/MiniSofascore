@@ -1,6 +1,8 @@
 package com.example.minisofascore.ui.home
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +13,9 @@ import com.example.minisofascore.data.repository.Repository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 class HomeViewModel : ViewModel() {
 
     private val repo = Repository()
@@ -20,8 +24,13 @@ class HomeViewModel : ViewModel() {
     val events: LiveData<List<Event>> = _events
 
     init {
+        getEventsByDate(LocalDate.now())
+    }
+
+
+    fun getEventsByDate(date: LocalDate) {
         viewModelScope.launch {
-            when(val response = repo.getEventsByDate()) {
+            when(val response = repo.getEventsByDate(date)) {
                 is Result.Error -> Log.d("aaaa", "error:${response.error}")
                 is Result.Success -> {
                     // list without logos is in response.data
