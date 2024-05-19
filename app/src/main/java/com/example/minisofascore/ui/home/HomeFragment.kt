@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.minisofascore.R
 import com.example.minisofascore.databinding.FragmentHomeBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.ui.home.adapters.EventAdapter
@@ -18,7 +17,7 @@ import com.google.android.material.tabs.TabLayout
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-const val NUM_OF_DATE_TABS = 15 // 1 week before + today + 1 week after
+const val NUM_OF_DATE_TABS = 7 + 1 + 7 // 1 week before + today + 1 week after
 
 class HomeFragment : Fragment() {
 
@@ -43,7 +42,7 @@ class HomeFragment : Fragment() {
             adapter = eventAdapter
         }
 
-        binding.dayInfoDate.text = "Today"
+        binding.dayInfoDate.text = getString(R.string.today)
 
         val tabLayoutCalendar = binding.tabLayoutCalendar
         val dateToday = LocalDate.now()
@@ -53,7 +52,7 @@ class HomeFragment : Fragment() {
             val tabDate = dateToday.minusDays(todayTabNumber - tabNumber)
             val tabBinding = TabItemDateBinding.inflate(layoutInflater)
             if (tabNumber == todayTabNumber) {
-                tabBinding.dayOfWeek.text = "Today"
+                tabBinding.dayOfWeek.text = getString(R.string.today)
                 newTab.select()
             } else {
                 tabBinding.dayOfWeek.text = tabDate.format(DateTimeFormatter.ofPattern("EEE"))
@@ -64,23 +63,22 @@ class HomeFragment : Fragment() {
         }
 
         tabLayoutCalendar.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(p0: TabLayout.Tab?) {
-                val date: TextView = (p0?.customView as LinearLayout).getChildAt(1) as TextView
-                homeViewModel.getEventsByDate(stringToDate(date.text.toString()))
-                val eventDateInfo = stringToDate(date.text.toString())
-                val isStartTimeToday = LocalDate.now() == eventDateInfo
-                binding.dayInfoDate.text = if(isStartTimeToday) "Today"
-                    else eventDateInfo.format(
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val tabDate = LocalDate.now().minusDays(todayTabNumber - tabLayoutCalendar.selectedTabPosition)
+                homeViewModel.getEventsByDate(tabDate)
+                val isStartTimeToday = todayTabNumber.toInt() == tabLayoutCalendar.selectedTabPosition
+                binding.dayInfoDate.text = if(isStartTimeToday) getString(R.string.today)
+                    else tabDate.format(
                         DateTimeFormatter.ofPattern("EEE, dd.MM.yyyy."))
                 binding.loadingIndicator.visibility = View.VISIBLE
                 binding.dayInfoLayout.visibility = View.GONE
                 binding.eventRecyclerView.visibility = View.GONE
             }
 
-            override fun onTabUnselected(p0: TabLayout.Tab?) {
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
-            override fun onTabReselected(p0: TabLayout.Tab?) {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
             }
 
         })
@@ -89,13 +87,12 @@ class HomeFragment : Fragment() {
 
         homeViewModel.events.observe(viewLifecycleOwner) {
             eventAdapter.updateItems(it)
-            var numOfEvents = ""
-            if (it.size > 1) {
-                numOfEvents = "${it.size} Events"
+            val numOfEvents = if (it.size > 1) {
+                "${it.size} ${getString(R.string.event_plural)}"
             } else if (it.size == 1) {
-                numOfEvents = "${it.size} Event"
+                "${it.size} ${getString(R.string.event_singular)}"
             } else {
-                numOfEvents = "No Events"
+                getString(R.string.event_none)
             }
             binding.dayInfoEvents.text = numOfEvents
             binding.loadingIndicator.visibility = View.GONE
@@ -104,21 +101,6 @@ class HomeFragment : Fragment() {
         }
 
         return root
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun stringToDate(dateString: String): LocalDate {
-        // Get the current year
-        val currentYear = LocalDate.now().year
-
-        // Create a date formatter
-        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-
-        // Parse the date string
-        val parsedDate = LocalDate.parse("$dateString$currentYear", formatter)
-
-        // Otherwise, use the current year
-        return parsedDate
     }
 
     override fun onDestroyView() {

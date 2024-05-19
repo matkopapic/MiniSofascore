@@ -20,4 +20,12 @@
     <string name="pointer_right">pointer right</string>
     <string name="sample_date">Wed, 12.02.2024.</string>
     <string name="sample_events">5 Events</string>
+    <string name="football">Football</string>
+    <string name="basketball">Basketball</string>
+    <string name="am_football">Am. Football</string>
+    <string name="football1">Football</string>
+    <string name="today">Today</string>
+    <string name="event_plural">Events</string>
+    <string name="event_singular">Event</string>
+    <string name="event_none">No Events</string>
 </resources>

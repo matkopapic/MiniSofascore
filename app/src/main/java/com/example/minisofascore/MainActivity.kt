@@ -31,15 +31,15 @@ class MainActivity : AppCompatActivity() {
             val tabBinding = TabItemSportBinding.inflate(layoutInflater)
             when (position) {
                 0 -> {
-                    tabBinding.tabText.text = "Football"
+                    tabBinding.tabText.text = getString(R.string.football)
                     tabBinding.tabIcon.setImageResource(R.drawable.ic_football)
                 }
                 1 -> {
-                    tabBinding.tabText.text = "Basketball"
+                    tabBinding.tabText.text = getString(R.string.basketball)
                     tabBinding.tabIcon.setImageResource(R.drawable.ic_basketball)
                 }
                 else -> {
-                    tabBinding.tabText.text = "Am. Football"
+                    tabBinding.tabText.text = getString(R.string.am_football)
                     tabBinding.tabIcon.setImageResource(R.drawable.ic_american_football)
                 }
             }
