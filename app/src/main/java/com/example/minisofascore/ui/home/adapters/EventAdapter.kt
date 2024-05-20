@@ -163,49 +163,6 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
                 }
             }
 
-//            binding.eventTime.text = when(event.status) {
-//                "notstarted" -> "-"
-//                "inprogress" -> ((System.currentTimeMillis() - event.startDate.time) / (1000 * 60) % 60).toString()
-//                    .also { binding.eventTime.setTextColor(liveColor) }
-//                "finished" -> "FT"
-//                else -> "-"
-//
-//            }
-
-
-
-//            if (event.status != "notstarted") {
-//                val teamHomeScore = event.homeScore.period1 + event.homeScore.period2 +
-//                        event.homeScore.period3 + event.homeScore.period4 + event.homeScore.overtime
-//                binding.teamHomeScore.text = teamHomeScore.toString()
-//
-//                if (event.status == "inprogress") {
-//                    binding.teamHomeScore.setTextColor(liveColor)
-//                    binding.teamAwayScore.setTextColor(liveColor)
-//                }
-//
-//                val teamAwayScore = event.awayScore.period1 + event.awayScore.period2 +
-//                        event.awayScore.period3 + event.awayScore.period4 + event.awayScore.overtime
-//                binding.teamAwayScore.text = teamAwayScore.toString()
-//            } else {
-//                binding.teamHomeScore.text = ""
-//                binding.teamAwayScore.text = ""
-//            }
-//
-//
-//
-//
-//            when (event.winnerCode) {
-//                "home" -> {
-//                    binding.teamHomeName.setTextColor(winnerTextColor)
-//                    binding.teamHomeScore.setTextColor(winnerTextColor)
-//                }
-//                "away" -> {
-//                    binding.teamAwayName.setTextColor(winnerTextColor)
-//                    binding.teamAwayScore.setTextColor(winnerTextColor)
-//                }
-//            }
-
         }
     }
 

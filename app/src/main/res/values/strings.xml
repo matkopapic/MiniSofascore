@@ -28,4 +28,5 @@
     <string name="event_plural">Events</string>
     <string name="event_singular">Event</string>
     <string name="event_none">No Events</string>
+    <string name="ft">FT</string>
 </resources>
