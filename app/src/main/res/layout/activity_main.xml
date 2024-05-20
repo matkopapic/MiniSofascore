@@ -1,84 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/surface_0"
+    tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <fragment
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/toolbar"
-        android:background="?attr/primary_default">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/sofascore_logo"
-            android:src="@drawable/logo_main"
-            app:tint="?attr/surface_1"/>
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/settings"
-            android:src="@drawable/ic_settings"
-            app:tint="?attr/surface_1"
-            android:layout_gravity="end"
-            android:padding="12dp"/>
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/tournaments"
-            android:src="@drawable/ic_tournaments"
-            app:tint="?attr/surface_1"
-            android:layout_gravity="end"
-            android:padding="12dp" />
-
-    </androidx.appcompat.widget.Toolbar>
-
-
-    
-    <com.google.android.material.tabs.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:id="@+id/tab_layout_sports"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:background="?attr/primary_default"
-        app:tabSelectedTextColor="?attr/surface_1"
-        app:tabTextColor="?attr/surface_1"
-        app:tabIndicatorColor="?attr/surface_1"
-        app:tabIndicatorHeight="4dp"
-        app:tabIndicator="@drawable/tab_indicator"
-        app:tabIconTint="?attr/surface_1"
-        app:tabPaddingBottom="0dp">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </com.google.android.material.tabs.TabItem>
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/view_pager_sports"
-        app:layout_constraintTop_toBottomOf="@+id/tab_layout_sports"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_host_fragment"
+        tools:ignore="FragmentTagUsage"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/navigation"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

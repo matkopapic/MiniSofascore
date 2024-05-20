@@ -1,4 +1,4 @@
-package com.example.minisofascore.ui.home.adapters
+package com.example.minisofascore.ui.main_list.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -9,6 +9,8 @@ import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Event
 import com.example.minisofascore.data.models.Score
 import com.example.minisofascore.data.models.Tournament
+import com.example.minisofascore.databinding.DayInfoLayoutBinding
+import com.example.minisofascore.databinding.EndDividerBinding
 import com.example.minisofascore.databinding.EventItemLayoutBinding
 import com.example.minisofascore.databinding.SectionDividerBinding
 import com.example.minisofascore.databinding.TournamentHeaderLayoutBinding
@@ -20,16 +22,17 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
+class EventAdapter(private val onEventClick: (Event) -> Unit) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items = emptyList<EventListItem>()
 
-    fun updateItems(newItems: List<Event>) {
+    fun updateItems(date: LocalDate, newItems: List<Event>) {
+
+        val eventListItems = mutableListOf<EventListItem>()
+        eventListItems.add(EventListItem.DayInfoItem(date, newItems.size))
 
         val eventsByTournament = newItems.groupBy { (it.tournament.id) }
 
-
-        val eventListItems = mutableListOf<EventListItem>()
         val numOfTournaments = eventsByTournament.keys.size
         var sectionCounter = 0
 
@@ -47,14 +50,17 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
                 eventListItems.add(EventListItem.SectionDivider)
             }
         }
+        eventListItems.add(EventListItem.EndDivider)
         items = eventListItems
         notifyDataSetChanged()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            0 -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            0 -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), onEventClick)
             1 -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             2 -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            3 -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            4 -> EndDividerViewHolder(EndDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -64,6 +70,8 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
             is EventListItem.EventItem -> 0
             is EventListItem.TournamentHeaderItem -> 1
             is EventListItem.SectionDivider -> 2
+            is EventListItem.DayInfoItem -> 3
+            is EventListItem.EndDivider -> 4
         }
     }
 
@@ -73,12 +81,15 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
         when (val item = items[position]) {
             is EventListItem.EventItem -> (holder as EventInfoViewHolder).bind(item.event)
             is EventListItem.TournamentHeaderItem -> (holder as TournamentHeaderViewHolder).bind(item.tournament)
-            is EventListItem.SectionDivider -> (holder as SectionDividerViewHolder).bind()
+            is EventListItem.SectionDivider -> {}
+            is EventListItem.DayInfoItem -> (holder as DayInfoViewHolder).bind(item.date, item.numOfEvents)
+            is EventListItem.EndDivider -> {}
         }
     }
 
     class EventInfoViewHolder(
-        private val binding: EventItemLayoutBinding
+        private val binding: EventItemLayoutBinding,
+        private val onEventClick: (Event) -> Unit
     ): ViewHolder(binding.root) {
 
         private val winnerTextColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv1, Color.BLACK)
@@ -89,6 +100,10 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
             val startDate = startDateTime.format(DateTimeFormatter.ofPattern("dd.MM.yy."))
             val startTime = startDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
             val isStartTimeToday = LocalDate.now() == startDateTime.toLocalDate()
+
+            binding.root.setOnClickListener{
+                onEventClick(event)
+            }
 
             binding.teamHomeName.text = event.homeTeam.name
             binding.teamAwayName.text = event.awayTeam.name
@@ -125,8 +140,8 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
                     binding.teamHomeName.setTextColor(winnerTextColor)
                     binding.teamAwayName.setTextColor(winnerTextColor)
 
-                    binding.teamHomeScore.text = event.homeScore.getTotal()
-                    binding.teamAwayScore.text = event.awayScore.getTotal()
+                    binding.teamHomeScore.text = event.homeScore.getTotalAsString()
+                    binding.teamAwayScore.text = event.awayScore.getTotalAsString()
 
                     binding.teamHomeScore.setTextColor(liveColor)
                     binding.teamAwayScore.setTextColor(liveColor)
@@ -149,8 +164,8 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
                         teamAwayColor = winnerTextColor
                     }
 
-                    binding.teamHomeScore.text = event.homeScore.getTotal()
-                    binding.teamAwayScore.text = event.awayScore.getTotal()
+                    binding.teamHomeScore.text = event.homeScore.getTotalAsString()
+                    binding.teamAwayScore.text = event.awayScore.getTotalAsString()
 
                     binding.teamHomeName.setTextColor(teamHomeColor)
                     binding.teamHomeScore.setTextColor(teamHomeColor)
@@ -175,15 +190,35 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     class SectionDividerViewHolder(
         binding: SectionDividerBinding
+    ): ViewHolder(binding.root)
+
+    class DayInfoViewHolder(
+        private val binding: DayInfoLayoutBinding
     ): ViewHolder(binding.root) {
+        fun bind(date: LocalDate, numOfEvents: Int) {
+            val isStartTimeToday = LocalDate.now() == date
 
-        fun bind(){
+            binding.dayInfoDate.text =
+                if(isStartTimeToday) "Today"
+                else date.format(DateTimeFormatter.ofPattern("EEE, dd.MM.yyyy."))
 
+            binding.dayInfoEvents.text =
+            if (numOfEvents > 1) {
+                "$numOfEvents Events"
+            } else if (numOfEvents == 1) {
+                "$numOfEvents Event"
+            } else {
+                "No Events"
+            }
         }
     }
+
+    class EndDividerViewHolder(
+        binding: EndDividerBinding
+    ): ViewHolder(binding.root)
 }
 
-fun Score.getTotal(): String {
+fun Score.getTotalAsString(): String {
     val score = period1 + period2 + period3 + period4 + overtime
     return score.toString()
 }

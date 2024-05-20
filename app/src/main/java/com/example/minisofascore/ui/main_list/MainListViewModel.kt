@@ -1,12 +1,12 @@
-package com.example.minisofascore.ui.home
+package com.example.minisofascore.ui.main_list
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.minisofascore.MainActivity
 import com.example.minisofascore.data.models.Event
-import com.example.minisofascore.data.models.Sport
 import com.example.minisofascore.data.remote.Result
 import com.example.minisofascore.data.repository.Repository
 import kotlinx.coroutines.async
@@ -14,24 +14,24 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class HomeViewModel : ViewModel() {
+class MainListViewModel : ViewModel() {
 
     private val repo = Repository()
 
     private val _events = MutableLiveData<List<Event>>()
     val events: LiveData<List<Event>> = _events
 
-    private val _sports = MutableLiveData<List<Sport>>()
-    val sports: LiveData<List<Sport>> = _sports
+    var selectedSport = MainActivity.sports[0]
+    var selectedDate: LocalDate = LocalDate.now()
 
     init {
-        getEventsByDate(LocalDate.now())
+        getEventsBySportAndDate(selectedSport.slug, LocalDate.now())
     }
 
 
-    fun getEventsByDate(date: LocalDate) {
+    fun getEventsBySportAndDate(sportSlug: String = selectedSport.slug, date: LocalDate = selectedDate) {
         viewModelScope.launch {
-            when(val response = repo.getEventsByDate(date)) {
+            when(val response = repo.getEventsBySportAndDate(sportSlug, date)) {
                 is Result.Error -> Log.d("aaaa", "error:${response.error}")
                 is Result.Success -> {
                     // list without logos is in response.data
@@ -62,13 +62,13 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun getAllSports() {
-        viewModelScope.launch {
-            when (val response = repo.getAllSports()) {
-                is Result.Error -> Log.d("aaaa", "Couldn't fetch sports")
-                is Result.Success -> _sports.value = response.data
-            }
-        }
-    }
+//    fun getAllSports() {
+//        viewModelScope.launch {
+//            when (val response = repo.getAllSports()) {
+//                is Result.Error -> Log.d("aaaa", "Couldn't fetch sports")
+//                is Result.Success -> _sports.value = response.data
+//            }
+//        }
+//    }
 }
 
