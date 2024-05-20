@@ -1,17 +1,22 @@
 package com.example.minisofascore.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.R
 import com.example.minisofascore.databinding.FragmentHomeBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.ui.home.adapters.EventAdapter
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -20,7 +25,7 @@ const val NUM_OF_DATE_TABS = 7 + 1 + 7 // 1 week before + today + 1 week after
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private val homeViewModel by viewModels<HomeViewModel>()
+    private val homeViewModel by activityViewModels<HomeViewModel>()
     private val binding get() = _binding!!
 
     private val eventAdapter by lazy { EventAdapter() }
@@ -30,6 +35,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -57,6 +63,12 @@ class HomeFragment : Fragment() {
             tabBinding.date.text = tabDate.format(DateTimeFormatter.ofPattern("dd.MM."))
             newTab.setCustomView(tabBinding.root)
             tabLayoutCalendar.addTab(newTab)
+        }
+
+        lifecycleScope.launch {
+            // reselects today's tab after sometime so the tablayout scrolls to it
+            delay(100)
+            tabLayoutCalendar.getTabAt(todayTabNumber.toInt())?.select()
         }
 
         tabLayoutCalendar.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

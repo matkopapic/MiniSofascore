@@ -26,6 +26,7 @@
             app:tabIndicator="@drawable/tab_indicator"
             app:tabIconTint="?attr/surface_1"
             app:tabPadding="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

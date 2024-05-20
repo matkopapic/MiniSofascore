@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.minisofascore.data.models.Event
+import com.example.minisofascore.data.models.Sport
 import com.example.minisofascore.data.remote.Result
 import com.example.minisofascore.data.repository.Repository
 import kotlinx.coroutines.async
@@ -19,6 +20,9 @@ class HomeViewModel : ViewModel() {
 
     private val _events = MutableLiveData<List<Event>>()
     val events: LiveData<List<Event>> = _events
+
+    private val _sports = MutableLiveData<List<Sport>>()
+    val sports: LiveData<List<Sport>> = _sports
 
     init {
         getEventsByDate(LocalDate.now())
@@ -58,6 +62,13 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-
+    fun getAllSports() {
+        viewModelScope.launch {
+            when (val response = repo.getAllSports()) {
+                is Result.Error -> Log.d("aaaa", "Couldn't fetch sports")
+                is Result.Success -> _sports.value = response.data
+            }
+        }
+    }
 }
 
