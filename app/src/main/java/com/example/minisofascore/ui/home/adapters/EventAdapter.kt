@@ -1,10 +1,8 @@
 package com.example.minisofascore.ui.home.adapters
 
 import android.graphics.Color
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.minisofascore.R
@@ -71,7 +69,6 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     override fun getItemCount() = items.size
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val item = items[position]) {
             is EventListItem.EventItem -> (holder as EventInfoViewHolder).bind(item.event)
@@ -87,7 +84,6 @@ class EventAdapter : RecyclerView.Adapter<ViewHolder>() {
         private val winnerTextColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv1, Color.BLACK)
         private val normalTextColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv2, Color.BLACK)
         private val liveColor = MaterialColors.getColor(binding.root, R.attr.live, Color.RED)
-        @RequiresApi(Build.VERSION_CODES.O)
         fun bind(event: Event) {
             val startDateTime = Instant.ofEpochMilli(event.startDate.time).atZone(ZoneId.systemDefault()).toLocalDateTime()
             val startDate = startDateTime.format(DateTimeFormatter.ofPattern("dd.MM.yy."))

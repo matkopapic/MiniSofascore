@@ -1,8 +1,6 @@
 package com.example.minisofascore.ui.home
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +13,6 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-@RequiresApi(Build.VERSION_CODES.O)
 class HomeViewModel : ViewModel() {
 
     private val repo = Repository()
