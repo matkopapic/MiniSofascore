@@ -1,8 +1,10 @@
 package com.example.minisofascore.ui.main_list.adapters
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.minisofascore.R
@@ -22,9 +24,9 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-class EventAdapter(private val onEventClick: (Event) -> Unit) : RecyclerView.Adapter<ViewHolder>() {
+class EventAdapter(private val context: Context, private val onEventClick: (Event) -> Unit) : RecyclerView.Adapter<ViewHolder>() {
 
-    private var items = emptyList<EventListItem>()
+    private var items = mutableListOf<EventListItem>()
 
     fun updateItems(date: LocalDate, newItems: List<Event>) {
 
@@ -51,15 +53,17 @@ class EventAdapter(private val onEventClick: (Event) -> Unit) : RecyclerView.Ada
             }
         }
         eventListItems.add(EventListItem.EndDivider)
+
+        val diffResult = DiffUtil.calculateDiff(EventDiffCallBack(items, eventListItems))
         items = eventListItems
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            0 -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), onEventClick)
+            0 -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context, onEventClick)
             1 -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             2 -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            3 -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            3 -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
             4 -> EndDividerViewHolder(EndDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -89,6 +93,7 @@ class EventAdapter(private val onEventClick: (Event) -> Unit) : RecyclerView.Ada
 
     class EventInfoViewHolder(
         private val binding: EventItemLayoutBinding,
+        private val context: Context,
         private val onEventClick: (Event) -> Unit
     ): ViewHolder(binding.root) {
 
@@ -153,7 +158,7 @@ class EventAdapter(private val onEventClick: (Event) -> Unit) : RecyclerView.Ada
                     } else {
                         binding.startTime.text = startDate
                     }
-                    binding.eventTime.text = "FT"
+                    binding.eventTime.text = context.getString(R.string.fulltime)
                     binding.eventTime.setTextColor(normalTextColor)
                     var teamHomeColor: Int = normalTextColor
                     var teamAwayColor: Int = normalTextColor
@@ -193,29 +198,80 @@ class EventAdapter(private val onEventClick: (Event) -> Unit) : RecyclerView.Ada
     ): ViewHolder(binding.root)
 
     class DayInfoViewHolder(
-        private val binding: DayInfoLayoutBinding
+        private val binding: DayInfoLayoutBinding,
+        private val context: Context
     ): ViewHolder(binding.root) {
         fun bind(date: LocalDate, numOfEvents: Int) {
             val isStartTimeToday = LocalDate.now() == date
 
             binding.dayInfoDate.text =
-                if(isStartTimeToday) "Today"
+                if (isStartTimeToday) context.getString(R.string.today)
                 else date.format(DateTimeFormatter.ofPattern("EEE, dd.MM.yyyy."))
 
             binding.dayInfoEvents.text =
-            if (numOfEvents > 1) {
-                "$numOfEvents Events"
-            } else if (numOfEvents == 1) {
-                "$numOfEvents Event"
-            } else {
-                "No Events"
-            }
+                if (numOfEvents > 1) {
+                    "$numOfEvents ${context.getString(R.string.event_plural)}"
+                } else if (numOfEvents == 1) {
+                    "$numOfEvents ${context.getString(R.string.event_singular)}"
+                } else {
+                    context.getString(R.string.event_none)
+                }
         }
     }
 
     class EndDividerViewHolder(
         binding: EndDividerBinding
     ): ViewHolder(binding.root)
+}
+
+class EventDiffCallBack(
+    private val oldList: List<EventListItem>,
+    private val newList: List<EventListItem>
+) : DiffUtil.Callback() {
+    override fun getOldListSize() = oldList.size
+
+    override fun getNewListSize() = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+
+        return when {
+            oldItem is EventListItem.TournamentHeaderItem
+                    && newItem is EventListItem.TournamentHeaderItem -> {
+                        oldItem.tournament.id == newItem.tournament.id
+                    }
+            oldItem is EventListItem.EventItem
+                    && newItem is EventListItem.EventItem -> {
+                        oldItem.event.id == newItem.event.id
+                    }
+            oldItem::class == newItem::class -> true
+            else -> false
+        }
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+
+        return when {
+            oldItem is EventListItem.TournamentHeaderItem
+                    && newItem is EventListItem.TournamentHeaderItem -> {
+                oldItem.tournament == newItem.tournament
+            }
+            oldItem is EventListItem.EventItem
+                    && newItem is EventListItem.EventItem -> {
+                oldItem.event == newItem.event
+            }
+            oldItem is EventListItem.DayInfoItem
+                    && newItem is EventListItem.DayInfoItem -> {
+                newItem.date == oldItem.date && newItem.numOfEvents == oldItem.numOfEvents
+            }
+            oldItem::class == newItem::class -> true
+            else -> false
+        }
+    }
+
 }
 
 fun Score.getTotalAsString(): String {

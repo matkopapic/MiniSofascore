@@ -39,7 +39,7 @@ class MainListFragment : Fragment() {
         _binding = FragmentMainListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val eventAdapter = EventAdapter {
+        val eventAdapter = EventAdapter(requireContext()) {
             findNavController().navigate(
                 R.id.action_navigation_main_list_to_navigation_event_details,
                 Bundle().apply {
@@ -51,6 +51,7 @@ class MainListFragment : Fragment() {
         binding.eventRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = eventAdapter
+            itemAnimator = null
         }
 
         val tabLayoutSports = binding.tabLayoutSports
