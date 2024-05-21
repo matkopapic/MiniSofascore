@@ -29,8 +29,11 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
     private var items = mutableListOf<EventListItem>()
 
     fun updateItems(date: LocalDate, newItems: List<Event>) {
+        // handles adding tournament headers, section dividers, etc
 
         val eventListItems = mutableListOf<EventListItem>()
+
+        // top element which displays date and number of events
         eventListItems.add(EventListItem.DayInfoItem(date, newItems.size))
 
         val eventsByTournament = newItems.groupBy { (it.tournament.id) }
@@ -48,10 +51,13 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
 
             eventListItems.addAll(sortedEvents.map { EventListItem.EventItem(it) })
 
+            // since we don't want to have section divider after last tournament
             if (sectionCounter != numOfTournaments) {
                 eventListItems.add(EventListItem.SectionDivider)
             }
         }
+
+        // empty space at the end of recycler view
         eventListItems.add(EventListItem.EndDivider)
 
         val diffResult = DiffUtil.calculateDiff(EventDiffCallBack(items, eventListItems))

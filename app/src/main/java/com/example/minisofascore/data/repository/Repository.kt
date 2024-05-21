@@ -12,12 +12,12 @@ import java.time.format.DateTimeFormatter
 class Repository {
     private val api = Network.getInstance()
 
-    suspend fun getAllSports() =
-        withContext(Dispatchers.IO) {
-            safeResponse {
-                api.getAllSports()
-            }
-        }
+//    suspend fun getAllSports() =
+//        withContext(Dispatchers.IO) {
+//            safeResponse {
+//                api.getAllSports()
+//            }
+//        }
 
     suspend fun getEventsBySportAndDate(sportSlug: String, date: LocalDate) =
         withContext(Dispatchers.IO) {

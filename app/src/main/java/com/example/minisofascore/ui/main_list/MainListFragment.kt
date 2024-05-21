@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.MainActivity
-import com.example.minisofascore.NUM_OF_DATE_TABS
 import com.example.minisofascore.R
 import com.example.minisofascore.databinding.FragmentMainListBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
@@ -23,6 +22,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 const val EVENT_INFO = "event_info"
+const val NUM_OF_DATE_TABS = 7 + 1 + 7 // 1 week before + today + 1 week after
+
 class MainListFragment : Fragment() {
 
     private var _binding: FragmentMainListBinding? = null
@@ -112,7 +113,7 @@ class MainListFragment : Fragment() {
 
 
         lifecycleScope.launch {
-            // reselects today's tab after sometime so the tablayout scrolls to it
+            // re-selects today's tab after sometime so the TabLayout scrolls to it
             delay(100)
             tabLayoutCalendar.setScrollPosition(selectedTabDateIndex, 0f, true)
         }

@@ -62,13 +62,5 @@ class MainListViewModel : ViewModel() {
         }
     }
 
-//    fun getAllSports() {
-//        viewModelScope.launch {
-//            when (val response = repo.getAllSports()) {
-//                is Result.Error -> Log.d("aaaa", "Couldn't fetch sports")
-//                is Result.Success -> _sports.value = response.data
-//            }
-//        }
-//    }
 }
 
