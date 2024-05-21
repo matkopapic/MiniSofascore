@@ -141,6 +141,11 @@ class MainListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mainListViewModel.cancelCurrentLoading()
+    }
+
     fun startLoadingAnimations() {
         binding.loadingIndicator.visibility = View.VISIBLE
         binding.eventRecyclerView.visibility = View.GONE
