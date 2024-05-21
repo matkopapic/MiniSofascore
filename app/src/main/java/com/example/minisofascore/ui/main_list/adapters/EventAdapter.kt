@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import coil.load
 import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Event
+import com.example.minisofascore.data.models.EventStatus
 import com.example.minisofascore.data.models.Score
 import com.example.minisofascore.data.models.Tournament
+import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.databinding.DayInfoLayoutBinding
 import com.example.minisofascore.databinding.EndDividerBinding
 import com.example.minisofascore.databinding.EventItemLayoutBinding
@@ -119,11 +122,11 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
             binding.teamHomeName.text = event.homeTeam.name
             binding.teamAwayName.text = event.awayTeam.name
 
-            event.homeTeam.logo?.let { binding.teamHomeLogo.setImageBitmap(it) }
-            event.awayTeam.logo?.let { binding.teamAwayLogo.setImageBitmap(it) }
+            binding.teamHomeLogo.load(Repository.getTeamLogoUrl(event.homeTeam.id))
+            binding.teamAwayLogo.load(Repository.getTeamLogoUrl(event.awayTeam.id))
 
             when (event.status) {
-                "notstarted" -> {
+                EventStatus.NOT_STARTED -> {
 
                     if (isStartTimeToday) {
                         binding.startTime.text = startTime
@@ -141,7 +144,7 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
                     binding.teamAwayScore.text = ""
 
                 }
-                "inprogress" -> {
+                EventStatus.IN_PROGRESS -> {
 
                     binding.startTime.text = startTime
                     val elapsedMinutesString = "${ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime)}'"
@@ -158,7 +161,7 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
                     binding.teamAwayScore.setTextColor(liveColor)
                 }
 
-                "finished" -> {
+                EventStatus.FINISHED -> {
                     if (isStartTimeToday) {
                         binding.startTime.text = startTime
                     } else {
@@ -195,7 +198,7 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
         fun bind(tournament: Tournament) {
             binding.countryName.text = tournament.country.name
             binding.tournamentName.text = tournament.name
-            tournament.logo?.let { binding.tournamentLogo.setImageBitmap(it) }
+            binding.tournamentLogo.load(Repository.getTournamentLogoUrl(tournament.id))
         }
     }
 

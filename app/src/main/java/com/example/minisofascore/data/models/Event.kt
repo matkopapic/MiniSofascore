@@ -1,6 +1,7 @@
 package com.example.minisofascore.data.models
 
 import android.graphics.Bitmap
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.sql.Timestamp
 
@@ -11,13 +12,22 @@ data class Event (
     val tournament: Tournament,
     val homeTeam: Team,
     val awayTeam: Team,
-    val status: String,
+    val status: EventStatus,
     val startDate: Timestamp,
     val homeScore: Score,
     val awayScore: Score,
     var winnerCode: String?,
     val round: Int
 ): Serializable
+
+enum class EventStatus {
+    @SerializedName("notstarted")
+    NOT_STARTED,
+    @SerializedName("inprogress")
+    IN_PROGRESS,
+    @SerializedName("finished")
+    FINISHED
+}
 
 data class Tournament(
     val id: Int,

@@ -38,7 +38,6 @@ class MainListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainListBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
         val eventAdapter = EventAdapter(requireContext()) {
             findNavController().navigate(
@@ -139,7 +138,7 @@ class MainListFragment : Fragment() {
             endLoadingAnimations()
         }
 
-        return root
+        return binding.root
     }
 
     fun startLoadingAnimations() {

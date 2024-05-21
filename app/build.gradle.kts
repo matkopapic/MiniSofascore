@@ -54,7 +54,7 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.okHttp.client)
     implementation(libs.okHttp.logging)
-    implementation(libs.play.services.location)
+    implementation(libs.coil)
 
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)

@@ -1,7 +1,6 @@
 package com.example.minisofascore.data.repository
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import com.example.minisofascore.data.remote.BASE_URL
 import com.example.minisofascore.data.remote.Network
 import com.example.minisofascore.util.safeResponse
 import kotlinx.coroutines.Dispatchers
@@ -12,12 +11,10 @@ import java.time.format.DateTimeFormatter
 class Repository {
     private val api = Network.getInstance()
 
-//    suspend fun getAllSports() =
-//        withContext(Dispatchers.IO) {
-//            safeResponse {
-//                api.getAllSports()
-//            }
-//        }
+    companion object {
+        fun getTeamLogoUrl(teamId: Int) = "${BASE_URL}team/$teamId/image"
+        fun getTournamentLogoUrl(tournamentId: Int) = "${BASE_URL}tournament/$tournamentId/image"
+    }
 
     suspend fun getEventsBySportAndDate(sportSlug: String, date: LocalDate) =
         withContext(Dispatchers.IO) {
@@ -27,25 +24,5 @@ class Repository {
                     event.winnerCode = event.winnerCode ?: "unknown"
                 }
             }
-        }
-
-    suspend fun getTeamLogoById(teamId: Int) =
-        withContext(Dispatchers.IO) {
-            val response = api.getTeamLogoById(teamId).execute()
-            var bitmap: Bitmap? = null
-            if (response.isSuccessful) {
-                bitmap = BitmapFactory.decodeStream(response.body()?.byteStream())
-            }
-            bitmap
-        }
-
-    suspend fun getTournamentLogoById(tournamentId: Int) =
-        withContext(Dispatchers.IO) {
-            val response = api.getTournamentLogoById(tournamentId).execute()
-            var bitmap: Bitmap? = null
-            if (response.isSuccessful) {
-                bitmap = BitmapFactory.decodeStream(response.body()?.byteStream())
-            }
-            bitmap
         }
 }
