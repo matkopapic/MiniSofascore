@@ -15,7 +15,7 @@ data class Event (
     val startDate: Timestamp,
     val homeScore: Score,
     val awayScore: Score,
-    val winnerCode: String,
+    var winnerCode: String?,
     val round: Int
 ): Serializable
 

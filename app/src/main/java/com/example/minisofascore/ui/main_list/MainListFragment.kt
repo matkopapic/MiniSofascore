@@ -29,6 +29,8 @@ class MainListFragment : Fragment() {
     private val mainListViewModel by viewModels<MainListViewModel>()
     private val binding get() = _binding!!
 
+    private var selectedTabDateIndex = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,7 +42,9 @@ class MainListFragment : Fragment() {
         val eventAdapter = EventAdapter {
             findNavController().navigate(
                 R.id.action_navigation_main_list_to_navigation_event_details,
-                Bundle().apply { putSerializable(EVENT_INFO, it) }
+                Bundle().apply {
+                    putSerializable(EVENT_INFO, it)
+                }
             )
         }
 
@@ -61,6 +65,9 @@ class MainListFragment : Fragment() {
                     else -> R.drawable.ic_american_football
                 }
             )
+            if (MainActivity.sports[tabNumber] == mainListViewModel.selectedSport) {
+                newTab.select()
+            }
             newTab.setCustomView(tabBinding.root)
             tabLayoutSports.addTab(newTab)
         }
@@ -89,19 +96,24 @@ class MainListFragment : Fragment() {
             val tabBinding = TabItemDateBinding.inflate(layoutInflater)
             if (tabNumber == todayTabNumber) {
                 tabBinding.dayOfWeek.text = getString(R.string.today)
-                newTab.select()
             } else {
                 tabBinding.dayOfWeek.text = tabDate.format(DateTimeFormatter.ofPattern("EEE"))
             }
             tabBinding.date.text = tabDate.format(DateTimeFormatter.ofPattern("dd.MM."))
+            if (tabDate == mainListViewModel.selectedDate) {
+                newTab.select()
+                selectedTabDateIndex = tabNumber.toInt()
+            }
             newTab.setCustomView(tabBinding.root)
             tabLayoutCalendar.addTab(newTab)
         }
 
+
+
         lifecycleScope.launch {
             // reselects today's tab after sometime so the tablayout scrolls to it
             delay(100)
-            tabLayoutCalendar.getTabAt(todayTabNumber.toInt())?.select()
+            tabLayoutCalendar.setScrollPosition(selectedTabDateIndex, 0f, true)
         }
 
         tabLayoutCalendar.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

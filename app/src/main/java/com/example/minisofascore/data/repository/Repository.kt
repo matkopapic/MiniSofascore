@@ -23,7 +23,9 @@ class Repository {
         withContext(Dispatchers.IO) {
             val dateString = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             safeResponse {
-                api.getEventsBySportAndDate(sportSlug, dateString)
+                api.getEventsBySportAndDate(sportSlug, dateString).onEach { event ->
+                    event.winnerCode = event.winnerCode ?: "unknown"
+                }
             }
         }
 
