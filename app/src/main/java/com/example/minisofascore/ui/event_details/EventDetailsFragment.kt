@@ -24,13 +24,12 @@ class EventDetailsFragment : Fragment() {
     ): View {
 
         _binding = FragmentEventDetailsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
         val event = requireArguments().getSerializable(EVENT_INFO)
 
         val textView: TextView = binding.textNotifications
         textView.text = event.toString()
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {
