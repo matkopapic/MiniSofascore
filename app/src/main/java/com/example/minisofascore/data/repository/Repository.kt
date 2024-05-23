@@ -1,10 +1,13 @@
 package com.example.minisofascore.data.repository
 
 import com.example.minisofascore.data.models.Event
+import com.example.minisofascore.data.models.TeamSide
 import com.example.minisofascore.data.remote.BASE_URL
 import com.example.minisofascore.data.remote.Network
 import com.example.minisofascore.data.remote.Result
 import com.example.minisofascore.util.safeResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -20,10 +23,15 @@ class Repository {
         val dateString = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         return safeResponse {
             api.getEventsBySportAndDate(sportSlug, dateString).onEach { event ->
-                event.winnerCode = event.winnerCode ?: "unknown"
+                event.winnerCode = event.winnerCode ?: TeamSide.NONE
             }
         }
 
     }
-
+    suspend fun getIncidentsForEvent(eventId: Int) =
+        withContext(Dispatchers.IO) {
+            safeResponse {
+                api.getIncidentsForEvent(eventId)
+            }
+        }
 }
