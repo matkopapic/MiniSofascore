@@ -29,4 +29,12 @@
     <string name="event_singular">Event</string>
     <string name="event_none">No Events</string>
     <string name="ft">FT</string>
+    <string name="incident_icon">incident icon</string>
+    <string name="sample_minute">87\'</string>
+    <string name="sample_player_name">Lionel Messi</string>
+    <string name="sample_incident_type">Foul</string>
+    <string name="sample_football_score">1</string>
+    <string name="minus">-</string>
+    <string name="period_sample">HT (2-1)</string>
+    <string name="foul">Foul</string>
 </resources>
