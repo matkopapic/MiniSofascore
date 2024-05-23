@@ -1,5 +1,7 @@
 package com.example.minisofascore.data.remote
 
+import com.example.minisofascore.data.models.Incident
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,7 +21,11 @@ object Network {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder().registerTypeAdapter(Incident::class.java, IncidentDeserializer()).create()
+            )
+        )
         .client(okHttpClient)
         .build()
 

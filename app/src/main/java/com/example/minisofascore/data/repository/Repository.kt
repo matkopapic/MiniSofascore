@@ -25,4 +25,11 @@ class Repository {
                 }
             }
         }
+
+    suspend fun getIncidentsForEvent(eventId: Int) =
+        withContext(Dispatchers.IO) {
+            safeResponse {
+                api.getIncidentsForEvent(eventId)
+            }
+        }
 }

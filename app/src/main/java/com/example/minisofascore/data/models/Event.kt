@@ -29,6 +29,13 @@ enum class EventStatus {
     FINISHED
 }
 
+enum class TeamSide {
+    @SerializedName("home")
+    HOME,
+    @SerializedName("away")
+    AWAY
+}
+
 data class Tournament(
     val id: Int,
     val name: String,
