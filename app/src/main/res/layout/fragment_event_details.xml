@@ -161,7 +161,9 @@
                     android:textStyle="bold"
                     android:maxWidth="96dp"
                     android:id="@+id/team_home_name"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:ellipsize="end"
+                    android:maxLines="2"/>
 
             </LinearLayout>
 
@@ -194,6 +196,8 @@
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:textAlignment="center"
+                    android:ellipsize="end"
+                    android:maxLines="2"
                     android:id="@+id/team_away_name"/>
 
             </LinearLayout>
