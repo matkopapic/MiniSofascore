@@ -40,4 +40,5 @@
     <string name="back_arrow">back arrow</string>
     <string name="sample_tournament_round">Football, Spain, LaLiga, Round 15</string>
     <string name="full_time">Full Time</string>
+    <string name="round">Round</string>
 </resources>

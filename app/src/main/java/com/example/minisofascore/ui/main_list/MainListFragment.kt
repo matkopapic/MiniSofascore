@@ -40,6 +40,8 @@ class MainListFragment : Fragment() {
     ): View {
         _binding = FragmentMainListBinding.inflate(inflater, container, false)
 
+        val dateFormat = "dd.MM."
+
         val eventAdapter = EventAdapter(requireContext()) {
             findNavController().navigate(
                 R.id.action_navigation_main_list_to_navigation_event_details,
@@ -102,7 +104,7 @@ class MainListFragment : Fragment() {
             } else {
                 tabBinding.dayOfWeek.text = tabDate.format(DateTimeFormatter.ofPattern("EEE"))
             }
-            tabBinding.date.text = tabDate.format(DateTimeFormatter.ofPattern("dd.MM."))
+            tabBinding.date.text = tabDate.format(DateTimeFormatter.ofPattern(dateFormat))
             if (tabDate == mainListViewModel.selectedDate) {
                 newTab.select()
                 selectedTabDateIndex = tabNumber.toInt()

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -11,12 +12,15 @@ import com.example.minisofascore.R
 import com.example.minisofascore.data.models.CardColor
 import com.example.minisofascore.data.models.GoalType
 import com.example.minisofascore.data.models.Incident
+import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.data.models.TeamSide
+import com.example.minisofascore.databinding.IncidentBbPointLayoutBinding
 import com.example.minisofascore.databinding.IncidentCardLayoutBinding
 import com.example.minisofascore.databinding.IncidentGoalLayoutBinding
 import com.example.minisofascore.databinding.IncidentPeriodLayoutBinding
+import com.google.android.material.color.MaterialColors
 
-class IncidentAdapter(private val context: Context) : RecyclerView.Adapter<ViewHolder>() {
+class IncidentAdapter(private val context: Context, private val sportType: SportType, private val isLive: Boolean) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items = listOf<Incident>()
 
@@ -31,7 +35,14 @@ class IncidentAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when(viewType) {
             0 -> CardIncidentViewHolder(IncidentCardLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
-            1 -> GoalIncidentViewHolder(IncidentGoalLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            1 -> {
+                when (sportType) {
+                    SportType.FOOTBALL -> GoalIncidentViewHolder(IncidentGoalLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                    SportType.BASKETBALL -> BasketballPointViewHolder(IncidentBbPointLayoutBinding.inflate(
+                        LayoutInflater.from(parent.context), parent, false))
+                    SportType.AMERICAN_FOOTBALL -> GoalIncidentViewHolder(IncidentGoalLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                }
+            }
             2 -> PeriodIncidentViewHolder(IncidentPeriodLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -40,8 +51,14 @@ class IncidentAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val item = items[position]) {
             is Incident.Card -> (holder as CardIncidentViewHolder).bind(item)
-            is Incident.Goal -> (holder as GoalIncidentViewHolder).bind(item)
-            is Incident.Period -> (holder as PeriodIncidentViewHolder).bind(item)
+            is Incident.Goal -> {
+                when (sportType) {
+                    SportType.FOOTBALL -> (holder as GoalIncidentViewHolder).bind(item)
+                    SportType.BASKETBALL -> (holder as BasketballPointViewHolder).bind(item, position == items.size-1)
+                    SportType.AMERICAN_FOOTBALL -> (holder as GoalIncidentViewHolder).bind(item)
+                }
+            }
+            is Incident.Period -> (holder as PeriodIncidentViewHolder).bind(item, position == 0 && isLive)
         }
     }
 
@@ -93,10 +110,44 @@ class IncidentAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
     class PeriodIncidentViewHolder(
         private val binding: IncidentPeriodLayoutBinding
     ): ViewHolder(binding.root) {
-        fun bind(incident: Incident.Period) {
+        private val liveColor = MaterialColors.getColor(binding.root, R.attr.live)
+        fun bind(incident: Incident.Period, isLiveColor: Boolean) {
             binding.periodText.text = incident.text
+            if (isLiveColor) {
+                binding.periodText.setTextColor(liveColor)
+            }
         }
     }
+
+    class BasketballPointViewHolder(
+        private val binding: IncidentBbPointLayoutBinding
+    ): ViewHolder(binding.root) {
+
+        fun bind(incident: Incident.Goal, isLast: Boolean) {
+            when (incident.scoringTeam) {
+                TeamSide.HOME -> {
+                    binding.incidentInfoLayout.layoutDirection = View.LAYOUT_DIRECTION_LTR
+                    binding.incidentInfoLayout.alignParentStart()
+                }
+                TeamSide.AWAY -> {
+                    binding.incidentInfoLayout.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                    binding.incidentInfoLayout.alignParentEnd()
+                }
+                TeamSide.NONE -> {}
+            }
+            val time = "${incident.time}'"
+            binding.time.text = time
+            binding.incidentIcon.setImageResource(incident.getDrawable())
+            binding.homeTeamScore.text = incident.homeScore.toString()
+            binding.awayTeamScore.text = incident.awayScore.toString()
+            if (isLast) {
+                binding.dividerTime.visibility = View.GONE
+            } else {
+                binding.dividerTime.visibility = View.VISIBLE
+            }
+        }
+    }
+
 }
 
 class IncidentDiffCallback(
@@ -140,4 +191,16 @@ fun Incident.Goal.getDrawable() = when (this.goalType) {
     GoalType.TOUCHDOWN -> R.drawable.ic_touchdown
     GoalType.FIELD_GOAL -> R.drawable.ic_field_goal
     GoalType.SAFETY -> R.drawable.ic_rogue
+}
+
+fun View.alignParentStart() {
+    val layoutParams = layoutParams as RelativeLayout.LayoutParams
+    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
+    setLayoutParams(layoutParams)
+}
+
+fun View.alignParentEnd() {
+    val layoutParams = layoutParams as RelativeLayout.LayoutParams
+    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END)
+    setLayoutParams(layoutParams)
 }

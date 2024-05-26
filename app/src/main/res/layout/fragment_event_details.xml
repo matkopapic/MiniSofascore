@@ -53,27 +53,29 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:id="@+id/main_info_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/home_layout"
+                app:layout_constraintEnd_toStartOf="@id/away_layout"
                 app:layout_constraintTop_toTopOf="parent"
                 android:gravity="center">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:id="@+id/score_layout"
                     android:paddingTop="16dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@+id/minus"
+                        app:layout_constraintTop_toTopOf="parent"
                         android:id="@+id/team_home_score"
                         android:textSize="32sp"
                         android:textStyle="bold"
@@ -83,9 +85,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         android:textSize="32sp"
                         android:textStyle="bold"
                         android:text="@string/minus"
+                        android:id="@+id/minus"
                         android:paddingHorizontal="4dp"
                         android:textColor="?attr/on_surface_lv2"/>
 
@@ -94,10 +100,12 @@
                         android:layout_height="wrap_content"
                         android:textSize="32sp"
                         android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/minus"
                         android:id="@+id/team_away_score"
                         android:textColor="?attr/on_surface_lv2"
                         android:text="@string/sample_football_score"/>
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -106,7 +114,8 @@
                     android:textColor="?attr/on_surface_lv1"
                     android:textSize="12sp"
                     android:id="@+id/start_date"
-                    android:paddingTop="24dp"/>
+                    android:paddingTop="24dp"
+                    android:visibility="gone"/>
             </LinearLayout>
 
 
@@ -116,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="?attr/on_surface_lv1"
-                android:text="@string/sample_minute"
+                android:text="@string/full_time"
                 android:paddingTop="4dp"
                 android:id="@+id/start_time"
                 app:layout_constraintStart_toStartOf="@+id/main_info_layout"
