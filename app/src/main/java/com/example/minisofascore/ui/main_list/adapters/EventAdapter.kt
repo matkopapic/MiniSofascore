@@ -16,7 +16,6 @@ import com.example.minisofascore.data.models.TeamSide
 import com.example.minisofascore.data.models.Tournament
 import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.databinding.DayInfoLayoutBinding
-import com.example.minisofascore.databinding.EndDividerBinding
 import com.example.minisofascore.databinding.EventItemLayoutBinding
 import com.example.minisofascore.databinding.SectionDividerBinding
 import com.example.minisofascore.databinding.TournamentHeaderLayoutBinding
@@ -61,9 +60,6 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
             }
         }
 
-        // empty space at the end of recycler view
-        eventListItems.add(EventListItem.EndDivider)
-
         val diffResult = DiffUtil.calculateDiff(EventDiffCallBack(items, eventListItems))
         items = eventListItems
         diffResult.dispatchUpdatesTo(this)
@@ -74,7 +70,6 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
             1 -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             2 -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             3 -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
-            4 -> EndDividerViewHolder(EndDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -85,7 +80,6 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
             is EventListItem.TournamentHeaderItem -> 1
             is EventListItem.SectionDivider -> 2
             is EventListItem.DayInfoItem -> 3
-            is EventListItem.EndDivider -> 4
         }
     }
 
@@ -97,7 +91,6 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
             is EventListItem.TournamentHeaderItem -> (holder as TournamentHeaderViewHolder).bind(item.tournament)
             is EventListItem.SectionDivider -> {}
             is EventListItem.DayInfoItem -> (holder as DayInfoViewHolder).bind(item.date, item.numOfEvents)
-            is EventListItem.EndDivider -> {}
         }
     }
 
@@ -229,10 +222,6 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
                 }
         }
     }
-
-    class EndDividerViewHolder(
-        binding: EndDividerBinding
-    ): ViewHolder(binding.root)
 }
 
 class EventDiffCallBack(
