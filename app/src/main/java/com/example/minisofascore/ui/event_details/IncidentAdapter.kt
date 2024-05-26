@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.minisofascore.R
@@ -20,8 +21,9 @@ class IncidentAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
     private var items = listOf<Incident>()
 
     fun updateItems(newItems: List<Incident>) {
+        val diffResult = DiffUtil.calculateDiff(IncidentDiffCallback(items, newItems))
         items = newItems.sortedWith(compareByDescending<Incident> { it.time }.thenByDescending { it.id })
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun getItemCount() = items.size
@@ -60,6 +62,7 @@ class IncidentAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
             when (incident.teamSide) {
                 TeamSide.HOME -> binding.root.layoutDirection = View.LAYOUT_DIRECTION_LTR
                 TeamSide.AWAY -> binding.root.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                else -> {}
             }
             val time = "${incident.time}'"
             binding.time.text = time
@@ -73,9 +76,10 @@ class IncidentAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
         private val binding: IncidentGoalLayoutBinding
     ): ViewHolder(binding.root) {
         fun bind(incident: Incident.Goal) {
-            when (incident.scoringTeam) {
+             when (incident.scoringTeam) {
                 TeamSide.HOME -> binding.root.layoutDirection = View.LAYOUT_DIRECTION_LTR
                 TeamSide.AWAY -> binding.root.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                else -> {}
             }
             val time = "${incident.time}'"
             binding.time.text = time
@@ -93,6 +97,30 @@ class IncidentAdapter(private val context: Context) : RecyclerView.Adapter<ViewH
             binding.periodText.text = incident.text
         }
     }
+}
+
+class IncidentDiffCallback(
+    private val oldList: List<Incident>,
+    private val newList: List<Incident>
+): DiffUtil.Callback() {
+    override fun getOldListSize() = oldList.size
+
+    override fun getNewListSize() = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+
+        return oldItem == newItem
+    }
+
 }
 
 fun Incident.Card.getDrawable() = when (this.color) {
