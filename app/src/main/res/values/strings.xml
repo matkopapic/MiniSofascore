@@ -35,7 +35,7 @@
     <string name="sample_incident_type">Foul</string>
     <string name="sample_football_score">1</string>
     <string name="minus">-</string>
-    <string name="period_sample">HT (2-1)</string>
+    <string name="period_sample">HT (2–1)</string>
     <string name="foul">Foul</string>
     <string name="back_arrow">back arrow</string>
     <string name="sample_tournament_round">Football, Spain, LaLiga, Round 15</string>
