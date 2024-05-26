@@ -12,6 +12,7 @@ import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Event
 import com.example.minisofascore.data.models.EventStatus
 import com.example.minisofascore.data.models.Score
+import com.example.minisofascore.data.models.TeamSide
 import com.example.minisofascore.data.models.Tournament
 import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.databinding.DayInfoLayoutBinding
@@ -171,10 +172,10 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
                     binding.eventTime.setTextColor(normalTextColor)
                     var teamHomeColor: Int = normalTextColor
                     var teamAwayColor: Int = normalTextColor
-                    if (event.winnerCode == "home") {
+                    if (event.winnerCode == TeamSide.HOME) {
                         teamHomeColor = winnerTextColor
                     }
-                    if (event.winnerCode == "away") {
+                    if (event.winnerCode == TeamSide.AWAY) {
                         teamAwayColor = winnerTextColor
                     }
 
