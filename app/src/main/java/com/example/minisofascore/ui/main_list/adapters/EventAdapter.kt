@@ -148,7 +148,8 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
                 EventStatus.IN_PROGRESS -> {
 
                     binding.startTime.text = startTime
-                    val elapsedMinutesString = "${ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime)}'"
+
+                    val elapsedMinutesString = "${ChronoUnit.MINUTES.between(startDateTime, LocalDateTime.now())}'"
                     binding.eventTime.text = elapsedMinutesString
                     binding.eventTime.setTextColor(liveColor)
 
