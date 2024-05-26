@@ -83,8 +83,4 @@
         android:id="@+id/player_name"
         android:layout_gravity="center"/>
 
-
-
-
-
 </LinearLayout>
