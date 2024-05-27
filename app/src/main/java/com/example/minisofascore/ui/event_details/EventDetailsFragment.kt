@@ -85,10 +85,15 @@ class EventDetailsFragment : Fragment() {
                 binding.startTime.text = startTime
                 binding.scoreLayout.visibility = View.GONE
                 binding.startDate.visibility = View.VISIBLE
+
+                binding.incidentRecyclerView.visibility = View.GONE
+                binding.notStartedLayout.visibility = View.VISIBLE
             }
             EventStatus.IN_PROGRESS -> {
                 binding.startDate.visibility = View.GONE
                 binding.scoreLayout.visibility = View.VISIBLE
+
+                binding.notStartedLayout.visibility = View.GONE
 
                 binding.teamHomeScore.text = event.homeScore.getTotalAsString()
                 binding.teamAwayScore.text = event.awayScore.getTotalAsString()
@@ -104,6 +109,8 @@ class EventDetailsFragment : Fragment() {
             EventStatus.FINISHED -> {
                 binding.startDate.visibility = View.GONE
                 binding.scoreLayout.visibility = View.VISIBLE
+
+                binding.notStartedLayout.visibility = View.GONE
 
                 binding.teamHomeScore.text = event.homeScore.getTotalAsString()
                 binding.teamAwayScore.text = event.awayScore.getTotalAsString()
