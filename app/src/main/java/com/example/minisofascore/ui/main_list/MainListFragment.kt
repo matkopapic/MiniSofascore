@@ -1,5 +1,6 @@
 package com.example.minisofascore.ui.main_list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.MainActivity
 import com.example.minisofascore.R
+import com.example.minisofascore.TournamentActivity
 import com.example.minisofascore.databinding.FragmentMainListBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.databinding.TabItemSportBinding
@@ -140,6 +142,11 @@ class MainListFragment : Fragment() {
         mainListViewModel.events.observe(viewLifecycleOwner) {
             eventAdapter.updateItems(mainListViewModel.selectedDate, it)
             endLoadingAnimations()
+        }
+
+        binding.tournamentIcon.setOnClickListener {
+            val intent = Intent(requireContext(), TournamentActivity::class.java)
+            startActivity(intent)
         }
 
         return binding.root
