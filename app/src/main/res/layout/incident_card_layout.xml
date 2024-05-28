@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="?attr/on_surface_lv1"
-            android:text="@string/sample_player_name"
+            tools:text="Lionel Messi"
             android:id="@+id/player_name"/>
 
         <TextView

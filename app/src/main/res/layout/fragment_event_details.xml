@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxWidth="260dp"
-                android:text="@string/sample_tournament_round"
+                tools:text="Football, Spain, LaLiga, Round 15"
                 android:textSize="12sp"
                 android:textColor="?attr/on_surface_lv2"
                 android:id="@+id/tournament_round_text"/>
@@ -80,7 +80,7 @@
                         android:textSize="32sp"
                         android:textStyle="bold"
                         android:textColor="?attr/on_surface_lv2"
-                        android:text="@string/sample_football_score"/>
+                        tools:text="1"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -104,13 +104,13 @@
                         app:layout_constraintStart_toEndOf="@+id/minus"
                         android:id="@+id/team_away_score"
                         android:textColor="?attr/on_surface_lv2"
-                        android:text="@string/sample_football_score"/>
+                        tools:text="0"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/sample_date"
+                    tools:text="Tue, 13.04.2023"
                     android:textColor="?attr/on_surface_lv1"
                     android:textSize="12sp"
                     android:id="@+id/start_date"
@@ -155,7 +155,7 @@
                     android:layout_width="96dp"
                     android:layout_height="wrap_content"
                     android:paddingTop="8dp"
-                    android:text="@string/team_home"
+                    tools:text="Team Home"
                     android:textColor="?attr/on_surface_lv1"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -191,7 +191,7 @@
                     android:layout_width="96dp"
                     android:layout_height="wrap_content"
                     android:paddingTop="8dp"
-                    android:text="@string/team_away"
+                    tools:text="Team Away"
                     android:textColor="?attr/on_surface_lv1"
                     android:textSize="12sp"
                     android:textStyle="bold"

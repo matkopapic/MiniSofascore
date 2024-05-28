@@ -41,6 +41,8 @@
     <string name="sample_tournament_round">Football, Spain, LaLiga, Round 15</string>
     <string name="full_time">Full Time</string>
     <string name="round">Round</string>
+    <string name="no_results_yet">No results yet.</string>
+    <string name="view_tournament_details">View Tournament Details</string>
     <plurals name="numOfEvents">
         <item quantity="one">%d Event</item>
         <item quantity="other">%d Events</item>
