@@ -6,4 +6,32 @@
     <string name="sofascore_logo">Sofascore Logo</string>
     <string name="settings">settings</string>
     <string name="tournaments">tournaments</string>
+    <string name="fulltime">FT</string>
+    <string name="start_time">13:00</string>
+    <string name="team_home">Team Home</string>
+    <string name="team_home_score">2</string>
+    <string name="team_away">Team Away</string>
+    <string name="team_away_score">0</string>
+    <string name="team_away_logo">team away logo</string>
+    <string name="team_home_logo">team home logo</string>
+    <string name="tournament_logo">tournament logo</string>
+    <string name="tournament">Tournament</string>
+    <string name="country">Country</string>
+    <string name="pointer_right">pointer right</string>
+    <string name="sample_date">Wed, 12.02.2024.</string>
+    <string name="sample_events">5 Events</string>
+    <string name="football">Football</string>
+    <string name="basketball">Basketball</string>
+    <string name="am_football">Am. Football</string>
+    <string name="football1">Football</string>
+    <string name="today">Today</string>
+    <string name="event_plural">Events</string>
+    <string name="event_singular">Event</string>
+    <string name="event_none">No Events</string>
+    <string name="ft">FT</string>
+
+    <plurals name="numOfEvents">
+        <item quantity="one">%d Event</item>
+        <item quantity="other">%d Events</item>
+    </plurals>
 </resources>

@@ -2,50 +2,40 @@ package com.example.minisofascore
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.minisofascore.data.models.Sport
 import com.example.minisofascore.databinding.ActivityMainBinding
-import com.example.minisofascore.databinding.TabItemSportBinding
-import com.example.minisofascore.ui.adapters.SportsViewPagerAdapter
-import com.google.android.material.tabs.TabLayoutMediator
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    companion object {
+        // faster since they are constant, could be replaced with API call in the future
+        val sports = listOf(
+            Sport(1, "Football", "football"),
+            Sport(2, "Basketball", "basketball"),
+            Sport(3, "Am. Football", "american-football")
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
 
-        val tabLayoutSports = binding.tabLayoutSports
+        setSupportActionBar(Toolbar(this))
+        supportActionBar?.hide() // custom toolbar in each fragment
 
-        val viewPager = binding.viewPagerSports
-        viewPager.isUserInputEnabled = false
-
-        val adapter = SportsViewPagerAdapter(supportFragmentManager, lifecycle)
-        viewPager.adapter = adapter
-
-        TabLayoutMediator(tabLayoutSports, viewPager) { tab, position ->
-            val tabBinding = TabItemSportBinding.inflate(layoutInflater)
-            when (position) {
-                0 -> {
-                    tabBinding.tabText.text = "Football"
-                    tabBinding.tabIcon.setImageResource(R.drawable.ic_football)
-                }
-                1 -> {
-                    tabBinding.tabText.text = "Basketball"
-                    tabBinding.tabIcon.setImageResource(R.drawable.ic_basketball)
-                }
-                else -> {
-                    tabBinding.tabText.text = "Am. Football"
-                    tabBinding.tabIcon.setImageResource(R.drawable.ic_american_football)
-                }
-            }
-            tab.setCustomView(tabBinding.root)
-        }.attach()
-
+        val navController = findNavController(R.id.nav_host_fragment)
+        val appBarConfiguration: AppBarConfiguration = AppBarConfiguration.Builder(navController.graph).build()
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
+
 
 }
