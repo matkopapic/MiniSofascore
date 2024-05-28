@@ -29,4 +29,9 @@
     <string name="event_singular">Event</string>
     <string name="event_none">No Events</string>
     <string name="ft">FT</string>
+
+    <plurals name="numOfEvents">
+        <item quantity="one">%d Event</item>
+        <item quantity="other">%d Events</item>
+    </plurals>
 </resources>

@@ -44,11 +44,11 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
         val numOfTournaments = eventsByTournament.keys.size
         var sectionCounter = 0
 
-        for ((tournamentId, tournamentEvents) in eventsByTournament) {
+        for ((_, tournamentEvents) in eventsByTournament) {
             sectionCounter++
 
-            val tournament = newItems.map { it.tournament }.find { it.id == tournamentId }
-            tournament?.let { eventListItems.add(EventListItem.TournamentHeaderItem(it)) }
+            val tournament = tournamentEvents[0].tournament
+            eventListItems.add(EventListItem.TournamentHeaderItem(tournament))
 
             val sortedEvents = tournamentEvents.sortedBy { it.startDate }
 
@@ -217,14 +217,8 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
                 if (isStartTimeToday) context.getString(R.string.today)
                 else date.format(DateTimeFormatter.ofPattern("EEE, dd.MM.yyyy."))
 
-            binding.dayInfoEvents.text =
-                if (numOfEvents > 1) {
-                    "$numOfEvents ${context.getString(R.string.event_plural)}"
-                } else if (numOfEvents == 1) {
-                    "$numOfEvents ${context.getString(R.string.event_singular)}"
-                } else {
-                    context.getString(R.string.event_none)
-                }
+            binding.dayInfoEvents.text = context.resources.getQuantityString(R.plurals.numOfEvents, numOfEvents, numOfEvents)
+
         }
     }
 

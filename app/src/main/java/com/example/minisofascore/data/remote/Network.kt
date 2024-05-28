@@ -23,10 +23,9 @@ object Network {
         .client(okHttpClient)
         .build()
 
-    fun getInstance(): ApiService{
-        if (INSTANCE == null) {
-            INSTANCE = retrofit.create(ApiService::class.java)
+    fun getInstance(): ApiService {
+        return INSTANCE ?: retrofit.create(ApiService::class.java).also {
+            INSTANCE = it
         }
-        return INSTANCE!!
     }
 }
