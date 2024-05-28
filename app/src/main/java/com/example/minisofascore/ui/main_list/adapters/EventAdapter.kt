@@ -66,20 +66,20 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            0 -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context, onEventClick)
-            1 -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            2 -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            3 -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
+            EventInfoViewHolder.TYPE -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context, onEventClick)
+            TournamentHeaderViewHolder.TYPE -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            SectionDividerViewHolder.TYPE -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            DayInfoViewHolder.viewType -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when(items[position]) {
-            is EventListItem.EventItem -> 0
-            is EventListItem.TournamentHeaderItem -> 1
-            is EventListItem.SectionDivider -> 2
-            is EventListItem.DayInfoItem -> 3
+            is EventListItem.EventItem -> EventInfoViewHolder.TYPE
+            is EventListItem.TournamentHeaderItem -> TournamentHeaderViewHolder.TYPE
+            is EventListItem.SectionDivider -> SectionDividerViewHolder.TYPE
+            is EventListItem.DayInfoItem -> DayInfoViewHolder.viewType
         }
     }
 
@@ -99,6 +99,10 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
         private val context: Context,
         private val onEventClick: (Event) -> Unit
     ): ViewHolder(binding.root) {
+
+        companion object {
+            const val TYPE = 0
+        }
 
         private val winnerTextColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv1, Color.BLACK)
         private val normalTextColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv2, Color.BLACK)
@@ -190,6 +194,10 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
         private val binding: TournamentHeaderLayoutBinding
     ): ViewHolder(binding.root) {
 
+        companion object {
+            const val TYPE = 1
+        }
+
         fun bind(tournament: Tournament) {
             binding.countryName.text = tournament.country.name
             binding.tournamentName.text = tournament.name
@@ -199,12 +207,20 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
 
     class SectionDividerViewHolder(
         binding: SectionDividerBinding
-    ): ViewHolder(binding.root)
+    ): ViewHolder(binding.root) {
+        companion object {
+            const val TYPE = 2
+        }
+    }
 
     class DayInfoViewHolder(
         private val binding: DayInfoLayoutBinding,
         private val context: Context
     ): ViewHolder(binding.root) {
+
+        companion object {
+            const val viewType = 3
+        }
         fun bind(date: LocalDate, numOfEvents: Int) {
             val isStartTimeToday = LocalDate.now() == date
 

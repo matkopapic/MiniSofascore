@@ -43,4 +43,5 @@
     <string name="round">Round</string>
     <string name="no_results_yet">No results yet.</string>
     <string name="view_tournament_details">View Tournament Details</string>
+    <string name="sport_icon">sport icon</string>
 </resources>

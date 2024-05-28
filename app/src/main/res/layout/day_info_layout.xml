@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/day_info_layout"
     android:background="?attr/surface_0">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sample_date"
+            tools:text="Wed, 12.02.2024."
             android:id="@+id/day_info_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sample_events"
+            tools:text="5 Events"
             android:id="@+id/day_info_events"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

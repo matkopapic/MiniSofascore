@@ -34,8 +34,8 @@ class IncidentAdapter(private val context: Context, private val sportType: Sport
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when(viewType) {
-            0 -> CardIncidentViewHolder(IncidentCardLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
-            1 -> {
+            CardIncidentViewHolder.TYPE -> CardIncidentViewHolder(IncidentCardLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
+            GoalIncidentViewHolder.TYPE -> {
                 when (sportType) {
                     SportType.FOOTBALL -> GoalIncidentViewHolder(IncidentGoalLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
                     SportType.BASKETBALL -> BasketballPointViewHolder(IncidentBbPointLayoutBinding.inflate(
@@ -43,7 +43,7 @@ class IncidentAdapter(private val context: Context, private val sportType: Sport
                     SportType.AMERICAN_FOOTBALL -> GoalIncidentViewHolder(IncidentGoalLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
                 }
             }
-            2 -> PeriodIncidentViewHolder(IncidentPeriodLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            PeriodIncidentViewHolder.TYPE -> PeriodIncidentViewHolder(IncidentPeriodLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -64,9 +64,9 @@ class IncidentAdapter(private val context: Context, private val sportType: Sport
 
     override fun getItemViewType(position: Int): Int {
         return when(items[position]) {
-            is Incident.Card -> 0
-            is Incident.Goal -> 1
-            is Incident.Period -> 2
+            is Incident.Card -> CardIncidentViewHolder.TYPE
+            is Incident.Goal -> GoalIncidentViewHolder.TYPE
+            is Incident.Period -> PeriodIncidentViewHolder.TYPE
         }
     }
 
@@ -74,6 +74,10 @@ class IncidentAdapter(private val context: Context, private val sportType: Sport
         private val binding: IncidentCardLayoutBinding,
         private val context: Context
     ): ViewHolder(binding.root) {
+
+        companion object {
+            const val TYPE = 0
+        }
 
         fun bind(incident: Incident.Card) {
             when (incident.teamSide) {
@@ -92,6 +96,10 @@ class IncidentAdapter(private val context: Context, private val sportType: Sport
     class GoalIncidentViewHolder(
         private val binding: IncidentGoalLayoutBinding
     ): ViewHolder(binding.root) {
+
+        companion object {
+            const val TYPE = 1
+        }
         fun bind(incident: Incident.Goal) {
              when (incident.scoringTeam) {
                 TeamSide.HOME -> binding.root.layoutDirection = View.LAYOUT_DIRECTION_LTR
@@ -110,6 +118,11 @@ class IncidentAdapter(private val context: Context, private val sportType: Sport
     class PeriodIncidentViewHolder(
         private val binding: IncidentPeriodLayoutBinding
     ): ViewHolder(binding.root) {
+
+        companion object {
+            const val TYPE = 2
+        }
+
         private val liveColor = MaterialColors.getColor(binding.root, R.attr.live)
         fun bind(incident: Incident.Period, isLiveColor: Boolean) {
             binding.periodText.text = incident.text
