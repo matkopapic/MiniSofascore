@@ -10,7 +10,7 @@
     android:paddingBottom="12dp"
     android:gravity="center_vertical"
     tools:ignore="RtlSymmetry"
-    app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+    app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"
     >
 
     <androidx.cardview.widget.CardView

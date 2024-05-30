@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar"
     android:contentInsetStart="4dp"
     android:background="?attr/primary_default">
@@ -16,6 +17,16 @@
         android:padding="12dp"
         android:layout_marginEnd="8dp"
         android:id="@+id/back_arrow"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Premier League"
+        android:textSize="20sp"
+        android:textColor="?attr/surface_1"
+        android:textStyle="bold"
+        android:id="@+id/toolbar_name"
+        android:alpha="0"/>
 
 </Toolbar>
 

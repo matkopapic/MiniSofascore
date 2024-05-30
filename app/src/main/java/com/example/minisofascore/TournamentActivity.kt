@@ -12,6 +12,7 @@ import com.example.minisofascore.databinding.ActivityTournamentBinding
 import com.example.minisofascore.databinding.TabItemTextBinding
 import com.example.minisofascore.ui.adapters.TournamentViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlin.math.abs
 
 class TournamentActivity : AppCompatActivity() {
 
@@ -32,9 +33,18 @@ class TournamentActivity : AppCompatActivity() {
 
         val tournament = intent.getSerializableExtra(TOURNAMENT_INFO) as Tournament
 
-//        binding.toolbarBackArrow.backArrow.setOnClickListener {
-//            finish()
-//        }
+        binding.toolbarBackArrow.backArrow.setOnClickListener {
+            finish()
+        }
+
+        binding.toolbarBackArrow.toolbarName.text = tournament.name
+
+        // animating text opacity in toolbar when scrolling
+        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val totalScrollRange = appBarLayout.totalScrollRange
+            val percentage = abs(verticalOffset).toFloat() / totalScrollRange.toFloat()
+            binding.toolbarBackArrow.toolbarName.alpha = percentage
+        }
 
         binding.toolbarImageText.name.text = tournament.name
         binding.toolbarImageText.mainLogo.load(Repository.getTournamentLogoUrl(tournament.id))
