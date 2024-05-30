@@ -47,7 +47,8 @@
                 android:src="@drawable/ic_tournaments"
                 app:tint="?attr/surface_1"
                 android:layout_gravity="end"
-                android:padding="12dp" />
+                android:padding="12dp"
+                android:id="@+id/tournament_icon"/>
 
         </androidx.appcompat.widget.Toolbar>
 

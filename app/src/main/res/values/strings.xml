@@ -29,6 +29,20 @@
     <string name="event_singular">Event</string>
     <string name="event_none">No Events</string>
     <string name="ft">FT</string>
+    <string name="position_symbol">#</string>
+    <string name="team">Team</string>
+    <string name="initial_played">P</string>
+    <string name="initial_wins">W</string>
+    <string name="initial_draws">D</string>
+    <string name="initial_losses">L</string>
+    <string name="goals">Goals</string>
+    <string name="abbr_points">pts</string>
+    <string name="abbr_difference">diff</string>
+    <string name="abbr_streak">Str</string>
+    <string name="initial_games_behind">GB</string>
+    <string name="abbr_percentage">PCT</string>
+    <string name="matches">Matches</string>
+    <string name="standings">Standings</string>
 
     <plurals name="numOfEvents">
         <item quantity="one">%d Event</item>

@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.MainActivity
 import com.example.minisofascore.R
+import com.example.minisofascore.TournamentActivity
+import com.example.minisofascore.data.models.Tournament
 import com.example.minisofascore.databinding.FragmentMainListBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.databinding.TabItemSportBinding
@@ -133,9 +135,18 @@ class MainListFragment : Fragment() {
 
         })
 
+        var tournament: Tournament? = null
+
         mainListViewModel.events.observe(viewLifecycleOwner) {
             eventAdapter.updateItems(mainListViewModel.selectedDate, it)
             endLoadingAnimations()
+            if (it.isNotEmpty())
+                tournament = it[0].tournament
+        }
+
+
+        binding.tournamentIcon.setOnClickListener {
+            startActivity(TournamentActivity.newInstance(requireContext(), tournament!!))
         }
 
         return binding.root

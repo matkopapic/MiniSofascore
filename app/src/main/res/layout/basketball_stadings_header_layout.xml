@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/surface_1"
+    android:padding="8dp">
+
+    <TextView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:text="@string/position_symbol"
+        android:textSize="14sp"
+        android:textColor="?attr/on_surface_lv2"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/position"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/team"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:textSize="14sp"
+        android:textColor="?attr/on_surface_lv2"
+        android:layout_weight="10"
+        android:id="@+id/name"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/initial_played"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:textColor="?attr/on_surface_lv2"
+        android:textSize="14sp"
+        android:layout_weight="1"
+        android:id="@+id/played"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/initial_wins"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:textColor="?attr/on_surface_lv2"
+        android:textSize="14sp"
+        android:layout_weight="1"
+        android:id="@+id/wins"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/initial_losses"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:textColor="?attr/on_surface_lv2"
+        android:textSize="14sp"
+        android:layout_weight="1"
+        android:id="@+id/losses"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/abbr_difference"
+        android:textAllCaps="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:textColor="?attr/on_surface_lv2"
+        android:textSize="14sp"
+        android:layout_weight="1"
+        android:id="@+id/diff"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/abbr_streak"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:textColor="?attr/on_surface_lv2"
+        android:textSize="14sp"
+        android:layout_weight="1"
+        android:id="@+id/streak"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/initial_games_behind"
+        android:textAllCaps="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:textColor="?attr/on_surface_lv2"
+        android:textSize="14sp"
+        android:layout_weight="1"
+        android:id="@+id/games_behind"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/abbr_percentage"
+        android:textAllCaps="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:textColor="?attr/on_surface_lv2"
+        android:textSize="14sp"
+        android:layout_weight="1"
+        android:id="@+id/percentage"
+        android:textAlignment="center"/>
+
+
+
+</TableRow>
