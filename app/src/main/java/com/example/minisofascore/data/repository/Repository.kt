@@ -23,7 +23,10 @@ class Repository {
                 event.winnerCode = event.winnerCode ?: "unknown"
             }
         }
+    }
 
+    suspend fun getStandingsForTournament(tournamentId: Int) = safeResponse {
+        api.getStandingsForTournament(tournamentId)
     }
 
 }
