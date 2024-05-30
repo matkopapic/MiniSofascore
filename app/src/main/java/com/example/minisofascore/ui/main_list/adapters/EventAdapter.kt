@@ -27,7 +27,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-class EventAdapter(private val context: Context, private val onEventClick: (Event) -> Unit) : RecyclerView.Adapter<ViewHolder>() {
+class EventAdapter(private val context: Context, private val onEventClick: (Event) -> Unit, private val onTournamentClick: (Tournament) -> Unit) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items = mutableListOf<EventListItem>()
 
@@ -70,7 +70,7 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
             0 -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context, onEventClick)
-            1 -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            1 -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), onTournamentClick)
             2 -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             3 -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
             4 -> EndDividerViewHolder(EndDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -192,10 +192,14 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
     }
 
     class TournamentHeaderViewHolder(
-        private val binding: TournamentHeaderLayoutBinding
+        private val binding: TournamentHeaderLayoutBinding,
+        private val onTournamentClick: (Tournament) -> Unit
     ): ViewHolder(binding.root) {
 
         fun bind(tournament: Tournament) {
+            binding.root.setOnClickListener {
+                onTournamentClick(tournament)
+            }
             binding.countryName.text = tournament.country.name
             binding.tournamentName.text = tournament.name
             binding.tournamentLogo.load(Repository.getTournamentLogoUrl(tournament.id))

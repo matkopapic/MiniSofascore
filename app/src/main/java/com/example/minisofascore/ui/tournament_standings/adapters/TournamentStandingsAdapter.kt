@@ -11,16 +11,21 @@ import com.example.minisofascore.databinding.FootballStandingsItemLayoutBinding
 
 class TournamentStandingsAdapter(private val standings: TournamentStandings) : RecyclerView.Adapter<ViewHolder>(){
 
+    companion object {
+        private const val TYPE_HEADER = 0
+        private const val TYPE_ITEM = 1
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            0 -> FootballHeaderViewHolder(FootballStandingsHeaderLayoutBinding.inflate(
+            TYPE_HEADER -> FootballHeaderViewHolder(FootballStandingsHeaderLayoutBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false))
             else -> FootballItemViewHolder(FootballStandingsItemLayoutBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false), standings)
         }
     }
 
-    override fun getItemCount() = standings.sortedStandingsRows.size
+    override fun getItemCount() = standings.sortedStandingsRows.size + 1
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (position) {
@@ -31,8 +36,8 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings) : R
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
-            0 -> 0
-            else -> 1
+            0 -> TYPE_HEADER
+            else -> TYPE_ITEM
         }
     }
 

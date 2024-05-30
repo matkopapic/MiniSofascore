@@ -1,10 +1,13 @@
+@file:Suppress("DEPRECATION")
 package com.example.minisofascore
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import coil.load
 import com.example.minisofascore.data.models.Tournament
+import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.databinding.ActivityTournamentBinding
 import com.example.minisofascore.databinding.TabItemTextBinding
 import com.example.minisofascore.ui.adapters.TournamentViewPagerAdapter
@@ -29,10 +32,17 @@ class TournamentActivity : AppCompatActivity() {
 
         val tournament = intent.getSerializableExtra(TOURNAMENT_INFO) as Tournament
 
+//        binding.toolbarBackArrow.backArrow.setOnClickListener {
+//            finish()
+//        }
+
+        binding.toolbarImageText.name.text = tournament.name
+        binding.toolbarImageText.mainLogo.load(Repository.getTournamentLogoUrl(tournament.id))
+        binding.toolbarImageText.countryName.text = tournament.country.name
+        binding.toolbarImageText.countryLogo.load(Repository.getTournamentLogoUrl(tournament.id))
+
         val viewpager = binding.viewpager
-
         val tabLayout = binding.tabLayout
-
         val adapter = TournamentViewPagerAdapter(supportFragmentManager, lifecycle, tournament)
         viewpager.adapter = adapter
 

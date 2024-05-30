@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.MainActivity
 import com.example.minisofascore.R
 import com.example.minisofascore.TournamentActivity
-import com.example.minisofascore.data.models.Tournament
 import com.example.minisofascore.databinding.FragmentMainListBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.databinding.TabItemSportBinding
@@ -41,14 +40,19 @@ class MainListFragment : Fragment() {
     ): View {
         _binding = FragmentMainListBinding.inflate(inflater, container, false)
 
-        val eventAdapter = EventAdapter(requireContext()) {
-            findNavController().navigate(
-                R.id.action_navigation_main_list_to_navigation_event_details,
-                Bundle().apply {
-                    putSerializable(EVENT_INFO, it)
-                }
-            )
-        }
+        val eventAdapter = EventAdapter(requireContext(),
+            onEventClick = {
+                findNavController().navigate(
+                    R.id.action_navigation_main_list_to_navigation_event_details,
+                    Bundle().apply {
+                        putSerializable(EVENT_INFO, it)
+                    }
+                )
+            },
+            onTournamentClick = {
+                startActivity(TournamentActivity.newInstance(requireContext(), it))
+            }
+        )
 
         binding.eventRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -135,18 +139,9 @@ class MainListFragment : Fragment() {
 
         })
 
-        var tournament: Tournament? = null
-
         mainListViewModel.events.observe(viewLifecycleOwner) {
             eventAdapter.updateItems(mainListViewModel.selectedDate, it)
             endLoadingAnimations()
-            if (it.isNotEmpty())
-                tournament = it[0].tournament
-        }
-
-
-        binding.tournamentIcon.setOnClickListener {
-            startActivity(TournamentActivity.newInstance(requireContext(), tournament!!))
         }
 
         return binding.root
