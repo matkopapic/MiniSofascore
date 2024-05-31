@@ -19,6 +19,8 @@ room = "2.6.1"
 activity = "1.9.0"
 legacySupportV4 = "1.0.0"
 fragmentKtx = "1.7.0"
+pagingCommonAndroid = "3.3.0"
+pagingRuntimeKtx = "3.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,6 +45,8 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+androidx-paging-common-android = { group = "androidx.paging", name = "paging-common-android", version.ref = "pagingCommonAndroid" }
+androidx-paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

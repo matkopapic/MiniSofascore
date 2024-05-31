@@ -13,7 +13,7 @@ class TournamentViewPagerAdapter (fragmentManager: FragmentManager, lifecycle: L
     override fun getItemCount() = NUM_TABS
     override fun createFragment(position: Int): Fragment {
         when (position) {
-            0 -> return TournamentMatchesFragment()
+            0 -> return TournamentMatchesFragment.newInstance(tournament)
             1 -> return TournamentStandingsFragment.newInstance(tournament)
         }
         return TournamentMatchesFragment()
