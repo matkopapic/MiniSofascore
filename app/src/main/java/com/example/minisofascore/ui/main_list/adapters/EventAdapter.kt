@@ -67,7 +67,7 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
             EventInfoViewHolder.TYPE -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context, onEventClick)
-            TournamentHeaderViewHolder.TYPE -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            TournamentHeaderViewHolder.TYPE -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), onTournamentClick)
             SectionDividerViewHolder.TYPE -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             DayInfoViewHolder.viewType -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
             else -> throw IllegalArgumentException("Invalid view type")

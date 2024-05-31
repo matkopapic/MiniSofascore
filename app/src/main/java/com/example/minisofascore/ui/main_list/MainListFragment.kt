@@ -1,6 +1,5 @@
 package com.example.minisofascore.ui.main_list
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +49,7 @@ class MainListFragment : Fragment() {
                     R.id.action_navigation_main_list_to_navigation_event_details,
                     Bundle().apply {
                         putSerializable(EVENT_INFO, it)
+                        putSerializable(SPORT_INFO, mainListViewModel.selectedSport)
                     }
                 )
             },
