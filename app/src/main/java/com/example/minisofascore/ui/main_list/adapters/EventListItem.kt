@@ -12,5 +12,4 @@ sealed class EventListItem {
 
     data class DayInfoItem(val date: LocalDate, val numOfEvents: Int): EventListItem()
 
-    data object EndDivider: EventListItem()
 }

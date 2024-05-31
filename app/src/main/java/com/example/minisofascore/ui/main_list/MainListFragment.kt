@@ -1,5 +1,6 @@
 package com.example.minisofascore.ui.main_list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 const val EVENT_INFO = "event_info"
+const val SPORT_INFO = "sport_info"
 const val NUM_OF_DATE_TABS = 7 + 1 + 7 // 1 week before + today + 1 week after
 
 class MainListFragment : Fragment() {
@@ -39,6 +41,8 @@ class MainListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainListBinding.inflate(inflater, container, false)
+
+        val dateFormat = "dd.MM."
 
         val eventAdapter = EventAdapter(requireContext(),
             onEventClick = {
@@ -106,7 +110,7 @@ class MainListFragment : Fragment() {
             } else {
                 tabBinding.dayOfWeek.text = tabDate.format(DateTimeFormatter.ofPattern("EEE"))
             }
-            tabBinding.date.text = tabDate.format(DateTimeFormatter.ofPattern("dd.MM."))
+            tabBinding.date.text = tabDate.format(DateTimeFormatter.ofPattern(dateFormat))
             if (tabDate == mainListViewModel.selectedDate) {
                 newTab.select()
                 selectedTabDateIndex = tabNumber.toInt()

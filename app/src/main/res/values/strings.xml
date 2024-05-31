@@ -47,6 +47,21 @@
     <string name="organization_logo">organization logo</string>
     <string name="country_logo">country logo</string>
 
+    <string name="incident_icon">incident icon</string>
+    <string name="sample_minute">87\'</string>
+    <string name="sample_player_name">Lionel Messi</string>
+    <string name="sample_incident_type">Foul</string>
+    <string name="sample_football_score">1</string>
+    <string name="minus">-</string>
+    <string name="period_sample">HT (2–1)</string>
+    <string name="foul">Foul</string>
+    <string name="back_arrow">back arrow</string>
+    <string name="sample_tournament_round">Football, Spain, LaLiga, Round 15</string>
+    <string name="full_time">Full Time</string>
+    <string name="round">Round</string>
+    <string name="no_results_yet">No results yet.</string>
+    <string name="view_tournament_details">View Tournament Details</string>
+    <string name="sport_icon">sport icon</string>
     <plurals name="numOfEvents">
         <item quantity="one">%d Event</item>
         <item quantity="other">%d Events</item>

@@ -16,7 +16,7 @@ data class Event (
     val startDate: Timestamp,
     val homeScore: Score,
     val awayScore: Score,
-    var winnerCode: String?,
+    var winnerCode: TeamSide?,
     val round: Int
 ): Serializable
 
@@ -27,6 +27,15 @@ enum class EventStatus {
     IN_PROGRESS,
     @SerializedName("finished")
     FINISHED
+}
+
+enum class TeamSide {
+    @SerializedName("home")
+    HOME,
+    @SerializedName("away")
+    AWAY,
+    @SerializedName("null")
+    NONE
 }
 
 data class Tournament(
