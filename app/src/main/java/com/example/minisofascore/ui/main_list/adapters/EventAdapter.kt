@@ -27,7 +27,11 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-class EventAdapter(private val context: Context, private val onEventClick: (Event) -> Unit, private val onTournamentClick: (Tournament) -> Unit) : RecyclerView.Adapter<ViewHolder>() {
+class EventAdapter(
+    private val context: Context,
+    private val onEventClick: (Event) -> Unit,
+    private val onTournamentClick: (Tournament) -> Unit
+) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items = mutableListOf<EventListItem>()
 
@@ -69,7 +73,7 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
             EventInfoViewHolder.TYPE -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context, onEventClick)
             TournamentHeaderViewHolder.TYPE -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), onTournamentClick)
             SectionDividerViewHolder.TYPE -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            DayInfoViewHolder.viewType -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
+            DayInfoViewHolder.TYPE -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -79,7 +83,7 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
             is EventListItem.EventItem -> EventInfoViewHolder.TYPE
             is EventListItem.TournamentHeaderItem -> TournamentHeaderViewHolder.TYPE
             is EventListItem.SectionDivider -> SectionDividerViewHolder.TYPE
-            is EventListItem.DayInfoItem -> DayInfoViewHolder.viewType
+            is EventListItem.DayInfoItem -> DayInfoViewHolder.TYPE
         }
     }
 
@@ -223,7 +227,7 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
     ): ViewHolder(binding.root) {
 
         companion object {
-            const val viewType = 3
+            const val TYPE = 3
         }
         fun bind(date: LocalDate, numOfEvents: Int) {
             val isStartTimeToday = LocalDate.now() == date

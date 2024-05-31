@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.data.models.Tournament
 import com.example.minisofascore.databinding.FragmentTournamentMatchesBinding
 import com.example.minisofascore.ui.tournament_matches.adapters.EventPagingAdapter
+import com.example.minisofascore.ui.tournament_matches.adapters.StickyHeaderItemDecorator
 import kotlinx.coroutines.launch
 
 class TournamentMatchesFragment : Fragment() {
@@ -31,8 +32,6 @@ class TournamentMatchesFragment : Fragment() {
 
     private val viewModel: TournamentMatchesViewModel by viewModels()
 
-    private val eventPagingAdapter by lazy { EventPagingAdapter() }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,14 +41,20 @@ class TournamentMatchesFragment : Fragment() {
 
         val tournament = requireArguments().getSerializable(TOURNAMENT_INFO) as Tournament
 
+        val eventPagingAdapter = EventPagingAdapter(
+            requireContext(),
+            onEventClick = {}
+        )
+
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = eventPagingAdapter
+            addItemDecoration(StickyHeaderItemDecorator(eventPagingAdapter))
         }
 
-        viewModel.getEventPageLiveData(tournament.id).observe(viewLifecycleOwner){
-            lifecycleScope.launch {
-                eventPagingAdapter.submitData(it)
+        lifecycleScope.launch {
+            viewModel.getEventPageFlow(tournament.id).collect{ pagingData ->
+                eventPagingAdapter.submitData(pagingData)
             }
         }
 
