@@ -1,5 +1,6 @@
 package com.example.minisofascore.ui.main_list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.MainActivity
 import com.example.minisofascore.R
+import com.example.minisofascore.TournamentActivity
 import com.example.minisofascore.databinding.FragmentMainListBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.databinding.TabItemSportBinding
@@ -22,6 +24,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 const val EVENT_INFO = "event_info"
+const val SPORT_INFO = "sport_info"
 const val NUM_OF_DATE_TABS = 7 + 1 + 7 // 1 week before + today + 1 week after
 
 class MainListFragment : Fragment() {
@@ -39,11 +42,14 @@ class MainListFragment : Fragment() {
     ): View {
         _binding = FragmentMainListBinding.inflate(inflater, container, false)
 
+        val dateFormat = "dd.MM."
+
         val eventAdapter = EventAdapter(requireContext()) {
             findNavController().navigate(
                 R.id.action_navigation_main_list_to_navigation_event_details,
                 Bundle().apply {
                     putSerializable(EVENT_INFO, it)
+                    putSerializable(SPORT_INFO, mainListViewModel.selectedSport)
                 }
             )
         }
@@ -100,7 +106,7 @@ class MainListFragment : Fragment() {
             } else {
                 tabBinding.dayOfWeek.text = tabDate.format(DateTimeFormatter.ofPattern("EEE"))
             }
-            tabBinding.date.text = tabDate.format(DateTimeFormatter.ofPattern("dd.MM."))
+            tabBinding.date.text = tabDate.format(DateTimeFormatter.ofPattern(dateFormat))
             if (tabDate == mainListViewModel.selectedDate) {
                 newTab.select()
                 selectedTabDateIndex = tabNumber.toInt()
@@ -136,6 +142,11 @@ class MainListFragment : Fragment() {
         mainListViewModel.events.observe(viewLifecycleOwner) {
             eventAdapter.updateItems(mainListViewModel.selectedDate, it)
             endLoadingAnimations()
+        }
+
+        binding.tournamentIcon.setOnClickListener {
+            val intent = Intent(requireContext(), TournamentActivity::class.java)
+            startActivity(intent)
         }
 
         return binding.root

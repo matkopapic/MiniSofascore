@@ -7,3 +7,9 @@ data class Sport (
     val name: String,
     val slug: String
 ): Serializable
+
+enum class SportType {
+    FOOTBALL,
+    BASKETBALL,
+    AMERICAN_FOOTBALL
+}
