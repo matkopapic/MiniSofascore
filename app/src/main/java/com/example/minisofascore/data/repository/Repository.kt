@@ -43,6 +43,10 @@ class Repository {
         api.getEventPage(tournamentId, lastOrNext.toString().lowercase(), page)
     }
 
+    suspend fun getEvent(eventId: Int) = safeResponse {
+        api.getEvent(eventId)
+    }
+
 }
 
 enum class LastOrNext {

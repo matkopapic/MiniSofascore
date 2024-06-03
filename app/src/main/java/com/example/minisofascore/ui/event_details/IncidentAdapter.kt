@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.minisofascore.R
 import com.example.minisofascore.data.models.CardColor
+import com.example.minisofascore.data.models.EventStatus
 import com.example.minisofascore.data.models.GoalType
 import com.example.minisofascore.data.models.Incident
 import com.example.minisofascore.data.models.SportType
@@ -20,14 +21,24 @@ import com.example.minisofascore.databinding.IncidentGoalLayoutBinding
 import com.example.minisofascore.databinding.IncidentPeriodLayoutBinding
 import com.google.android.material.color.MaterialColors
 
-class IncidentAdapter(private val context: Context, private val sportType: SportType, private val isLive: Boolean) : RecyclerView.Adapter<ViewHolder>() {
+class IncidentAdapter(private val context: Context, private val sportType: SportType, private var isLive: Boolean) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items = listOf<Incident>()
 
     fun updateItems(newItems: List<Incident>) {
         val diffResult = DiffUtil.calculateDiff(IncidentDiffCallback(items, newItems))
         items = newItems.sortedWith(compareByDescending<Incident> { it.time }.thenByDescending { it.id })
+
+        // color the top period element in a different color if the event is live
+        if (items[0] is Incident.Period && isLive) {
+            (items[0] as Incident.Period).isColoredLive = true
+        }
         diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun refreshEventStatus(eventStatus: EventStatus) {
+        isLive = eventStatus == EventStatus.IN_PROGRESS
+        updateItems(items)
     }
 
     override fun getItemCount() = items.size
@@ -58,7 +69,7 @@ class IncidentAdapter(private val context: Context, private val sportType: Sport
                     SportType.AMERICAN_FOOTBALL -> (holder as GoalIncidentViewHolder).bind(item)
                 }
             }
-            is Incident.Period -> (holder as PeriodIncidentViewHolder).bind(item, position == 0 && isLive)
+            is Incident.Period -> (holder as PeriodIncidentViewHolder).bind(item)
         }
     }
 
@@ -124,9 +135,9 @@ class IncidentAdapter(private val context: Context, private val sportType: Sport
         }
 
         private val liveColor = MaterialColors.getColor(binding.root, R.attr.live)
-        fun bind(incident: Incident.Period, isLiveColor: Boolean) {
+        fun bind(incident: Incident.Period) {
             binding.periodText.text = incident.text
-            if (isLiveColor) {
+            if (incident.isColoredLive) {
                 binding.periodText.setTextColor(liveColor)
             }
         }

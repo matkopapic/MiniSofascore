@@ -8,8 +8,8 @@ data class Sport (
     val slug: String
 ): Serializable
 
-enum class SportType {
-    FOOTBALL,
-    BASKETBALL,
-    AMERICAN_FOOTBALL
+enum class SportType(val sportName: String, val slug: String) {
+    FOOTBALL("Football","football"),
+    BASKETBALL("Basketball","basketball"),
+    AMERICAN_FOOTBALL("Am. Football","american-football")
 }

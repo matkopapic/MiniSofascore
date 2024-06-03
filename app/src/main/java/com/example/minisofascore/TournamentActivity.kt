@@ -5,12 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import coil.load
 import com.example.minisofascore.data.models.Tournament
-import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.databinding.ActivityTournamentBinding
 import com.example.minisofascore.databinding.TabItemTextBinding
 import com.example.minisofascore.ui.adapters.TournamentViewPagerAdapter
+import com.example.minisofascore.util.loadTournamentLogo
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.math.abs
 
@@ -47,9 +46,9 @@ class TournamentActivity : AppCompatActivity() {
         }
 
         binding.toolbarImageText.name.text = tournament.name
-        binding.toolbarImageText.mainLogo.load(Repository.getTournamentLogoUrl(tournament.id))
+        binding.toolbarImageText.mainLogo.loadTournamentLogo(tournament.id)
         binding.toolbarImageText.countryName.text = tournament.country.name
-        binding.toolbarImageText.countryLogo.load(Repository.getTournamentLogoUrl(tournament.id))
+        binding.toolbarImageText.countryLogo.loadTournamentLogo(tournament.id)
 
         val viewpager = binding.viewpager
         val tabLayout = binding.tabLayout
