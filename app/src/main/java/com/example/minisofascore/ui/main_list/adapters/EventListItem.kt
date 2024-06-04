@@ -10,6 +10,6 @@ sealed class EventListItem {
 
     data object SectionDivider : EventListItem()
 
-    data class DayInfoItem(val date: LocalDate, val numOfEvents: Int, val round: Int = 0): EventListItem()
+    data class DayInfoItem(val date: LocalDate = LocalDate.now(), val numOfEvents: Int = 0, val round: Int = 0): EventListItem()
 
 }

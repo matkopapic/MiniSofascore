@@ -39,11 +39,16 @@ class EventPagingAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(getItem(position)) {
-            is EventListItem.EventItem -> EventAdapter.EventInfoViewHolder.TYPE
-            is EventListItem.DayInfoItem -> DayInfoViewHolder.TYPE
-            else -> -1
+        return try {
+            when(getItem(position)) {
+                is EventListItem.EventItem -> EventAdapter.EventInfoViewHolder.TYPE
+                is EventListItem.DayInfoItem -> DayInfoViewHolder.TYPE
+                else -> -1
+            }
+        } catch (exception: IndexOutOfBoundsException) {
+            return -1
         }
+
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val item = getItem(position)) {

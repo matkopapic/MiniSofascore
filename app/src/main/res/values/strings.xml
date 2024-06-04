@@ -62,6 +62,9 @@
     <string name="view_tournament_details">View Tournament Details</string>
     <string name="sport_icon">sport icon</string>
     <string name="tournament_info">TOURNAMENT_INFO</string>
+    <string name="retry">Retry</string>
+    <string name="notLoading">Couldn\'t load! Try again?</string>
+    <string name="noMatches">There is no matches for this tournament</string>
     <plurals name="numOfEvents">
         <item quantity="one">%d Event</item>
         <item quantity="other">%d Events</item>

@@ -1,6 +1,5 @@
 package com.example.minisofascore.ui.tournament_matches.adapters
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.minisofascore.data.models.Event
@@ -22,13 +21,16 @@ class EventPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Event> {
         val position = params.key ?: 0
-        val data = getEventPage(position)
-        return LoadResult.Page(
-            data = data,
-            prevKey = (position - 1).takeIf { data.isNotEmpty() },
-            nextKey = (position + 1).takeIf { data.isNotEmpty() }
-        )
-
+        return try {
+            val data = getEventPage(position)
+            LoadResult.Page(
+                data = data,
+                prevKey = (position - 1).takeIf { data.isNotEmpty() },
+                nextKey = (position + 1).takeIf { data.isNotEmpty() }
+            )
+        } catch (exception: Exception) {
+            return LoadResult.Error(exception)
+        }
     }
 
     private suspend fun getEventPage(page: Int): List<Event> {
@@ -41,7 +43,7 @@ class EventPagingSource(
         val pageNum = if (page < 0) abs(page + 1) else page
         return when (val response = repository.getEventPage(tournamentId, lastOrNext, pageNum)) {
             is Result.Success -> response.data
-            is Result.Error -> emptyList<Event>().also { Log.e("aaaa", "Error loading page ${response.error}") }
+            is Result.Error -> throw Exception(response.error)
         }
     }
 }
