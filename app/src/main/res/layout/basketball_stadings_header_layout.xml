@@ -26,11 +26,11 @@
         android:layout_marginStart="8dp"
         android:textSize="14sp"
         android:textColor="?attr/on_surface_lv2"
-        android:layout_weight="10"
+        android:layout_weight="5"
         android:id="@+id/name"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/initial_played"
         android:layout_gravity="center"
@@ -38,11 +38,12 @@
         android:textColor="?attr/on_surface_lv2"
         android:textSize="14sp"
         android:layout_weight="1"
+        android:maxLines="1"
         android:id="@+id/played"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/initial_wins"
         android:layout_gravity="center"
@@ -50,11 +51,12 @@
         android:textColor="?attr/on_surface_lv2"
         android:textSize="14sp"
         android:layout_weight="1"
+        android:maxLines="1"
         android:id="@+id/wins"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/initial_losses"
         android:layout_gravity="center"
@@ -62,11 +64,12 @@
         android:textColor="?attr/on_surface_lv2"
         android:textSize="14sp"
         android:layout_weight="1"
+        android:maxLines="1"
         android:id="@+id/losses"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/abbr_difference"
         android:textAllCaps="true"
@@ -74,12 +77,13 @@
         android:layout_marginStart="8dp"
         android:textColor="?attr/on_surface_lv2"
         android:textSize="14sp"
-        android:layout_weight="1"
+        android:layout_weight="2"
+        android:maxLines="1"
         android:id="@+id/diff"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/abbr_streak"
         android:layout_gravity="center"
@@ -87,11 +91,12 @@
         android:textColor="?attr/on_surface_lv2"
         android:textSize="14sp"
         android:layout_weight="1"
+        android:maxLines="1"
         android:id="@+id/streak"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/initial_games_behind"
         android:textAllCaps="true"
@@ -99,12 +104,13 @@
         android:layout_marginStart="8dp"
         android:textColor="?attr/on_surface_lv2"
         android:textSize="14sp"
-        android:layout_weight="1"
+        android:maxLines="1"
+        android:layout_weight="2"
         android:id="@+id/games_behind"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/abbr_percentage"
         android:textAllCaps="true"
@@ -112,7 +118,8 @@
         android:layout_marginStart="8dp"
         android:textColor="?attr/on_surface_lv2"
         android:textSize="14sp"
-        android:layout_weight="1"
+        android:maxLines="1"
+        android:layout_weight="3"
         android:id="@+id/percentage"
         android:textAlignment="center"/>
 

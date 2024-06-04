@@ -29,11 +29,11 @@
         android:layout_marginStart="8dp"
         android:textSize="14sp"
         android:textColor="?attr/on_surface_lv1"
-        android:layout_weight="10"
+        android:layout_weight="5"
         android:id="@+id/name"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="37"
         android:layout_gravity="center"
@@ -41,23 +41,25 @@
         android:textColor="?attr/on_surface_lv1"
         android:textSize="14sp"
         android:layout_weight="1"
+        android:maxLines="1"
         android:id="@+id/played"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="24"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:textColor="?attr/on_surface_lv1"
         android:textSize="14sp"
+        android:maxLines="1"
         android:layout_weight="1"
         android:id="@+id/wins"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="22"
         android:layout_gravity="center"
@@ -66,53 +68,58 @@
         android:textSize="14sp"
         android:layout_weight="1"
         android:id="@+id/losses"
+        android:maxLines="1"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="-255"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:textColor="?attr/on_surface_lv1"
         android:textSize="14sp"
-        android:layout_weight="1"
+        android:layout_weight="2"
+        android:maxLines="1"
         android:id="@+id/diff"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="4"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:textColor="?attr/on_surface_lv1"
         android:textSize="14sp"
+        android:maxLines="1"
         android:layout_weight="1"
         android:id="@+id/streak"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="16.0"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:textColor="?attr/on_surface_lv1"
         android:textSize="14sp"
-        android:layout_weight="1"
+        android:maxLines="1"
+        android:layout_weight="2"
         android:id="@+id/games_behind"
         android:textAlignment="center"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="0.684"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:textColor="?attr/on_surface_lv1"
         android:textSize="14sp"
-        android:layout_weight="1"
+        android:maxLines="1"
+        android:layout_weight="3"
         android:id="@+id/percentage"
         android:textAlignment="center"/>
 
