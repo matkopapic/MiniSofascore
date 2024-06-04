@@ -10,8 +10,9 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/secondary_highlight"
+        android:backgroundTint="?attr/secondary_highlight"
         app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
         >
 
         <TextView

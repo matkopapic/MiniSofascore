@@ -41,7 +41,7 @@ class EventDetailsFragment : Fragment() {
 
         _binding = FragmentEventDetailsBinding.inflate(inflater, container, false)
 
-        val event = (requireArguments().getSerializable(EVENT_INFO)) as Event
+        var event = (requireArguments().getSerializable(EVENT_INFO)) as Event
         val sportType = (requireArguments().getSerializable(SPORT_TYPE_INFO)) as SportType
 
         val incidentAdapter = IncidentAdapter(requireContext(), sportType, event.status == EventStatus.IN_PROGRESS)
@@ -68,18 +68,20 @@ class EventDetailsFragment : Fragment() {
         // we request EventStatus updates if the game is live or it's 5 minutes before startTime
         val startDateTime = event.startDate.getLocalDateTime()
         if (event.status == EventStatus.IN_PROGRESS ||
-            (
-                event.status == EventStatus.NOT_STARTED &&
-                ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime) < 5)
+            event.status == EventStatus.NOT_STARTED // TODO: remove this line and uncomment lines below after testing is done
+//            (
+//                event.status == EventStatus.NOT_STARTED
+//                        &&
+//                ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime) < 5)
             ) {
-            eventDetailsViewModel.startEventStatusUpdates(event.id)
+            eventDetailsViewModel.startEventUpdates(event.id)
             eventDetailsViewModel.eventStatus.observe(viewLifecycleOwner) {
-                if (it != event.status) {
-                    event.status = it
+                if (it.status != event.status) {
+                    event = it
                     setupHeaderWithEvent(event)
-                    incidentAdapter.refreshEventStatus(it)
+                    incidentAdapter.refreshEventStatus(it.status)
                     eventDetailsViewModel.getIncidents(event.id)
-                    if (it == EventStatus.FINISHED) eventDetailsViewModel.stopEventStatusUpdates()
+                    if (it.status == EventStatus.FINISHED) eventDetailsViewModel.stopEventUpdates()
                 } else {
                     // game is live so we still want incident updates
                     eventDetailsViewModel.getIncidents(event.id)
@@ -99,9 +101,10 @@ class EventDetailsFragment : Fragment() {
 
         setupHeaderWithEvent(event)
 
-        eventDetailsViewModel.getIncidents(1)
+        eventDetailsViewModel.getIncidents(event.id)
         eventDetailsViewModel.incidents.observe(viewLifecycleOwner){
-            incidentAdapter.updateItems(it)
+            if (it.isNotEmpty())
+                incidentAdapter.updateItems(it)
         }
 
 
@@ -134,6 +137,7 @@ class EventDetailsFragment : Fragment() {
                 binding.startDate.visibility = View.GONE
                 binding.scoreLayout.visibility = View.VISIBLE
 
+                binding.incidentRecyclerView.visibility = View.VISIBLE
                 binding.notStartedLayout.visibility = View.GONE
 
                 binding.teamHomeScore.text = event.homeScore.getTotalAsString()
@@ -151,13 +155,18 @@ class EventDetailsFragment : Fragment() {
                 binding.startDate.visibility = View.GONE
                 binding.scoreLayout.visibility = View.VISIBLE
 
+                binding.incidentRecyclerView.visibility = View.VISIBLE
                 binding.notStartedLayout.visibility = View.GONE
 
                 binding.teamHomeScore.text = event.homeScore.getTotalAsString()
                 binding.teamAwayScore.text = event.awayScore.getTotalAsString()
 
                 binding.startTime.text = getString(R.string.full_time)
+
                 binding.startTime.setTextColor(timeFinishedColor)
+                binding.teamHomeScore.setTextColor(timeFinishedColor)
+                binding.minus.setTextColor(timeFinishedColor)
+                binding.teamAwayScore.setTextColor(timeFinishedColor)
                 if (event.winnerCode == TeamSide.HOME) {
                     binding.teamHomeScore.setTextColor(winnerColor)
                 }
@@ -170,7 +179,7 @@ class EventDetailsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        eventDetailsViewModel.stopEventStatusUpdates()
+        eventDetailsViewModel.stopEventUpdates()
         _binding = null
     }
 }

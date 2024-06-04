@@ -13,7 +13,7 @@ data class Event (
     val homeTeam: Team,
     val awayTeam: Team,
     var status: EventStatus,
-    val startDate: Timestamp,
+    var startDate: Timestamp,
     val homeScore: Score,
     val awayScore: Score,
     var winnerCode: TeamSide?,

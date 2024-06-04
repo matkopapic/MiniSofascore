@@ -1,6 +1,7 @@
 package com.example.minisofascore.data.repository
 
 import com.example.minisofascore.data.models.Event
+import com.example.minisofascore.data.models.EventStatus
 import com.example.minisofascore.data.models.TeamSide
 import com.example.minisofascore.data.remote.BASE_URL
 import com.example.minisofascore.data.remote.Network
@@ -8,6 +9,7 @@ import com.example.minisofascore.data.remote.Result
 import com.example.minisofascore.util.safeResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -22,7 +24,7 @@ class Repository {
     suspend fun getIncidentsForEvent(eventId: Int) =
         withContext(Dispatchers.IO) {
             safeResponse {
-                api.getIncidentsForEvent(eventId)
+                api.getIncidentsForEvent(1) // TODO: still for testing purposes change to eventId
             }
         }
 
@@ -43,8 +45,23 @@ class Repository {
         api.getEventPage(tournamentId, lastOrNext.toString().lowercase(), page)
     }
 
+    private var eventSentCounter = 0
+
     suspend fun getEvent(eventId: Int) = safeResponse {
-        api.getEvent(eventId)
+        eventSentCounter++
+        if (eventSentCounter < 2) {
+            api.getEvent(1).apply {
+                status = EventStatus.IN_PROGRESS
+                startDate = Timestamp(System.currentTimeMillis() - 700000L)
+            }
+        } else {
+            api.getEvent(1)
+        }
+        // TODO: used for testing live games delete above and uncomment below after done testing
+
+//        api.getEvent(eventId)
+
+
     }
 
 }

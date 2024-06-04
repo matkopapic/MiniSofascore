@@ -26,13 +26,16 @@ class IncidentAdapter(private val context: Context, private val sportType: Sport
     private var items = listOf<Incident>()
 
     fun updateItems(newItems: List<Incident>) {
-        val diffResult = DiffUtil.calculateDiff(IncidentDiffCallback(items, newItems))
-        items = newItems.sortedWith(compareByDescending<Incident> { it.time }.thenByDescending { it.id })
+        val newItemsSorted = newItems.sortedWith(compareByDescending<Incident> { it.time }.thenByDescending { it.id })
 
         // color the top period element in a different color if the event is live
-        if (items[0] is Incident.Period && isLive) {
-            (items[0] as Incident.Period).isColoredLive = true
-        }
+        if (newItemsSorted[0] is Incident.Period)
+            (newItemsSorted[0] as Incident.Period).isColoredLive = isLive
+
+        val diffResult = DiffUtil.calculateDiff(IncidentDiffCallback(items, newItemsSorted))
+
+        items = newItemsSorted
+
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -135,10 +138,13 @@ class IncidentAdapter(private val context: Context, private val sportType: Sport
         }
 
         private val liveColor = MaterialColors.getColor(binding.root, R.attr.live)
+        private val notLiveColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv1)
         fun bind(incident: Incident.Period) {
             binding.periodText.text = incident.text
             if (incident.isColoredLive) {
                 binding.periodText.setTextColor(liveColor)
+            } else {
+                binding.periodText.setTextColor(notLiveColor)
             }
         }
     }
