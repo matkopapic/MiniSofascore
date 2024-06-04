@@ -4,7 +4,6 @@ package com.example.minisofascore
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
@@ -12,11 +11,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.minisofascore.data.models.Tournament
 import com.example.minisofascore.databinding.ActivityTournamentBinding
-import com.example.minisofascore.ui.viewpager.ViewPagerViewModel
 
 class TournamentActivity : AppCompatActivity() {
-
-    private val viewModel: ViewPagerViewModel by viewModels()
 
     companion object {
         const val TOURNAMENT_INFO = "tournament_info"
