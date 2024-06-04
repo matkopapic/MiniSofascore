@@ -1,4 +1,4 @@
-package com.example.minisofascore.ui.adapters
+package com.example.minisofascore.ui.viewpager.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -9,6 +9,7 @@ import com.example.minisofascore.ui.tournament_matches.TournamentMatchesFragment
 import com.example.minisofascore.ui.tournament_standings.TournamentStandingsFragment
 
 private const val NUM_TABS = 2
+
 class TournamentViewPagerAdapter (fragmentManager: FragmentManager, lifecycle: Lifecycle, private val tournament: Tournament): FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount() = NUM_TABS
     override fun createFragment(position: Int): Fragment {
@@ -16,6 +17,6 @@ class TournamentViewPagerAdapter (fragmentManager: FragmentManager, lifecycle: L
             0 -> return TournamentMatchesFragment.newInstance(tournament)
             1 -> return TournamentStandingsFragment.newInstance(tournament)
         }
-        return TournamentMatchesFragment()
+        return TournamentMatchesFragment.newInstance(tournament)
     }
 }

@@ -7,9 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Tournament
+import com.example.minisofascore.data.models.getSportType
 import com.example.minisofascore.databinding.FragmentTournamentMatchesBinding
+import com.example.minisofascore.ui.main_list.EVENT_INFO
+import com.example.minisofascore.ui.main_list.SPORT_TYPE_INFO
 import com.example.minisofascore.ui.tournament_matches.adapters.EventPagingAdapter
 import com.example.minisofascore.ui.tournament_matches.adapters.StickyHeaderItemDecorator
 import kotlinx.coroutines.launch
@@ -43,7 +48,15 @@ class TournamentMatchesFragment : Fragment() {
 
         val eventPagingAdapter = EventPagingAdapter(
             requireContext(),
-            onEventClick = {}
+            onEventClick = {
+                findNavController().navigate(
+                    R.id.action_fragmentViewPager_to_fragmentEventDetails,
+                    Bundle().apply {
+                        putSerializable(EVENT_INFO, it)
+                        putSerializable(SPORT_TYPE_INFO, tournament.sport.getSportType())
+                    }
+                )
+            }
         )
 
         binding.recyclerView.apply {

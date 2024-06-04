@@ -56,8 +56,13 @@ class EventDetailsFragment : Fragment() {
         }
 
         binding.buttonViewTournamentDetails.setOnClickListener {
-            val intent = TournamentActivity.newInstance(requireContext(), event.tournament)
-            startActivity(intent)
+            if (activity is TournamentActivity) {
+                findNavController().popBackStack()
+            } else {
+                val intent = TournamentActivity.newInstance(requireContext(), event.tournament)
+                startActivity(intent)
+            }
+
         }
 
         // we request EventStatus updates if the game is live or it's 5 minutes before startTime

@@ -8,53 +8,14 @@
     tools:context=".TournamentActivity"
     >
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:outlineProvider="none"-->
-<!--        >-->
-<!--        <include-->
-<!--            android:id="@+id/toolbar_back_arrow"-->
-<!--            layout="@layout/toolbar_back_arrow" />-->
-
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/app_bar_layout"
-        >
-
-        <include
-            android:id="@+id/toolbar_back_arrow"
-            layout="@layout/toolbar_back_arrow" />
-
-        <include
-            android:id="@+id/toolbar_image_text"
-            layout="@layout/toolbar_image_text" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:id="@+id/tab_layout"
-            android:background="?attr/primary_default"
-            app:tabSelectedTextColor="?attr/surface_1"
-            app:tabTextColor="?attr/surface_1"
-            app:tabIndicatorColor="?attr/surface_1"
-            app:tabIndicatorHeight="4dp"
-            app:tabIndicator="@drawable/tab_indicator"
-            app:tabIconTint="?attr/surface_1"
-            app:tabPaddingBottom="0dp" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewpager"
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        />
+        app:defaultNavHost="true"
+        tools:ignore="FragmentTagUsage" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
