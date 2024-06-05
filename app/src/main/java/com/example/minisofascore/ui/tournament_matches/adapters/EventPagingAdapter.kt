@@ -112,16 +112,7 @@ class EventPagingAdapter(
     }
 
     override fun getHeaderPositionForItem(itemPosition: Int): Int {
-        var headerPosition = 0
-        var itemPos = itemPosition
-        do {
-            if (this.isHeader(itemPos)) {
-                headerPosition = itemPos
-                break
-            }
-            itemPos -= 1
-        } while (itemPos >= 0)
-        return headerPosition
+        return (itemPosition downTo 0).firstOrNull{ isHeader(it) } ?: 0
     }
 
     override fun getHeaderLayout(headerPosition: Int): Int {

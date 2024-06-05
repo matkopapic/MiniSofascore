@@ -72,11 +72,10 @@ class EventDetailsFragment : Fragment() {
         // we request EventStatus updates if the game is live or it's 5 minutes before startTime
         val startDateTime = event.startDate.getLocalDateTime()
         if (event.status == EventStatus.IN_PROGRESS ||
-            event.status == EventStatus.NOT_STARTED // TODO: remove this line and uncomment lines below after testing is done
-//            (
-//                event.status == EventStatus.NOT_STARTED
-//                        &&
-//                ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime) < 5)
+            (
+                event.status == EventStatus.NOT_STARTED
+                        &&
+                ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime) < 5)
             ) {
             eventDetailsViewModel.startEventUpdates(event.id)
             eventDetailsViewModel.eventStatus.observe(viewLifecycleOwner) {
