@@ -1,7 +1,9 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore.ui.main_list.adapters
 
 import android.content.Context
 import android.graphics.Color
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -17,6 +19,8 @@ import com.example.minisofascore.databinding.DayInfoLayoutBinding
 import com.example.minisofascore.databinding.EventItemLayoutBinding
 import com.example.minisofascore.databinding.SectionDividerBinding
 import com.example.minisofascore.databinding.TournamentHeaderLayoutBinding
+import com.example.minisofascore.ui.settings.DateFormat
+import com.example.minisofascore.ui.settings.SettingsFragment
 import com.example.minisofascore.util.getLocalDateTime
 import com.example.minisofascore.util.loadTeamLogo
 import com.example.minisofascore.util.loadTournamentLogo
@@ -110,9 +114,11 @@ class EventAdapter(
         private val winnerTextColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv1, Color.BLACK)
         private val normalTextColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv2, Color.BLACK)
         private val liveColor = MaterialColors.getColor(binding.root, R.attr.live, Color.RED)
+        private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
+        private val dateFormat = preferences.getString(SettingsFragment.DATE_FORMAT, DateFormat.EUROPEAN.formatString)
         fun bind(event: Event) {
             val startDateTime = event.startDate.getLocalDateTime()
-            val startDate = startDateTime.format(DateTimeFormatter.ofPattern("dd.MM.yy."))
+            val startDate = startDateTime.format(DateTimeFormatter.ofPattern("${dateFormat}yy."))
             val startTime = startDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
             val isStartTimeToday = LocalDate.now() == startDateTime.toLocalDate()
 
@@ -228,12 +234,14 @@ class EventAdapter(
         companion object {
             const val TYPE = 3
         }
+        private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
+        private val dateFormat = preferences.getString(SettingsFragment.DATE_FORMAT, DateFormat.EUROPEAN.formatString)
         fun bind(date: LocalDate, numOfEvents: Int) {
             val isStartTimeToday = LocalDate.now() == date
 
             binding.dayInfoDate.text =
                 if (isStartTimeToday) context.getString(R.string.today)
-                else date.format(DateTimeFormatter.ofPattern("EEE, dd.MM.yyyy."))
+                else date.format(DateTimeFormatter.ofPattern("EEE, ${dateFormat}yyyy.")).replaceFirstChar { it.uppercase() }
 
             binding.dayInfoEvents.text = context.resources.getQuantityString(R.plurals.numOfEvents, numOfEvents, numOfEvents)
 
