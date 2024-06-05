@@ -1,6 +1,5 @@
 package com.example.minisofascore.ui.main_list
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.minisofascore.MainActivity
 import com.example.minisofascore.R
 import com.example.minisofascore.TournamentActivity
+import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.databinding.FragmentMainListBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.databinding.TabItemSportBinding
@@ -24,7 +23,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 const val EVENT_INFO = "event_info"
-const val SPORT_INFO = "sport_info"
+const val SPORT_TYPE_INFO = "sport_info"
 const val NUM_OF_DATE_TABS = 7 + 1 + 7 // 1 week before + today + 1 week after
 
 class MainListFragment : Fragment() {
@@ -44,15 +43,20 @@ class MainListFragment : Fragment() {
 
         val dateFormat = "dd.MM."
 
-        val eventAdapter = EventAdapter(requireContext()) {
-            findNavController().navigate(
-                R.id.action_navigation_main_list_to_navigation_event_details,
-                Bundle().apply {
-                    putSerializable(EVENT_INFO, it)
-                    putSerializable(SPORT_INFO, mainListViewModel.selectedSport)
-                }
-            )
-        }
+        val eventAdapter = EventAdapter(requireContext(),
+            onEventClick = {
+                findNavController().navigate(
+                    R.id.action_navigation_main_list_to_navigation_event_details,
+                    Bundle().apply {
+                        putSerializable(EVENT_INFO, it)
+                        putSerializable(SPORT_TYPE_INFO, mainListViewModel.selectedSport)
+                    }
+                )
+            },
+            onTournamentClick = {
+                startActivity(TournamentActivity.newInstance(requireContext(), it))
+            }
+        )
 
         binding.eventRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -61,10 +65,10 @@ class MainListFragment : Fragment() {
         }
 
         val tabLayoutSports = binding.tabLayoutSports
-        for (tabNumber in MainActivity.sports.indices) {
+        for (tabNumber in SportType.entries.indices) {
             val newTab = tabLayoutSports.newTab()
             val tabBinding = TabItemSportBinding.inflate(layoutInflater)
-            tabBinding.tabText.text = MainActivity.sports[tabNumber].name
+            tabBinding.tabText.text = SportType.entries[tabNumber].sportName
             tabBinding.tabIcon.setImageResource(
                 when (tabNumber) {
                     0 -> R.drawable.ic_football
@@ -72,7 +76,7 @@ class MainListFragment : Fragment() {
                     else -> R.drawable.ic_american_football
                 }
             )
-            if (MainActivity.sports[tabNumber] == mainListViewModel.selectedSport) {
+            if (SportType.entries.toTypedArray()[tabNumber] == mainListViewModel.selectedSport) {
                 newTab.select()
             }
             newTab.setCustomView(tabBinding.root)
@@ -81,7 +85,7 @@ class MainListFragment : Fragment() {
 
         tabLayoutSports.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(p0: TabLayout.Tab?) {
-                mainListViewModel.selectedSport = MainActivity.sports[tabLayoutSports.selectedTabPosition]
+                mainListViewModel.selectedSport = SportType.entries.toTypedArray()[tabLayoutSports.selectedTabPosition]
                 mainListViewModel.getEventsBySportAndDate()
                 startLoadingAnimations()
             }
@@ -142,11 +146,6 @@ class MainListFragment : Fragment() {
         mainListViewModel.events.observe(viewLifecycleOwner) {
             eventAdapter.updateItems(mainListViewModel.selectedDate, it)
             endLoadingAnimations()
-        }
-
-        binding.tournamentIcon.setOnClickListener {
-            val intent = Intent(requireContext(), TournamentActivity::class.java)
-            startActivity(intent)
         }
 
         return binding.root

@@ -9,22 +9,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil.load
-import com.example.minisofascore.MainActivity
 import com.example.minisofascore.R
+import com.example.minisofascore.TournamentActivity
 import com.example.minisofascore.data.models.Event
 import com.example.minisofascore.data.models.EventStatus
-import com.example.minisofascore.data.models.Sport
+import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.data.models.TeamSide
-import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.databinding.FragmentEventDetailsBinding
 import com.example.minisofascore.ui.main_list.EVENT_INFO
-import com.example.minisofascore.ui.main_list.SPORT_INFO
+import com.example.minisofascore.ui.main_list.SPORT_TYPE_INFO
 import com.example.minisofascore.ui.main_list.adapters.getTotalAsString
+import com.example.minisofascore.util.getLocalDateTime
+import com.example.minisofascore.util.loadTeamLogo
+import com.example.minisofascore.util.loadTournamentLogo
 import com.google.android.material.color.MaterialColors
-import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
@@ -42,10 +41,8 @@ class EventDetailsFragment : Fragment() {
 
         _binding = FragmentEventDetailsBinding.inflate(inflater, container, false)
 
-        val dateFormat = "dd.MM.yyyy."
-        val event = (requireArguments().getSerializable(EVENT_INFO)) as Event
-        val sport = (requireArguments().getSerializable(SPORT_INFO)) as Sport
-        val sportType = MainActivity.getSportTypeFromSport(sport)
+        var event = (requireArguments().getSerializable(EVENT_INFO)) as Event
+        val sportType = (requireArguments().getSerializable(SPORT_TYPE_INFO)) as SportType
 
         val incidentAdapter = IncidentAdapter(requireContext(), sportType, event.status == EventStatus.IN_PROGRESS)
 
@@ -58,24 +55,71 @@ class EventDetailsFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        binding.buttonViewTournamentDetails.setOnClickListener {
+            if (activity is TournamentActivity) {
+                findNavController().popBackStack()
+            } else {
+                val intent = TournamentActivity.newInstance(requireContext(), event.tournament)
+                startActivity(intent)
+            }
 
+        }
 
-        binding.tournamentLogo.load(Repository.getTournamentLogoUrl(event.tournament.id))
-        val tournamentRoundText = "${sport.name}, ${event.tournament.country.name}, ${event.tournament.name}, ${getString(R.string.round)} ${event.round}"
+        // we request EventStatus updates if the game is live or it's 5 minutes before startTime
+        val startDateTime = event.startDate.getLocalDateTime()
+        if (event.status == EventStatus.IN_PROGRESS ||
+            event.status == EventStatus.NOT_STARTED // TODO: remove this line and uncomment lines below after testing is done
+//            (
+//                event.status == EventStatus.NOT_STARTED
+//                        &&
+//                ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime) < 5)
+            ) {
+            eventDetailsViewModel.startEventUpdates(event.id)
+            eventDetailsViewModel.eventStatus.observe(viewLifecycleOwner) {
+                if (it.status != event.status) {
+                    event = it
+                    setupHeaderWithEvent(event)
+                    incidentAdapter.refreshEventStatus(it.status)
+                    eventDetailsViewModel.getIncidents(event.id)
+                    if (it.status == EventStatus.FINISHED) eventDetailsViewModel.stopEventUpdates()
+                } else {
+                    // game is live so we still want incident updates
+                    eventDetailsViewModel.getIncidents(event.id)
+                }
+            }
+        }
+
+        binding.tournamentLogo.loadTournamentLogo(event.tournament.id)
+        val tournamentRoundText = "${sportType.sportName}, ${event.tournament.country.name}, ${event.tournament.name}, ${getString(R.string.round)} ${event.round}"
         binding.tournamentRoundText.text = tournamentRoundText
 
         binding.teamHomeName.text = event.homeTeam.name
         binding.teamAwayName.text = event.awayTeam.name
 
-        binding.teamHomeLogo.load(Repository.getTeamLogoUrl(event.homeTeam.id))
-        binding.teamAwayLogo.load(Repository.getTeamLogoUrl(event.awayTeam.id))
+        binding.teamHomeLogo.loadTeamLogo(event.homeTeam.id)
+        binding.teamAwayLogo.loadTeamLogo(event.awayTeam.id)
 
+        setupHeaderWithEvent(event)
+
+        eventDetailsViewModel.getIncidents(event.id)
+        eventDetailsViewModel.incidents.observe(viewLifecycleOwner){
+            if (it.isNotEmpty())
+                incidentAdapter.updateItems(it)
+        }
+
+
+        return binding.root
+    }
+
+    private fun setupHeaderWithEvent(event: Event) {
+
+        val dateFormat = "dd.MM.yyyy."
 
         val winnerColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv1)
         val timeFinishedColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv2)
         val liveColor = MaterialColors.getColor(binding.root, R.attr.live)
 
-        val startDateTime = Instant.ofEpochMilli(event.startDate.time).atZone(ZoneId.systemDefault()).toLocalDateTime()
+        val startDateTime = event.startDate.getLocalDateTime()
         val startDate = startDateTime.format(DateTimeFormatter.ofPattern(dateFormat))
         val startTime = startDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
 
@@ -93,6 +137,7 @@ class EventDetailsFragment : Fragment() {
                 binding.startDate.visibility = View.GONE
                 binding.scoreLayout.visibility = View.VISIBLE
 
+                binding.incidentRecyclerView.visibility = View.VISIBLE
                 binding.notStartedLayout.visibility = View.GONE
 
                 binding.teamHomeScore.text = event.homeScore.getTotalAsString()
@@ -110,13 +155,18 @@ class EventDetailsFragment : Fragment() {
                 binding.startDate.visibility = View.GONE
                 binding.scoreLayout.visibility = View.VISIBLE
 
+                binding.incidentRecyclerView.visibility = View.VISIBLE
                 binding.notStartedLayout.visibility = View.GONE
 
                 binding.teamHomeScore.text = event.homeScore.getTotalAsString()
                 binding.teamAwayScore.text = event.awayScore.getTotalAsString()
 
                 binding.startTime.text = getString(R.string.full_time)
+
                 binding.startTime.setTextColor(timeFinishedColor)
+                binding.teamHomeScore.setTextColor(timeFinishedColor)
+                binding.minus.setTextColor(timeFinishedColor)
+                binding.teamAwayScore.setTextColor(timeFinishedColor)
                 if (event.winnerCode == TeamSide.HOME) {
                     binding.teamHomeScore.setTextColor(winnerColor)
                 }
@@ -125,17 +175,11 @@ class EventDetailsFragment : Fragment() {
                 }
             }
         }
-
-        eventDetailsViewModel.getIncidents(1)
-        eventDetailsViewModel.incidents.observe(viewLifecycleOwner){
-            incidentAdapter.updateItems(it)
-        }
-
-        return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        eventDetailsViewModel.stopEventUpdates()
         _binding = null
     }
 }

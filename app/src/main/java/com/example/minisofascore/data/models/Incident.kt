@@ -32,7 +32,8 @@ sealed class Incident(
         id: Int,
         time: Int,
         type: IncidentType,
-        val text: String
+        val text: String,
+        var isColoredLive: Boolean = false
     ): Incident(id, time, type)
 }
 

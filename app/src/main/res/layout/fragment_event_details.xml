@@ -214,6 +214,7 @@
         android:clipToPadding="false"
         android:paddingTop="8dp"
         android:paddingBottom="?attr/actionBarSize"
+        android:descendantFocusability="blocksDescendants"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
 
     <LinearLayout
@@ -233,7 +234,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
-            android:background="?attr/surface_2">
+            app:cardElevation="0dp"
+            android:backgroundTint="?attr/surface_2">
 
             <TextView
                 android:layout_width="wrap_content"

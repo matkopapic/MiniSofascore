@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.minisofascore.MainActivity
 import com.example.minisofascore.data.models.Event
+import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.data.remote.Result
 import com.example.minisofascore.data.repository.Repository
 import kotlinx.coroutines.Job
@@ -20,7 +20,7 @@ class MainListViewModel : ViewModel() {
     private val _events = MutableLiveData<List<Event>>()
     val events: LiveData<List<Event>> = _events
 
-    var selectedSport = MainActivity.sports[0]
+    var selectedSport = SportType.FOOTBALL
     var selectedDate: LocalDate = LocalDate.now()
 
     private var currentlyLoadingJob: Job? = null
