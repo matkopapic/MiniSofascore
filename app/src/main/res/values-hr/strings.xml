@@ -60,4 +60,9 @@
     <string name="api_credit">API Zasluge</string>
     <string name="developer">Programer</string>
     <string name="language">Jezik</string>
+    <plurals name="numOfEvents">
+        <item quantity="one">%d Događaj</item>
+        <item quantity="few">%d Događaja</item>
+        <item quantity="other">%d Događaja</item>
+    </plurals>
 </resources>
