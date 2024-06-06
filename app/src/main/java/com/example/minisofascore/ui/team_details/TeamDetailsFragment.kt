@@ -58,9 +58,11 @@ class TeamDetailsFragment : Fragment() {
     private fun populateTeamDetails(details: TeamDetails, team: Team) {
         val coachText = "${requireContext().getString(R.string.coach)}: ${details.team.managerName ?: ""}"
         binding.coachName.text = coachText
+        binding.coachCountryName.text = team.country.name
         val totalPlayers = details.players.size
         binding.totalPlayers.text = totalPlayers.toString()
         val foreignPlayers = details.players.count { it.country.id != team.country.id }
+        binding.foreignPlayersGraph.setProgress((100f * foreignPlayers / totalPlayers).toInt())
         binding.foreignPlayers.text = foreignPlayers.toString()
 
         binding.teamTournamentsLayout.removeAllViews()

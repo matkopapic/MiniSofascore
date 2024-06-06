@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:layout="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.team_details.TeamDetailsFragment"
     android:background="?attr/surface_0"
@@ -37,7 +38,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:contentDescription="@string/coach_image"
-                android:src="@drawable/ic_football"
+                android:src="@drawable/ic_anonymous"
+                android:tint="?attr/on_surface_lv1"
                 layout:layout_constraintStart_toStartOf="parent"
                 layout:layout_constraintTop_toTopOf="parent"
                 layout:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +61,8 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:contentDescription="@string/country_logo"
-                android:src="@drawable/ic_football"
+                android:src="@drawable/ic_question_mark"
+                android:tint="?attr/on_surface_lv1"
                 android:id="@+id/coach_country_logo"
                 layout:layout_constraintStart_toStartOf="@+id/coach_name"
                 layout:layout_constraintBottom_toBottomOf="@+id/coach_image"
@@ -89,7 +92,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="8dp">
+            android:paddingVertical="12dp">
 
             <ImageView
                 android:layout_width="40dp"
@@ -103,7 +106,7 @@
                 layout:layout_constraintTop_toTopOf="parent"
                 layout:tint="?attr/primary_default" />
 
-            <ImageView
+            <com.example.minisofascore.ui.team_details.CircularGraphView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/foreign_players_graph"
@@ -112,8 +115,9 @@
                 layout:layout_constraintStart_toEndOf="@+id/team_image"
                 layout:layout_constraintEnd_toEndOf="parent"
                 layout:layout_constraintTop_toTopOf="@+id/team_image"
-                android:src="@drawable/ic_football"
-                layout:tint="?attr/primary_default" />
+                app:highlightColor="?attr/primary_default"
+                app:nonHighlightColor="?attr/secondary_default"
+                android:src="@drawable/ic_football" />
 
             <TextView
                 android:layout_width="wrap_content"
