@@ -1,0 +1,23 @@
+package com.example.minisofascore.ui.team_details_viewpager.adapters
+
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.minisofascore.data.models.Team
+import com.example.minisofascore.ui.team_details.TeamDetailsFragment
+
+private const val NUM_TABS = 4
+class TeamDetailsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, private val team: Team): FragmentStateAdapter(fragmentManager, lifecycle) {
+
+    override fun getItemCount() = NUM_TABS
+    override fun createFragment(position: Int): Fragment {
+        when (position) {
+            0 -> return TeamDetailsFragment.newInstance(team)
+            1 -> return TeamDetailsFragment.newInstance(team)
+            2 -> return TeamDetailsFragment.newInstance(team)
+            3 -> return TeamDetailsFragment.newInstance(team)
+        }
+        return TeamDetailsFragment.newInstance(team)
+    }
+}

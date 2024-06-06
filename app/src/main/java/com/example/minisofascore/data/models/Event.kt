@@ -1,6 +1,5 @@
 package com.example.minisofascore.data.models
 
-import android.graphics.Bitmap
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.sql.Timestamp
@@ -44,14 +43,6 @@ data class Tournament(
     val slug: String,
     val sport: Sport,
     val country: Country,
-    var logo: Bitmap? = null
-): Serializable
-
-data class Team(
-    val id: Int,
-    val name: String,
-    val country: Country,
-    var logo: Bitmap? = null
 ): Serializable
 
 data class Score(

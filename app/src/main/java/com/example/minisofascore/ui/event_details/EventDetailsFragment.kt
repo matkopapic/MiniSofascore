@@ -11,14 +11,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.R
+import com.example.minisofascore.TeamDetailsActivity
 import com.example.minisofascore.TournamentActivity
 import com.example.minisofascore.data.models.Event
 import com.example.minisofascore.data.models.EventStatus
-import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.data.models.TeamSide
+import com.example.minisofascore.data.models.getSportType
 import com.example.minisofascore.databinding.FragmentEventDetailsBinding
 import com.example.minisofascore.ui.main_list.EVENT_INFO
-import com.example.minisofascore.ui.main_list.SPORT_TYPE_INFO
 import com.example.minisofascore.ui.main_list.adapters.getTotalAsString
 import com.example.minisofascore.ui.settings.DateFormat
 import com.example.minisofascore.ui.settings.SettingsFragment
@@ -45,7 +45,7 @@ class EventDetailsFragment : Fragment() {
         _binding = FragmentEventDetailsBinding.inflate(inflater, container, false)
 
         var event = (requireArguments().getSerializable(EVENT_INFO)) as Event
-        val sportType = (requireArguments().getSerializable(SPORT_TYPE_INFO)) as SportType
+        val sportType = event.tournament.sport.getSportType()
 
         val incidentAdapter = IncidentAdapter(requireContext(), sportType, event.status == EventStatus.IN_PROGRESS)
 
@@ -57,6 +57,16 @@ class EventDetailsFragment : Fragment() {
 
         binding.backArrow.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.homeLayout.setOnClickListener {
+            val intent = TeamDetailsActivity.newInstance(requireContext(), event.homeTeam)
+            startActivity(intent)
+        }
+
+        binding.awayLayout.setOnClickListener {
+            val intent = TeamDetailsActivity.newInstance(requireContext(), event.awayTeam)
+            startActivity(intent)
         }
 
         binding.buttonViewTournamentDetails.setOnClickListener {

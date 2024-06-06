@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    xmlns:layout="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.team_details.TeamDetailsFragment"
+    android:background="?attr/surface_0"
+    android:paddingBottom="?attr/actionBarSize"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="?attr/surface_1">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/team_info"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="?attr/on_surface_lv1"
+            android:textSize="16sp"
+            android:padding="16dp"/>
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="16dp">
+            
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/coach_image"
+                android:src="@drawable/ic_football"
+                layout:layout_constraintStart_toStartOf="parent"
+                layout:layout_constraintTop_toTopOf="parent"
+                layout:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/coach_image"/>
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                layout:layout_constraintStart_toEndOf="@+id/coach_image"
+                layout:layout_constraintTop_toTopOf="@+id/coach_image"
+                tools:text="Coach Name"
+                android:textSize="14sp"
+                android:textColor="?attr/on_surface_lv1"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
+                android:id="@+id/coach_name"/>
+            
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:contentDescription="@string/country_logo"
+                android:src="@drawable/ic_football"
+                android:id="@+id/coach_country_logo"
+                layout:layout_constraintStart_toStartOf="@+id/coach_name"
+                layout:layout_constraintBottom_toBottomOf="@+id/coach_image"
+                android:layout_marginBottom="2dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Coach Country"
+                android:textColor="?attr/on_surface_lv2"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:id="@+id/coach_country_name"
+                android:layout_marginStart="4dp"
+                layout:layout_constraintStart_toEndOf="@+id/coach_country_logo"
+                layout:layout_constraintBottom_toBottomOf="@+id/coach_country_logo"
+                layout:layout_constraintTop_toTopOf="@+id/coach_country_logo"/>
+            
+            
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            layout="@layout/section_divider"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/team_players_image"
+                android:src="@drawable/ic_team"
+                android:id="@+id/team_image"
+                android:layout_marginHorizontal="50dp"
+                layout:layout_constraintStart_toStartOf="parent"
+                layout:layout_constraintEnd_toStartOf="@+id/foreign_players_graph"
+                layout:layout_constraintTop_toTopOf="parent"
+                layout:tint="?attr/primary_default" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/foreign_players_graph"
+                android:layout_marginHorizontal="50dp"
+                android:contentDescription="@string/foreign_players_graph"
+                layout:layout_constraintStart_toEndOf="@+id/team_image"
+                layout:layout_constraintEnd_toEndOf="parent"
+                layout:layout_constraintTop_toTopOf="@+id/team_image"
+                android:src="@drawable/ic_football"
+                layout:tint="?attr/primary_default" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="24"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="?attr/primary_default"
+                layout:layout_constraintTop_toBottomOf="@+id/team_image"
+                layout:layout_constraintStart_toStartOf="@+id/team_image"
+                layout:layout_constraintEnd_toEndOf="@+id/team_image"
+                android:layout_marginTop="8dp"
+                android:id="@+id/total_players"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="10"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="?attr/primary_default"
+                layout:layout_constraintTop_toBottomOf="@+id/foreign_players_graph"
+                layout:layout_constraintStart_toStartOf="@+id/foreign_players_graph"
+                layout:layout_constraintEnd_toEndOf="@+id/foreign_players_graph"
+                android:layout_marginTop="8dp"
+                android:id="@+id/foreign_players"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_players"
+                android:textSize="12sp"
+                android:textColor="?attr/on_surface_lv2"
+                layout:layout_constraintTop_toBottomOf="@+id/total_players"
+                layout:layout_constraintStart_toStartOf="@+id/total_players"
+                layout:layout_constraintEnd_toEndOf="@+id/total_players"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/foreign_players"
+                android:textSize="12sp"
+                android:textColor="?attr/on_surface_lv2"
+                layout:layout_constraintTop_toBottomOf="@+id/foreign_players"
+                layout:layout_constraintStart_toStartOf="@+id/foreign_players"
+                layout:layout_constraintEnd_toEndOf="@+id/foreign_players"
+                android:layout_marginTop="8dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            layout="@layout/section_divider"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tournaments"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="?attr/on_surface_lv1"
+            android:textSize="16sp"
+            android:padding="16dp"/>
+
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/team_tournaments_layout"
+            android:columnCount="3"
+
+            />
+
+        <include
+            layout="@layout/section_divider"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/venue"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="?attr/on_surface_lv1"
+            android:textSize="16sp"
+            android:padding="16dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="?attr/on_surface_lv1"
+                android:text="@string/stadium"
+                layout:layout_constraintStart_toStartOf="parent"
+                layout:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="?attr/on_surface_lv1"
+                tools:text="Venue Name"
+                android:id="@+id/venue_name"
+                layout:layout_constraintEnd_toEndOf="parent"
+                layout:layout_constraintTop_toTopOf="parent"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            layout="@layout/section_divider"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next_match"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="?attr/on_surface_lv1"
+            android:textSize="16sp"
+            android:padding="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/next_match_layout"
+            android:orientation="vertical"/>
+
+
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

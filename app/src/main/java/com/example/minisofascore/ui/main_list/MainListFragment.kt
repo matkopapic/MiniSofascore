@@ -27,7 +27,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 const val EVENT_INFO = "event_info"
-const val SPORT_TYPE_INFO = "sport_info"
 const val NUM_OF_DATE_TABS = 7 + 1 + 7 // 1 week before + today + 1 week after
 
 class MainListFragment : Fragment() {
@@ -54,7 +53,6 @@ class MainListFragment : Fragment() {
                     R.id.action_navigation_main_list_to_navigation_event_details,
                     Bundle().apply {
                         putSerializable(EVENT_INFO, it)
-                        putSerializable(SPORT_TYPE_INFO, mainListViewModel.selectedSport)
                     }
                 )
             },

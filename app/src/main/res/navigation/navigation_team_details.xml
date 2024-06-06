@@ -2,16 +2,16 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_tournament"
-    app:startDestination="@id/fragmentViewPager">
+    android:id="@+id/navigation_team_details"
+    app:startDestination="@id/fragmentTeamViewPager">
 
     <fragment
-        android:id="@+id/fragmentViewPager"
-        android:name="com.example.minisofascore.ui.tournament_viewpager.ViewPagerFragment"
-        tools:layout="@layout/fragment_view_pager">
+        android:id="@+id/fragmentTeamViewPager"
+        android:name="com.example.minisofascore.ui.team_details_viewpager.ViewPagerTeamDetailsFragment"
+        tools:layout="@layout/fragment_view_pager_team_details">
 
         <action
-            android:id="@+id/action_fragmentViewPager_to_fragmentEventDetails"
+            android:id="@+id/action_fragmentTeamViewPager_to_fragmentEventDetails"
             app:destination="@id/fragmentEventDetails"
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_pop_exit_anim"
@@ -24,12 +24,6 @@
         android:name="com.example.minisofascore.ui.event_details.EventDetailsFragment"
         tools:layout="@layout/fragment_event_details">
 
-        <action
-            android:id="@+id/action_fragmentEventDetails_to_fragmentViewPager"
-            app:destination="@id/fragmentViewPager"
-            app:enterAnim="@anim/nav_default_pop_enter_anim"
-            app:exitAnim="@anim/nav_default_pop_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
+
 </navigation>

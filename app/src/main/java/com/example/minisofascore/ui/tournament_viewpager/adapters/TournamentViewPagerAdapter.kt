@@ -1,4 +1,4 @@
-package com.example.minisofascore.ui.viewpager.adapters
+package com.example.minisofascore.ui.tournament_viewpager.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

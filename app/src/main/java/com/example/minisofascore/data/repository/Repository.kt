@@ -1,12 +1,15 @@
 package com.example.minisofascore.data.repository
 
 import com.example.minisofascore.data.models.Event
+import com.example.minisofascore.data.models.TeamDetails
 import com.example.minisofascore.data.models.TeamSide
 import com.example.minisofascore.data.remote.BASE_URL
 import com.example.minisofascore.data.remote.Network
 import com.example.minisofascore.data.remote.Result
 import com.example.minisofascore.util.safeResponse
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -40,11 +43,27 @@ class Repository {
     }
 
     suspend fun getEventPage(tournamentId: Int, lastOrNext: LastOrNext, page: Int) = safeResponse {
-        api.getEventPage(tournamentId, lastOrNext.toString().lowercase(), page)
+        api.getTournamentEventPage(tournamentId, lastOrNext.toString().lowercase(), page)
     }
 
     suspend fun getEvent(eventId: Int) = safeResponse {
         api.getEvent(eventId)
+    }
+
+    suspend fun getTeamDetails(teamId: Int) = safeResponse {
+
+        val details = CoroutineScope(Dispatchers.IO).async { api.getTeamDetails(teamId) }
+        val tournaments = CoroutineScope(Dispatchers.IO).async { api.getTeamTournaments(teamId) }
+        val matches = CoroutineScope(Dispatchers.IO).async { api.getTeamEventPage(teamId, LastOrNext.NEXT.toString().lowercase(), 0) }
+        val players = CoroutineScope(Dispatchers.IO).async { api.getPlayers(teamId) }
+
+        TeamDetails(
+            team = details.await(),
+            tournament = tournaments.await(),
+            nextMatches = matches.await(),
+            players = players.await()
+        )
+
     }
 
 }

@@ -16,7 +16,6 @@ import com.example.minisofascore.data.models.Tournament
 import com.example.minisofascore.data.models.getSportType
 import com.example.minisofascore.databinding.FragmentTournamentMatchesBinding
 import com.example.minisofascore.ui.main_list.EVENT_INFO
-import com.example.minisofascore.ui.main_list.SPORT_TYPE_INFO
 import com.example.minisofascore.ui.tournament_matches.adapters.EventPagingAdapter
 import com.example.minisofascore.ui.tournament_matches.adapters.EventsLoadStateAdapter
 import com.example.minisofascore.ui.tournament_matches.adapters.StickyHeaderItemDecorator
@@ -56,7 +55,6 @@ class TournamentMatchesFragment : Fragment() {
                     R.id.action_fragmentViewPager_to_fragmentEventDetails,
                     Bundle().apply {
                         putSerializable(EVENT_INFO, it)
-                        putSerializable(SPORT_TYPE_INFO, tournament.sport.getSportType())
                     }
                 )
             }
