@@ -16,16 +16,23 @@ fun ImageView.loadTournamentLogo(tournamentId: Int) {
 }
 
 fun ImageView.loadPlayerImage(playerId: Int) {
-    load(Repository.getPlayerImageUrl(playerId))
+    load(Repository.getPlayerImageUrl(playerId)) {
+        placeholder(R.drawable.ic_anonymous)
+        target(
+            onSuccess = {setImageDrawable(it)},
+            onError = {setImageResource(R.drawable.ic_anonymous)} )
+    }
 }
 
 fun ImageView.loadFlag(countryName: String) {
-    val countryCode = FlagUtil.getCountryCode(countryName)
-    if (countryCode != null) {
-        load(Repository.getFlagUrl(countryCode))
-    } else {
-        setImageResource(R.drawable.ic_question_mark)
+    val countryCode = FlagUtil.getCountryCode(countryName) ?: ""
+    load(Repository.getFlagUrl(countryCode)){
+        target(
+            onSuccess = {setImageDrawable(it)},
+            onError = {setImageResource(R.drawable.ic_question_mark)}
+        )
     }
+
 }
 
 object FlagUtil {

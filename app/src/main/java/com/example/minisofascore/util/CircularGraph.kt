@@ -1,10 +1,13 @@
 package com.example.minisofascore.util
 
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import com.example.minisofascore.R
 import kotlin.math.min
@@ -17,10 +20,11 @@ class CircularGraphView @JvmOverloads constructor(
 
 
 
-    private var progress = 0
+    private var progress = 0f
 
     private var highlightColor = Color.BLACK
     private var backgroundColor = Color.WHITE
+    private val animator = ValueAnimator()
 
     init {
         setCustomAttributes(attrs)
@@ -39,16 +43,35 @@ class CircularGraphView @JvmOverloads constructor(
         strokeWidth = 20f
         isAntiAlias = true
     }
-
     fun setProgress(progress: Int) {
-        this.progress = progress
+        this.progress = progress.toFloat()
         invalidate()
     }
 
     private fun setCustomAttributes(attrs: AttributeSet?) {
-        val attrArray = context.obtainStyledAttributes(attrs, R.styleable.CircularGraph)
-        highlightColor = attrArray.getColor(R.styleable.CircularGraph_highlightColor, Color.BLACK)
-        backgroundColor = attrArray.getColor(R.styleable.CircularGraph_nonHighlightColor, Color.WHITE)
+        val attrArray = context.obtainStyledAttributes(attrs, R.styleable.CircularGraphView)
+        highlightColor = attrArray.getColor(R.styleable.CircularGraphView_highlightColor, Color.BLACK)
+        backgroundColor = attrArray.getColor(R.styleable.CircularGraphView_nonHighlightColor, Color.WHITE)
+        attrArray.recycle()
+    }
+
+    fun animate(time: Long) {
+        val toProgress = progress
+        val valuesHolder = PropertyValuesHolder.ofFloat("progress", 0f, toProgress)
+        animator.cancel()
+        animator.apply {
+            setValues(valuesHolder)
+            duration = time
+            addUpdateListener {
+                progress = it.getAnimatedValue("progress") as Float
+                invalidate()
+            }
+        }.start()
+    }
+
+    override fun onDetachedFromWindow() {
+        animator.cancel()
+        super.onDetachedFromWindow()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -59,7 +82,6 @@ class CircularGraphView @JvmOverloads constructor(
         val radius = min(centerX, centerY) - backgroundPaint.strokeWidth / 2
 
         canvas.drawCircle(centerX, centerY, radius, backgroundPaint)
-
         val sweepAngle = progress * 360 / 100f
         canvas.drawArc(
             centerX - radius,

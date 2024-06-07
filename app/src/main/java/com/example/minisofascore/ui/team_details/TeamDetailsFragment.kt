@@ -19,6 +19,7 @@ import com.example.minisofascore.databinding.TournamentItemLayoutBinding
 import com.example.minisofascore.ui.main_list.EVENT_INFO
 import com.example.minisofascore.ui.main_list.adapters.EventAdapter
 import com.example.minisofascore.util.loadFlag
+import com.example.minisofascore.util.loadPlayerImage
 import com.example.minisofascore.util.loadTournamentLogo
 
 class TeamDetailsFragment : Fragment() {
@@ -58,14 +59,18 @@ class TeamDetailsFragment : Fragment() {
 
     private fun populateTeamDetails(details: TeamDetails) {
         val coachText = "${requireContext().getString(R.string.coach)}: ${details.team.managerName ?: ""}"
+        binding.coachLayout.playerImage.loadPlayerImage(0)
         binding.coachLayout.playerName.text = coachText
         binding.coachLayout.playerCountryName.text = details.team.country.name
         binding.coachLayout.playerCountryLogo.loadFlag(details.team.country.name)
+
         val totalPlayers = details.players.size
         binding.totalPlayers.text = totalPlayers.toString()
+
         val foreignPlayers = details.players.count { it.country.id != details.team.country.id }
         binding.foreignPlayersGraph.setProgress((100f * foreignPlayers / totalPlayers).toInt())
         binding.foreignPlayers.text = foreignPlayers.toString()
+        binding.foreignPlayersGraph.animate(1500)
 
         binding.teamTournamentsLayout.removeAllViews()
         details.tournament.forEach { tournament ->
@@ -74,6 +79,10 @@ class TeamDetailsFragment : Fragment() {
             tournamentItemLayout.tournamentName.text = tournament.name
             binding.teamTournamentsLayout.addView(tournamentItemLayout.root)
             tournamentItemLayout.root.layoutParams.width = binding.teamTournamentsLayout.width / 3
+            tournamentItemLayout.root.setOnClickListener {
+                val intent = TournamentActivity.newInstance(requireContext(), tournament)
+                startActivity(intent)
+            }
         }
         val nextMatch = details.nextMatches.sortedBy { it.startDate }[0]
 
@@ -97,8 +106,5 @@ class TeamDetailsFragment : Fragment() {
         }
         eventViewHolder.bind(nextMatch)
         binding.nextMatchLayout.addView(eventView.root)
-
-
-
     }
 }

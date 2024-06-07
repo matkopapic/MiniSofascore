@@ -24,7 +24,7 @@
         <attr name="elevation_2" format="reference|color"/>
     </declare-styleable>
 
-    <declare-styleable name="CircularGraph">
+    <declare-styleable name="CircularGraphView">
         <attr
             name="nonHighlightColor"
             format="color|reference"/>
