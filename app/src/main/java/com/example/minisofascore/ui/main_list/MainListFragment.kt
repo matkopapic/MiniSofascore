@@ -72,22 +72,12 @@ class MainListFragment : Fragment() {
         }
 
         val tabLayoutSports = binding.tabLayoutSports
-        for (tabNumber in SportType.entries.indices) {
+        SportType.entries.forEach { sportType ->
             val newTab = tabLayoutSports.newTab()
             val tabBinding = TabItemSportBinding.inflate(layoutInflater)
-            tabBinding.tabText.text = when (tabNumber) {
-                0 -> getString(R.string.football)
-                1 -> getString(R.string.basketball)
-                else -> getString(R.string.am_football)
-            }
-            tabBinding.tabIcon.setImageResource(
-                when (tabNumber) {
-                    0 -> R.drawable.ic_football
-                    1 -> R.drawable.ic_basketball
-                    else -> R.drawable.ic_american_football
-                }
-            )
-            if (SportType.entries.toTypedArray()[tabNumber] == mainListViewModel.selectedSport) {
+            tabBinding.tabText.text = getString(sportType.stringRes)
+            tabBinding.tabIcon.setImageResource(sportType.drawableRes)
+            if (sportType == mainListViewModel.selectedSport) {
                 newTab.select()
             }
             newTab.setCustomView(tabBinding.root)
