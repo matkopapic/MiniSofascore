@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.minisofascore.R
 import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.data.models.StandingsRow
+import com.example.minisofascore.data.models.Team
 import com.example.minisofascore.data.models.TournamentStandings
 import com.example.minisofascore.databinding.AmFootballStandingsHeaderLayoutBinding
 import com.example.minisofascore.databinding.AmFootballStandingsItemLayoutBinding
@@ -13,9 +15,10 @@ import com.example.minisofascore.databinding.BasketballStadingsHeaderLayoutBindi
 import com.example.minisofascore.databinding.BasketballStandingsItemLayoutBinding
 import com.example.minisofascore.databinding.FootballStandingsHeaderLayoutBinding
 import com.example.minisofascore.databinding.FootballStandingsItemLayoutBinding
+import com.google.android.material.color.MaterialColors
 import java.util.Locale
 
-class TournamentStandingsAdapter(private val standings: TournamentStandings, private val sportType: SportType) : RecyclerView.Adapter<ViewHolder>(){
+class TournamentStandingsAdapter(private val standings: TournamentStandings, private val sportType: SportType, private val highlightedTeam: Team?) : RecyclerView.Adapter<ViewHolder>(){
 
     companion object {
         private const val TYPE_HEADER = 0
@@ -47,7 +50,7 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
                 SportType.AMERICAN_FOOTBALL -> (holder as AmericanFootballHeaderViewHolder).bind()
             }
             else -> when (sportType) {
-                SportType.FOOTBALL -> (holder as FootballItemViewHolder).bind(standings.sortedStandingsRows[position-1])
+                SportType.FOOTBALL -> (holder as FootballItemViewHolder).bind(standings.sortedStandingsRows[position-1], highlightedTeam)
                 SportType.BASKETBALL -> (holder as BasketballItemViewHolder).bind(standings.sortedStandingsRows[position-1])
                 SportType.AMERICAN_FOOTBALL -> (holder as AmericanFootballItemViewHolder).bind(standings.sortedStandingsRows[position-1])
             }
@@ -79,7 +82,7 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
             fun create(parent:ViewGroup, standings: TournamentStandings) = FootballItemViewHolder(FootballStandingsItemLayoutBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false), standings)
         }
-        fun bind(row: StandingsRow) {
+        fun bind(row: StandingsRow, highlightedTeam: Team?) {
             val position = standings.sortedStandingsRows.indexOf(row) + 1
             binding.position.text = position.toString()
             binding.name.text = row.team.name
@@ -90,6 +93,14 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
             val goalDiff = "${row.scoresFor}:${row.scoresAgainst}"
             binding.goalDiff.text = goalDiff
             binding.points.text = (row.points ?: 0).toString()
+
+            highlightedTeam?.let {
+                if (it == row.team) {
+                    binding.root.setBackgroundColor(MaterialColors.getColor(binding.root, R.attr.primary_highlight))
+                } else {
+                    binding.root.setBackgroundColor(MaterialColors.getColor(binding.root, R.attr.surface_1))
+                }
+            }
         }
     }
 

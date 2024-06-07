@@ -7,7 +7,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import com.example.minisofascore.R
 import kotlin.math.min
@@ -21,7 +20,7 @@ class CircularGraphView @JvmOverloads constructor(
 
 
     private var progress = 0f
-
+    private var toProgress = 0f
     private var highlightColor = Color.BLACK
     private var backgroundColor = Color.WHITE
     private val animator = ValueAnimator()
@@ -55,13 +54,13 @@ class CircularGraphView @JvmOverloads constructor(
         attrArray.recycle()
     }
 
-    fun animate(time: Long) {
-        val toProgress = progress
+    fun animate(timeMillis: Long) {
+        toProgress = progress
         val valuesHolder = PropertyValuesHolder.ofFloat("progress", 0f, toProgress)
         animator.cancel()
         animator.apply {
             setValues(valuesHolder)
-            duration = time
+            duration = timeMillis
             addUpdateListener {
                 progress = it.getAnimatedValue("progress") as Float
                 invalidate()
@@ -71,6 +70,7 @@ class CircularGraphView @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         animator.cancel()
+        progress = toProgress
         super.onDetachedFromWindow()
     }
 

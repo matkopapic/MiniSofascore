@@ -43,7 +43,7 @@ class TournamentStandingsFragment : Fragment() {
         viewModel.standings.observe(viewLifecycleOwner){
             binding.recyclerView.apply {
                 layoutManager = LinearLayoutManager(requireContext())
-                adapter = TournamentStandingsAdapter(it, tournament.sport.getSportType())
+                adapter = TournamentStandingsAdapter(it, tournament.sport.getSportType(), null)
             }
         }
         return binding.root

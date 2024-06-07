@@ -7,6 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.minisofascore.data.models.Team
 import com.example.minisofascore.ui.team_details.TeamDetailsFragment
 import com.example.minisofascore.ui.team_details_squad.TeamDetailsSquadFragment
+import com.example.minisofascore.ui.team_standings.TeamStandingsFragment
 
 private const val NUM_TABS = 4
 class TeamDetailsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, private val team: Team): FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -16,7 +17,7 @@ class TeamDetailsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: L
         when (position) {
             0 -> return TeamDetailsFragment.newInstance(team)
             1 -> return TeamDetailsFragment.newInstance(team)
-            2 -> return TeamDetailsFragment.newInstance(team)
+            2 -> return TeamStandingsFragment.newInstance(team)
             3 -> return TeamDetailsSquadFragment.newInstance(team)
         }
         return TeamDetailsFragment.newInstance(team)
