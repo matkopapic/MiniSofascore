@@ -11,6 +11,7 @@ import com.example.minisofascore.data.models.Team
 import com.example.minisofascore.databinding.FragmentViewPagerTeamDetailsBinding
 import com.example.minisofascore.databinding.TabItemTextBinding
 import com.example.minisofascore.ui.team_details_viewpager.adapters.TeamDetailsViewPagerAdapter
+import com.example.minisofascore.util.loadFlag
 import com.example.minisofascore.util.loadTeamLogo
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.math.abs
@@ -54,7 +55,7 @@ class ViewPagerTeamDetailsFragment : Fragment() {
         binding.toolbarImageText.name.text = team.name
         binding.toolbarImageText.mainLogo.loadTeamLogo(team.id)
         binding.toolbarImageText.countryName.text = team.country.name
-        binding.toolbarImageText.countryLogo.loadTeamLogo(team.id)
+        binding.toolbarImageText.countryLogo.loadFlag(team.country.name)
 
 
         val viewpager = binding.viewpager

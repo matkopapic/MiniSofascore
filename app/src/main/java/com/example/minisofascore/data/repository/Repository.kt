@@ -20,6 +20,9 @@ class Repository {
     companion object {
         fun getTeamLogoUrl(teamId: Int) = "${BASE_URL}team/$teamId/image"
         fun getTournamentLogoUrl(tournamentId: Int) = "${BASE_URL}tournament/$tournamentId/image"
+
+        fun getPlayerImageUrl(playerId: Int) = "${BASE_URL}player/$playerId/image"
+        fun getFlagUrl(countryCode: String) = "https://flagsapi.com/${countryCode}/flat/64.png"
     }
 
     suspend fun getIncidentsForEvent(eventId: Int) =

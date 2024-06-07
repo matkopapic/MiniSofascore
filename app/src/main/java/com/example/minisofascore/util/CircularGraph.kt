@@ -1,4 +1,4 @@
-package com.example.minisofascore.ui.team_details
+package com.example.minisofascore.util
 
 import android.content.Context
 import android.graphics.Canvas

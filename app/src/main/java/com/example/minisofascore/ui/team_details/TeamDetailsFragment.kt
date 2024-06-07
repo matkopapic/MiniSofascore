@@ -18,6 +18,7 @@ import com.example.minisofascore.databinding.TournamentHeaderLayoutBinding
 import com.example.minisofascore.databinding.TournamentItemLayoutBinding
 import com.example.minisofascore.ui.main_list.EVENT_INFO
 import com.example.minisofascore.ui.main_list.adapters.EventAdapter
+import com.example.minisofascore.util.loadFlag
 import com.example.minisofascore.util.loadTournamentLogo
 
 class TeamDetailsFragment : Fragment() {
@@ -46,7 +47,7 @@ class TeamDetailsFragment : Fragment() {
         viewModel.getTeamDetails(team.id)
 
         viewModel.teamDetails.observe(viewLifecycleOwner) {
-            populateTeamDetails(it, team)
+            populateTeamDetails(it)
         }
 
 
@@ -55,13 +56,14 @@ class TeamDetailsFragment : Fragment() {
         return binding.root
     }
 
-    private fun populateTeamDetails(details: TeamDetails, team: Team) {
+    private fun populateTeamDetails(details: TeamDetails) {
         val coachText = "${requireContext().getString(R.string.coach)}: ${details.team.managerName ?: ""}"
-        binding.coachName.text = coachText
-        binding.coachCountryName.text = team.country.name
+        binding.coachLayout.playerName.text = coachText
+        binding.coachLayout.playerCountryName.text = details.team.country.name
+        binding.coachLayout.playerCountryLogo.loadFlag(details.team.country.name)
         val totalPlayers = details.players.size
         binding.totalPlayers.text = totalPlayers.toString()
-        val foreignPlayers = details.players.count { it.country.id != team.country.id }
+        val foreignPlayers = details.players.count { it.country.id != details.team.country.id }
         binding.foreignPlayersGraph.setProgress((100f * foreignPlayers / totalPlayers).toInt())
         binding.foreignPlayers.text = foreignPlayers.toString()
 
