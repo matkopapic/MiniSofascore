@@ -62,7 +62,7 @@ class Repository {
 
         TeamDetails(
             team = details.await(),
-            tournament = tournaments.await(),
+            tournaments = tournaments.await(),
             nextMatches = matches.await(),
             players = players.await()
         )

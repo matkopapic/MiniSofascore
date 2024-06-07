@@ -12,7 +12,7 @@ data class Team(
 
 data class TeamDetails(
     val team: Team,
-    val tournament: List<Tournament>,
+    val tournaments: List<Tournament>,
     val nextMatches: List<Event>,
     val players: List<Player>
 ): Serializable

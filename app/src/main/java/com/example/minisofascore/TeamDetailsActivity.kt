@@ -3,6 +3,7 @@ package com.example.minisofascore
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
@@ -10,8 +11,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.minisofascore.data.models.Team
 import com.example.minisofascore.databinding.ActivityTeamDetailsBinding
+import com.example.minisofascore.ui.team_details.TeamDetailsViewModel
 
 class TeamDetailsActivity : AppCompatActivity() {
+
+    private val viewModel: TeamDetailsViewModel by viewModels()
 
     companion object {
         const val TEAM_DETAILS = "team_details"
@@ -32,6 +36,8 @@ class TeamDetailsActivity : AppCompatActivity() {
         supportActionBar?.hide() // custom toolbar in each fragment
 
         val team = intent.getSerializableExtra(TEAM_DETAILS) as Team
+
+        viewModel.getTeamDetails(team.id)
 
         val navController = findNavController(R.id.nav_host_fragment)
         navController.setGraph(

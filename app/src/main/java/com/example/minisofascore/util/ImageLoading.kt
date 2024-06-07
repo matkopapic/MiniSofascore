@@ -18,19 +18,14 @@ fun ImageView.loadTournamentLogo(tournamentId: Int) {
 fun ImageView.loadPlayerImage(playerId: Int) {
     load(Repository.getPlayerImageUrl(playerId)) {
         placeholder(R.drawable.ic_anonymous)
-        target(
-            onSuccess = {setImageDrawable(it)},
-            onError = {setImageResource(R.drawable.ic_anonymous)} )
+        error(R.drawable.ic_anonymous)
     }
 }
 
 fun ImageView.loadFlag(countryName: String) {
     val countryCode = FlagUtil.getCountryCode(countryName) ?: ""
     load(Repository.getFlagUrl(countryCode)){
-        target(
-            onSuccess = {setImageDrawable(it)},
-            onError = {setImageResource(R.drawable.ic_question_mark)}
-        )
+        error(R.drawable.ic_question_mark)
     }
 
 }

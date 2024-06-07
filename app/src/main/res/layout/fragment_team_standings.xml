@@ -29,12 +29,20 @@
                         android:layout_gravity="center|start"
                         android:layout_marginStart="8dp"
                         app:cardElevation="0dp"
-                        app:cardCornerRadius="8dp">
+                        app:cardCornerRadius="8dp"
+                        android:padding="4dp"
+                        android:background="?attr/surface_2">
 
-                        <Spinner
+                        <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tournament_spinner" />
+                            android:background="?attr/surface_2">
+                            <Spinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tournament_spinner"
+                                android:popupBackground="?attr/primary_highlight"/>
+                        </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
 

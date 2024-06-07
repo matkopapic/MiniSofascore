@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.minisofascore.R
@@ -35,7 +36,7 @@ class TeamDetailsFragment : Fragment() {
     private var _binding: FragmentTeamDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: TeamDetailsViewModel by viewModels()
+    private val viewModel: TeamDetailsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,16 +44,9 @@ class TeamDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentTeamDetailsBinding.inflate(inflater, container, false)
 
-        val team = requireArguments().getSerializable(TeamDetailsActivity.TEAM_DETAILS) as Team
-
-        viewModel.getTeamDetails(team.id)
-
         viewModel.teamDetails.observe(viewLifecycleOwner) {
             populateTeamDetails(it)
         }
-
-
-
 
         return binding.root
     }
@@ -73,7 +67,7 @@ class TeamDetailsFragment : Fragment() {
         binding.foreignPlayersGraph.animate(1500)
 
         binding.teamTournamentsLayout.removeAllViews()
-        details.tournament.forEach { tournament ->
+        details.tournaments.forEach { tournament ->
             val tournamentItemLayout = TournamentItemLayoutBinding.inflate(layoutInflater)
             tournamentItemLayout.tournamentLogo.loadTournamentLogo(tournament.id)
             tournamentItemLayout.tournamentName.text = tournament.name
