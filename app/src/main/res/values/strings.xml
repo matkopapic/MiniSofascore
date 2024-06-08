@@ -111,4 +111,9 @@
     <string name="manager">Manager</string>
     <string name="coach">Coach</string>
     <string name="players">Players</string>
+    <string name="nationality">Nationality</string>
+    <string name="position">Position</string>
+    <string name="team_logo">team logo</string>
+    <string name="playerDOB">9 Sep 1985</string>
+    <string name="playerAge">37 Yrs</string>
 </resources>

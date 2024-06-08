@@ -53,6 +53,10 @@ class Repository {
         api.getTeamEventPage(teamId, lastOrNext.toString().lowercase(), page)
     }
 
+    suspend fun getPlayerEventPage(playerId: Int, lastOrNext: LastOrNext, page: Int) = safeResponse {
+        api.getPlayerEventPage(playerId, lastOrNext.toString().lowercase(), page)
+    }
+
     suspend fun getEvent(eventId: Int) = safeResponse {
         api.getEvent(eventId)
     }

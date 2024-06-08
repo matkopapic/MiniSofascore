@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.minisofascore.R
 import com.example.minisofascore.TeamDetailsActivity
 import com.example.minisofascore.data.models.Team
 import com.example.minisofascore.databinding.FragmentTeamDetailsSquadBinding
+import com.example.minisofascore.ui.player_details.PlayerDetailsFragment
 import com.example.minisofascore.ui.team_details.TeamDetailsViewModel
 import com.example.minisofascore.ui.team_details_squad.adapters.PlayerAdapter
 
@@ -34,8 +37,15 @@ class TeamDetailsSquadFragment : Fragment() {
     ): View {
         _binding = FragmentTeamDetailsSquadBinding.inflate(layoutInflater, container, false)
 
+        val team = requireArguments().getSerializable(TeamDetailsActivity.TEAM_DETAILS) as Team
+
         val playerAdapter = PlayerAdapter(requireContext()){
-            // handle player click
+            findNavController().navigate(
+                R.id.action_fragmentTeamViewPager_to_fragmentPlayerDetails,
+                Bundle().apply {
+                    putSerializable(PlayerDetailsFragment.PLAYER_INFO, it)
+                    putSerializable(TeamDetailsActivity.TEAM_DETAILS, team)
+                })
         }
 
         binding.recyclerView.apply {

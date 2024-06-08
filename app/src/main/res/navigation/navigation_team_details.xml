@@ -17,6 +17,13 @@
             app:exitAnim="@anim/nav_default_pop_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+            android:id="@+id/action_fragmentTeamViewPager_to_fragmentPlayerDetails"
+            app:destination="@id/fragmentPlayerDetails"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
     <fragment
@@ -24,6 +31,20 @@
         android:name="com.example.minisofascore.ui.event_details.EventDetailsFragment"
         tools:layout="@layout/fragment_event_details">
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentPlayerDetails"
+        android:name="com.example.minisofascore.ui.player_details.PlayerDetailsFragment"
+        tools:layout="@layout/fragment_player_details">
+
+        <action
+            android:id="@+id/action_fragmentPlayerDetails_to_fragmentEventDetails"
+            app:destination="@id/fragmentEventDetails"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
 </navigation>

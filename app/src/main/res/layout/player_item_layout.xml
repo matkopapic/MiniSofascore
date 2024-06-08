@@ -14,6 +14,7 @@
         layout:layout_constraintStart_toStartOf="parent"
         layout:layout_constraintTop_toTopOf="parent"
         layout:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_anonymous"
         android:id="@+id/player_image"/>
 
     <TextView
