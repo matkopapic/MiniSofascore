@@ -62,7 +62,6 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.paging.common.android)
     implementation(libs.androidx.paging.runtime.ktx)
-    implementation(libs.androidx.legacy.support.v4)
     ksp(libs.room.compiler)
 
 
