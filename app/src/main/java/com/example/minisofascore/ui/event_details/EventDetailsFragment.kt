@@ -2,6 +2,7 @@
 package com.example.minisofascore.ui.event_details
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,8 @@ import com.example.minisofascore.databinding.FragmentEventDetailsBinding
 import com.example.minisofascore.ui.main_list.EVENT_INFO
 import com.example.minisofascore.ui.main_list.SPORT_TYPE_INFO
 import com.example.minisofascore.ui.main_list.adapters.getTotalAsString
+import com.example.minisofascore.ui.settings.DateFormat
+import com.example.minisofascore.ui.settings.SettingsFragment
 import com.example.minisofascore.util.getLocalDateTime
 import com.example.minisofascore.util.loadTeamLogo
 import com.example.minisofascore.util.loadTournamentLogo
@@ -31,7 +34,7 @@ class EventDetailsFragment : Fragment() {
 
     private var _binding: FragmentEventDetailsBinding? = null
     private val eventDetailsViewModel by viewModels<EventDetailsViewModel>()
-
+    private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +48,7 @@ class EventDetailsFragment : Fragment() {
         val sportType = (requireArguments().getSerializable(SPORT_TYPE_INFO)) as SportType
 
         val incidentAdapter = IncidentAdapter(requireContext(), sportType, event.status == EventStatus.IN_PROGRESS)
+
 
         binding.incidentRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -68,11 +72,10 @@ class EventDetailsFragment : Fragment() {
         // we request EventStatus updates if the game is live or it's 5 minutes before startTime
         val startDateTime = event.startDate.getLocalDateTime()
         if (event.status == EventStatus.IN_PROGRESS ||
-            event.status == EventStatus.NOT_STARTED // TODO: remove this line and uncomment lines below after testing is done
-//            (
-//                event.status == EventStatus.NOT_STARTED
-//                        &&
-//                ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime) < 5)
+            (
+                event.status == EventStatus.NOT_STARTED
+                        &&
+                ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime) < 5)
             ) {
             eventDetailsViewModel.startEventUpdates(event.id)
             eventDetailsViewModel.eventStatus.observe(viewLifecycleOwner) {
@@ -113,7 +116,7 @@ class EventDetailsFragment : Fragment() {
 
     private fun setupHeaderWithEvent(event: Event) {
 
-        val dateFormat = "dd.MM.yyyy."
+        val dateFormat = "${preferences.getString(SettingsFragment.DATE_FORMAT, DateFormat.EUROPEAN.formatString)}yyyy."
 
         val winnerColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv1)
         val timeFinishedColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv2)

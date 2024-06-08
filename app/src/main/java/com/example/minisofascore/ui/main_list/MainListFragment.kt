@@ -1,6 +1,8 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore.ui.main_list
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,8 @@ import com.example.minisofascore.databinding.FragmentMainListBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.databinding.TabItemSportBinding
 import com.example.minisofascore.ui.main_list.adapters.EventAdapter
+import com.example.minisofascore.ui.settings.DateFormat
+import com.example.minisofascore.ui.settings.SettingsFragment
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -30,6 +34,7 @@ class MainListFragment : Fragment() {
 
     private var _binding: FragmentMainListBinding? = null
     private val mainListViewModel by viewModels<MainListViewModel>()
+    private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(requireContext()) }
     private val binding get() = _binding!!
 
     private var selectedTabDateIndex = 0
@@ -41,7 +46,7 @@ class MainListFragment : Fragment() {
     ): View {
         _binding = FragmentMainListBinding.inflate(inflater, container, false)
 
-        val dateFormat = "dd.MM."
+        val dateFormat = preferences.getString(SettingsFragment.DATE_FORMAT, DateFormat.EUROPEAN.formatString)
 
         val eventAdapter = EventAdapter(requireContext(),
             onEventClick = {
@@ -58,6 +63,10 @@ class MainListFragment : Fragment() {
             }
         )
 
+        binding.settingsIcon.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_main_list_to_navigation_settings)
+        }
+
         binding.eventRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = eventAdapter
@@ -68,7 +77,11 @@ class MainListFragment : Fragment() {
         for (tabNumber in SportType.entries.indices) {
             val newTab = tabLayoutSports.newTab()
             val tabBinding = TabItemSportBinding.inflate(layoutInflater)
-            tabBinding.tabText.text = SportType.entries[tabNumber].sportName
+            tabBinding.tabText.text = when (tabNumber) {
+                0 -> getString(R.string.football)
+                1 -> getString(R.string.basketball)
+                else -> getString(R.string.am_football)
+            }
             tabBinding.tabIcon.setImageResource(
                 when (tabNumber) {
                     0 -> R.drawable.ic_football

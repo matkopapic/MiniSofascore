@@ -15,8 +15,5 @@ enum class SportType(val sportName: String, val slug: String) {
 }
 
 fun Sport.getSportType(): SportType {
-    for (type in SportType.entries) {
-        if (type.slug == this.slug) return type
-    }
-    return SportType.FOOTBALL
+    return SportType.entries.firstOrNull{ it.slug == slug } ?: SportType.FOOTBALL
 }

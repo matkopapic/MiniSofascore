@@ -34,7 +34,7 @@ class MainListViewModel : ViewModel() {
         currentlyLoadingJob?.cancel()
         currentlyLoadingJob = viewModelScope.launch {
             when(val response = repo.getEventsBySportAndDate(sportSlug, date)) {
-                is Result.Error -> Log.d("aaaa", "error:${response.error}")
+                is Result.Error -> Log.e("aaaa", "error:${response.error}")
                 is Result.Success -> _events.value = response.data
             }
         }
