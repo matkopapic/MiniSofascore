@@ -3,7 +3,6 @@ package com.example.minisofascore.ui.event_details
 
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +36,7 @@ class EventDetailsFragment : Fragment() {
     private val eventDetailsViewModel by viewModels<EventDetailsViewModel>()
     private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
     private val binding get() = _binding!!
-    var currentEvent: Event? = null
+    private var currentEvent: Event? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,22 +81,18 @@ class EventDetailsFragment : Fragment() {
 
         }
 
-        // we request EventStatus updates if the game is live or it's 5 minutes before startTime
-        val startDateTime = event.startDate.getLocalDateTime()
-
-            eventDetailsViewModel.eventStatus.observe(viewLifecycleOwner) {
-                if (it.status != event.status) {
-                    event = it
-                    setupHeaderWithEvent(event)
-                    incidentAdapter.refreshEventStatus(it.status)
-                    eventDetailsViewModel.getIncidents(event.id)
-                    if (it.status == EventStatus.FINISHED) eventDetailsViewModel.stopEventUpdates()
-                } else {
-                    // game is live so we still want incident updates
-                    eventDetailsViewModel.getIncidents(event.id)
-                }
+        eventDetailsViewModel.eventStatus.observe(viewLifecycleOwner) {
+            if (it.status != event.status) {
+                event = it
+                setupHeaderWithEvent(event)
+                incidentAdapter.refreshEventStatus(it.status)
+                eventDetailsViewModel.getIncidents(event.id)
+                if (it.status == EventStatus.FINISHED) eventDetailsViewModel.stopEventUpdates()
+            } else {
+                // game is live so we still want incident updates
+                eventDetailsViewModel.getIncidents(event.id)
             }
-
+        }
 
         binding.tournamentLogo.loadTournamentLogo(event.tournament.id)
         val tournamentRoundText = "${sportType.sportName}, ${event.tournament.country.name}, ${event.tournament.name}, ${getString(R.string.round)} ${event.round}"
@@ -188,12 +183,12 @@ class EventDetailsFragment : Fragment() {
     }
 
     private fun requestEventUpdates(event: Event){
+        // we start EventStatus updates if the game is live or it's 5 minutes before startTime
         val startDateTime = event.startDate.getLocalDateTime()
-        if (event.status == EventStatus.IN_PROGRESS || true ||
-            (
-                    event.status == EventStatus.NOT_STARTED
-                            &&
-                            ChronoUnit.MINUTES.between(startDateTime, LocalDateTime.now()) < 5)
+        if (event.status == EventStatus.IN_PROGRESS ||
+            (event.status == EventStatus.NOT_STARTED
+                    &&
+            ChronoUnit.MINUTES.between(startDateTime, LocalDateTime.now()) < 5)
         ) {
             eventDetailsViewModel.startEventUpdates(event.id)
         }

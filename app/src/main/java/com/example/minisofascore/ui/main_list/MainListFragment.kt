@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.R
@@ -17,6 +18,7 @@ import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.databinding.FragmentMainListBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.databinding.TabItemSportBinding
+import com.example.minisofascore.ui.leagues.LeaguesFragment
 import com.example.minisofascore.ui.main_list.adapters.EventAdapter
 import com.example.minisofascore.ui.settings.DateFormat
 import com.example.minisofascore.ui.settings.SettingsFragment
@@ -60,6 +62,14 @@ class MainListFragment : Fragment() {
                 startActivity(TournamentActivity.newInstance(requireContext(), it))
             }
         )
+
+        binding.tournamentIcon.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_navigation_main_list_to_navigation_leagues,
+                Bundle().apply {
+                    putSerializable(LeaguesFragment.SPORT_TYPE, mainListViewModel.selectedSport)
+                })
+        }
 
         binding.settingsIcon.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_main_list_to_navigation_settings)

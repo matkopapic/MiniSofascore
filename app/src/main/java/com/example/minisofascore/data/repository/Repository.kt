@@ -1,6 +1,7 @@
 package com.example.minisofascore.data.repository
 
 import com.example.minisofascore.data.models.Event
+import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.data.models.TeamDetails
 import com.example.minisofascore.data.models.TeamSide
 import com.example.minisofascore.data.remote.BASE_URL
@@ -47,6 +48,10 @@ class Repository {
 
     suspend fun getTournamentEventPage(tournamentId: Int, lastOrNext: LastOrNext, page: Int) = safeResponse {
         api.getTournamentEventPage(tournamentId, lastOrNext.toString().lowercase(), page)
+    }
+
+    suspend fun getLeaguesBySport(sportType: SportType) = safeResponse {
+        api.getLeaguesBySport(sportType.slug)
     }
 
     suspend fun getTeamEventPage(teamId: Int, lastOrNext: LastOrNext, page: Int) = safeResponse {

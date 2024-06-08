@@ -37,6 +37,9 @@ interface ApiService {
     @GET("player/{playerId}/events/{lastOrNext}/{page}")
     suspend fun getPlayerEventPage(@Path("playerId") playerId: Int, @Path("lastOrNext") lastOrNext: String, @Path("page") page: Int): List<Event>
 
+    @GET("sport/{slug}/tournaments")
+    suspend fun getLeaguesBySport(@Path("slug") slug: String): List<Tournament>
+
 
 
 }
