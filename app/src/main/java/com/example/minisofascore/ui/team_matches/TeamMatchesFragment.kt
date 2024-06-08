@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.R
 import com.example.minisofascore.TeamDetailsActivity
@@ -19,6 +21,7 @@ import com.example.minisofascore.ui.main_list.EVENT_INFO
 import com.example.minisofascore.ui.team_details.TeamDetailsViewModel
 import com.example.minisofascore.ui.team_matches.adapters.TournamentHeaderDecorator
 import com.example.minisofascore.ui.team_matches.adapters.TeamPagingAdapter
+import com.example.minisofascore.ui.tournament_matches.adapters.EventsLoadStateAdapter
 import kotlinx.coroutines.launch
 
 class TeamMatchesFragment : Fragment() {
@@ -31,7 +34,6 @@ class TeamMatchesFragment : Fragment() {
         }
     }
 
-    private val viewModel: TeamDetailsViewModel by activityViewModels()
     private val matchesViewModel: TeamMatchesViewModel by viewModels()
 
     private var _binding: FragmentTeamMatchesBinding? = null
@@ -59,7 +61,10 @@ class TeamMatchesFragment : Fragment() {
 
         binding.recyclerView.apply{
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = pagingAdapter
+            adapter = pagingAdapter.withLoadStateHeaderAndFooter(
+                header = EventsLoadStateAdapter{ pagingAdapter.retry() },
+                footer = EventsLoadStateAdapter{ pagingAdapter.retry() }
+            )
         }
 
         val stickyHeaderItemDecorator = TournamentHeaderDecorator()
@@ -76,6 +81,21 @@ class TeamMatchesFragment : Fragment() {
             matchesViewModel.getEventPageFlow(team.id).collect{ pagingData ->
                 pagingAdapter.submitData(pagingData)
                 stickyHeaderItemDecorator.refreshHeader()
+            }
+        }
+
+        binding.retryButton.setOnClickListener {
+            pagingAdapter.retry()
+        }
+
+        lifecycleScope.launch {
+            pagingAdapter.loadStateFlow.collect { loadState ->
+                // initial loading of list, before any page is loaded
+                val isListEmpty = loadState.refresh is LoadState.NotLoading && pagingAdapter.itemCount == 0
+                binding.emptyList.isVisible = isListEmpty
+                binding.recyclerView.isVisible = !isListEmpty
+                binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
             }
         }
         return binding.root
