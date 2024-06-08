@@ -45,8 +45,12 @@ class Repository {
         api.getStandingsForTournament(tournamentId)
     }
 
-    suspend fun getEventPage(tournamentId: Int, lastOrNext: LastOrNext, page: Int) = safeResponse {
+    suspend fun getTournamentEventPage(tournamentId: Int, lastOrNext: LastOrNext, page: Int) = safeResponse {
         api.getTournamentEventPage(tournamentId, lastOrNext.toString().lowercase(), page)
+    }
+
+    suspend fun getTeamEventPage(teamId: Int, lastOrNext: LastOrNext, page: Int) = safeResponse {
+        api.getTeamEventPage(teamId, lastOrNext.toString().lowercase(), page)
     }
 
     suspend fun getEvent(eventId: Int) = safeResponse {

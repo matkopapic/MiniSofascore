@@ -48,7 +48,6 @@ class EventPagingAdapter(
         } catch (exception: IndexOutOfBoundsException) {
             return -1
         }
-
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val item = getItem(position)) {
