@@ -70,12 +70,15 @@ class TeamDetailsFragment : Fragment() {
             val tournamentItemLayout = TournamentItemLayoutBinding.inflate(layoutInflater)
             tournamentItemLayout.tournamentLogo.loadTournamentLogo(tournament.id)
             tournamentItemLayout.tournamentName.text = tournament.name
-            binding.teamTournamentsLayout.addView(tournamentItemLayout.root)
-            tournamentItemLayout.root.layoutParams.width = binding.teamTournamentsLayout.width / 3
-            tournamentItemLayout.root.setOnClickListener {
-                val intent = TournamentActivity.newInstance(requireContext(), tournament)
-                startActivity(intent)
+            binding.teamTournamentsLayout.post {
+                binding.teamTournamentsLayout.addView(tournamentItemLayout.root)
+                tournamentItemLayout.root.layoutParams.width = binding.teamTournamentsLayout.width / 3
+                tournamentItemLayout.root.setOnClickListener {
+                    val intent = TournamentActivity.newInstance(requireContext(), tournament)
+                    startActivity(intent)
+                }
             }
+
         }
         val nextMatch = details.nextMatches.sortedBy { it.startDate }[0]
 
