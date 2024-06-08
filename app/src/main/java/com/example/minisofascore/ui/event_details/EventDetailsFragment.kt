@@ -3,6 +3,7 @@ package com.example.minisofascore.ui.event_details
 
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class EventDetailsFragment : Fragment() {
     private val eventDetailsViewModel by viewModels<EventDetailsViewModel>()
     private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
     private val binding get() = _binding!!
+    var currentEvent: Event? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,6 +47,7 @@ class EventDetailsFragment : Fragment() {
         _binding = FragmentEventDetailsBinding.inflate(inflater, container, false)
 
         var event = (requireArguments().getSerializable(EVENT_INFO)) as Event
+        currentEvent = event
         val sportType = event.tournament.sport.getSportType()
 
         val incidentAdapter = IncidentAdapter(requireContext(), sportType, event.status == EventStatus.IN_PROGRESS)
@@ -81,13 +84,7 @@ class EventDetailsFragment : Fragment() {
 
         // we request EventStatus updates if the game is live or it's 5 minutes before startTime
         val startDateTime = event.startDate.getLocalDateTime()
-        if (event.status == EventStatus.IN_PROGRESS ||
-            (
-                event.status == EventStatus.NOT_STARTED
-                        &&
-                ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime) < 5)
-            ) {
-            eventDetailsViewModel.startEventUpdates(event.id)
+
             eventDetailsViewModel.eventStatus.observe(viewLifecycleOwner) {
                 if (it.status != event.status) {
                     event = it
@@ -100,7 +97,7 @@ class EventDetailsFragment : Fragment() {
                     eventDetailsViewModel.getIncidents(event.id)
                 }
             }
-        }
+
 
         binding.tournamentLogo.loadTournamentLogo(event.tournament.id)
         val tournamentRoundText = "${sportType.sportName}, ${event.tournament.country.name}, ${event.tournament.name}, ${getString(R.string.round)} ${event.round}"
@@ -190,9 +187,27 @@ class EventDetailsFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    private fun requestEventUpdates(event: Event){
+        val startDateTime = event.startDate.getLocalDateTime()
+        if (event.status == EventStatus.IN_PROGRESS || true ||
+            (
+                    event.status == EventStatus.NOT_STARTED
+                            &&
+                            ChronoUnit.MINUTES.between(startDateTime, LocalDateTime.now()) < 5)
+        ) {
+            eventDetailsViewModel.startEventUpdates(event.id)
+        }
+    }
+
+    override fun onPause() {
         eventDetailsViewModel.stopEventUpdates()
-        _binding = null
+        super.onPause()
+    }
+
+    override fun onResume() {
+        currentEvent?.let {
+            requestEventUpdates(it)
+        }
+        super.onResume()
     }
 }

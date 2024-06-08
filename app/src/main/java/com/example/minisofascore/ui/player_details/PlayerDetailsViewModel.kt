@@ -8,7 +8,6 @@ import androidx.paging.map
 import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.ui.main_list.adapters.EventListItem
 import com.example.minisofascore.ui.player_details.adapters.PlayerPagingSource
-import com.example.minisofascore.ui.team_matches.adapters.TeamPagingSource
 import kotlinx.coroutines.flow.map
 
 class PlayerDetailsViewModel : ViewModel() {

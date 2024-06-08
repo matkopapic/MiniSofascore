@@ -93,8 +93,10 @@ class TeamDetailsFragment : Fragment() {
 
         val eventView = EventItemLayoutBinding.inflate(LayoutInflater.from(context), null, false)
         val eventViewHolder = EventAdapter.EventInfoViewHolder(eventView, requireContext()) {
-            findNavController().navigate(R.id.action_fragmentTeamViewPager_to_fragmentEventDetails, Bundle().apply {
-                putSerializable(EVENT_INFO, nextMatch)
+            findNavController().navigate(
+                R.id.action_fragmentTeamViewPager_to_fragmentEventDetails,
+                Bundle().apply {
+                    putSerializable(EVENT_INFO, nextMatch)
             })
         }
         eventViewHolder.bind(nextMatch)
