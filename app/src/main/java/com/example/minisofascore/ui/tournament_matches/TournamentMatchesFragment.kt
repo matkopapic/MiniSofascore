@@ -13,7 +13,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Tournament
-import com.example.minisofascore.data.models.getSportType
 import com.example.minisofascore.databinding.FragmentTournamentMatchesBinding
 import com.example.minisofascore.ui.main_list.EVENT_INFO
 import com.example.minisofascore.ui.tournament_matches.adapters.EventPagingAdapter

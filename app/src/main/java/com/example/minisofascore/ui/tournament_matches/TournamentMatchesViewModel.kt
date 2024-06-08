@@ -7,7 +7,6 @@ import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.ui.main_list.adapters.EventListItem
-import com.example.minisofascore.ui.tournament_matches.adapters.EventPagingSource
 import com.example.minisofascore.ui.tournament_matches.adapters.TournamentPagingSource
 import kotlinx.coroutines.flow.map
 

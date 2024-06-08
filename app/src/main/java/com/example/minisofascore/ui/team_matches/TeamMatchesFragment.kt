@@ -17,10 +17,8 @@ import com.example.minisofascore.data.models.Team
 import com.example.minisofascore.databinding.FragmentTeamMatchesBinding
 import com.example.minisofascore.ui.main_list.EVENT_INFO
 import com.example.minisofascore.ui.team_details.TeamDetailsViewModel
-import com.example.minisofascore.ui.team_matches.adapters.StickyHeaderDecorator
+import com.example.minisofascore.ui.team_matches.adapters.TournamentHeaderDecorator
 import com.example.minisofascore.ui.team_matches.adapters.TeamPagingAdapter
-import com.example.minisofascore.ui.team_standings.TeamStandingsFragment
-import com.example.minisofascore.ui.tournament_matches.adapters.StickyHeaderItemDecorator
 import kotlinx.coroutines.launch
 
 class TeamMatchesFragment : Fragment() {
@@ -59,20 +57,12 @@ class TeamMatchesFragment : Fragment() {
                 startActivity(TournamentActivity.newInstance(requireContext(), it))
             })
 
-        val stickyHeaderItemDecorator = StickyHeaderDecorator()
-//        binding.recyclerView.apply {
-//            stickyHeaderItemDecorator.attachRecyclerView(
-//                listener = pagingAdapter,
-//                recyclerView = this,
-//                adapter = pagingAdapter
-//            )
-//        }
-
         binding.recyclerView.apply{
             layoutManager = LinearLayoutManager(requireContext())
             adapter = pagingAdapter
         }
 
+        val stickyHeaderItemDecorator = TournamentHeaderDecorator()
         binding.recyclerView.let {
             stickyHeaderItemDecorator.attachRecyclerView(
                 pagingAdapter,

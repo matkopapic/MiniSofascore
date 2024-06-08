@@ -3,10 +3,6 @@ package com.example.minisofascore.ui.tournament_matches.adapters
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.minisofascore.data.models.Event
-import com.example.minisofascore.data.remote.Result
-import com.example.minisofascore.data.repository.LastOrNext
-import com.example.minisofascore.data.repository.Repository
-import kotlin.math.abs
 
 abstract class EventPagingSource : PagingSource<Int, Event>() {
     override fun getRefreshKey(state: PagingState<Int, Event>): Int? {

@@ -5,20 +5,21 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.minisofascore.R
 
-class StickyHeaderDecorator {
+class TournamentHeaderDecorator {
 
     private lateinit var listener: StickyHeaderInterface
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: TeamPagingAdapter
+    private lateinit var adapter: RecyclerView.Adapter<ViewHolder>
     private val currentHeaderViewMap: MutableMap<Int, Boolean> by lazy { mutableMapOf() }
     private var stickyHeaderContainer: LinearLayout? = null
 
     fun attachRecyclerView(
         listener: StickyHeaderInterface,
         recyclerView: RecyclerView,
-        adapter: TeamPagingAdapter
+        adapter: RecyclerView.Adapter<ViewHolder>
     ) {
         this.listener = listener
         this.recyclerView = recyclerView
