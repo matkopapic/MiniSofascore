@@ -21,7 +21,7 @@ class TeamDetailsViewModel : ViewModel() {
         viewModelScope.launch {
             when (val response = repo.getTeamDetails(teamId)) {
                 is Result.Success -> _teamDetails.value = response.data
-                is Result.Error -> Log.e("aaaa", "getTeamDetails: couldn't fetch team details ${response.error}", )
+                is Result.Error -> Log.e("aaaa", "getTeamDetails: couldn't fetch team details ${response.error}")
             }
         }
     }

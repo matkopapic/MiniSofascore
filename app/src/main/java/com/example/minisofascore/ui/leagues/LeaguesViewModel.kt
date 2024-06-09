@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.minisofascore.data.models.Event
-import com.example.minisofascore.data.models.Sport
 import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.data.models.Tournament
 import com.example.minisofascore.data.remote.Result

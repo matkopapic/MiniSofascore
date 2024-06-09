@@ -1,3 +1,4 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore
 
 import android.content.Context

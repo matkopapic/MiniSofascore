@@ -1,3 +1,4 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore.ui.team_details_viewpager
 
 import android.os.Bundle

@@ -11,7 +11,6 @@ import com.example.minisofascore.util.safeResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -27,10 +26,8 @@ class Repository {
     }
 
     suspend fun getIncidentsForEvent(eventId: Int) =
-        withContext(Dispatchers.IO) {
-            safeResponse {
-                api.getIncidentsForEvent(eventId)
-            }
+        safeResponse {
+            api.getIncidentsForEvent(eventId)
         }
 
     suspend fun getEventsBySportAndDate(sportSlug: String, date: LocalDate): Result<List<Event>> {

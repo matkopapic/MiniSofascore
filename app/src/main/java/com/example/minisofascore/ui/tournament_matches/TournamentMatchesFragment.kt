@@ -1,3 +1,4 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore.ui.tournament_matches
 
 import android.os.Bundle

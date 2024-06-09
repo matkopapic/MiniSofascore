@@ -129,10 +129,6 @@ class TournamentHeaderDecorator {
         }
     }
 
-    fun clearReferences() {
-        recyclerView.removeOnScrollListener(onScrollChangeListener)
-    }
-
     interface StickyHeaderInterface {
         fun isHeader(itemPosition: Int): Boolean
     }

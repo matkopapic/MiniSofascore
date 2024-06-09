@@ -1,3 +1,4 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore.ui.leagues
 
 import androidx.fragment.app.viewModels
@@ -8,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.minisofascore.R
 import com.example.minisofascore.TournamentActivity
 import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.databinding.FragmentLeaguesBinding

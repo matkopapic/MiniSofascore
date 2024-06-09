@@ -1,3 +1,4 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore.ui.team_matches
 
 import androidx.fragment.app.viewModels
@@ -7,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -18,7 +18,6 @@ import com.example.minisofascore.TournamentActivity
 import com.example.minisofascore.data.models.Team
 import com.example.minisofascore.databinding.FragmentTeamMatchesBinding
 import com.example.minisofascore.ui.main_list.EVENT_INFO
-import com.example.minisofascore.ui.team_details.TeamDetailsViewModel
 import com.example.minisofascore.ui.team_matches.adapters.TournamentHeaderDecorator
 import com.example.minisofascore.ui.team_matches.adapters.TeamPagingAdapter
 import com.example.minisofascore.ui.tournament_matches.adapters.EventsLoadStateAdapter

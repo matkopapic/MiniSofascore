@@ -1,3 +1,4 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore.ui.player_details
 
 import androidx.fragment.app.viewModels
