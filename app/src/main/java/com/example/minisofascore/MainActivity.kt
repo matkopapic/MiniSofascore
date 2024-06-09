@@ -1,29 +1,26 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.minisofascore.data.models.Sport
 import com.example.minisofascore.databinding.ActivityMainBinding
+import com.example.minisofascore.ui.settings.SettingsFragment
+import com.example.minisofascore.ui.settings.Theme
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    companion object {
-        // faster since they are constant, could be replaced with API call in the future
-        val sports = listOf(
-            Sport(1, "Football", "football"),
-            Sport(2, "Basketball", "basketball"),
-            Sport(3, "Am. Football", "american-football")
-        )
-    }
+    private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        updateAppTheme()
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -35,6 +32,14 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration: AppBarConfiguration = AppBarConfiguration.Builder(navController.graph).build()
         setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    private fun updateAppTheme() {
+        when (preferences.getString(SettingsFragment.THEME, Theme.SYSTEM_DEFAULT.name)) {
+            Theme.LIGHT.name -> SettingsFragment.setAppTheme(Theme.LIGHT)
+            Theme.DARK.name -> SettingsFragment.setAppTheme(Theme.DARK)
+            else -> SettingsFragment.setAppTheme(Theme.SYSTEM_DEFAULT)
+        }
     }
 
 

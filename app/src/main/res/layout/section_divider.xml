@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="8dp"
-    android:gravity="bottom">
+    android:gravity="bottom"
+    android:background="?attr/surface_1">
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

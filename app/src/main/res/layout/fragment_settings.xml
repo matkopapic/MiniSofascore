@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.settings.SettingsFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/toolbar_back_arrow"
+            layout="@layout/toolbar_back_arrow"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="?attr/surface_1"
+            >
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                app:hintTextColor="?attr/primary_default"
+                app:boxStrokeColor="?attr/primary_default"
+                app:endIconTint="?attr/on_surface_lv2"
+                app:boxStrokeWidth="0dp"
+                android:textColorHint="?attr/primary_default"
+                app:boxStrokeWidthFocused="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="16dp"
+                >
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/language"
+                    android:textColor="?attr/on_surface_lv1"
+                    android:background="?attr/surface_2"
+                    android:backgroundTint="?attr/surface_2"
+                    android:textCursorDrawable="@null"
+                    android:id="@+id/language_dropdown"
+                    tools:text="English"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <include
+                layout="@layout/section_divider"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/theme_radio_group"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/theme"
+                    android:textSize="12sp"
+                    android:textColor="?attr/primary_default"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="?attr/on_surface_lv1"
+                    android:button="@null"
+                    android:buttonTint="?attr/primary_default"
+                    android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
+                    android:text="@string/light"
+                    android:drawableTint="@color/radio_button_tint"
+                    android:background="@null"
+                    android:id="@+id/button_light"/>
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="?attr/on_surface_lv1"
+                    android:button="@null"
+                    android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
+                    android:drawableTint="@color/radio_button_tint"
+                    android:text="@string/dark"
+                    android:background="@null"
+                    android:id="@+id/button_dark"/>
+
+            </RadioGroup>
+
+            <include
+                layout="@layout/section_divider"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/date_format_radio_group"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_format"
+                    android:textSize="12sp"
+                    android:textColor="?attr/primary_default"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="?attr/on_surface_lv1"
+                    android:button="@null"
+                    android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
+                    android:drawableTint="@color/radio_button_tint"
+                    android:text="@string/format_european"
+                    android:background="@null"
+                    android:id="@+id/button_format_european"/>
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="?attr/on_surface_lv1"
+                    android:button="@null"
+                    android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
+                    android:drawableTint="@color/radio_button_tint"
+                    android:text="@string/format_american"
+                    android:background="@null"
+                    android:id="@+id/button_format_american"/>
+
+            </RadioGroup>
+
+            <include
+                layout="@layout/section_divider"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/on_surface_lv1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_margin="16dp"
+                android:text="@string/about"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/on_surface_lv1"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginHorizontal="16dp"
+                android:text="@string/sofascore_android_academy"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/on_surface_lv1"
+                android:textSize="14sp"
+                android:text="@string/class_2024"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"/>
+
+            <include
+                layout="@layout/section_divider"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="?attr/on_surface_lv2"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/app_name_settings"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="?attr/on_surface_lv1"
+                android:text="@string/app_name"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="2dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="?attr/on_surface_lv2"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/api_credit"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="?attr/on_surface_lv1"
+                android:text="@string/sofascore"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="2dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="?attr/on_surface_lv2"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/developer"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="?attr/on_surface_lv1"
+                android:text="@string/developer_name"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="16dp"/>
+
+            <include
+                layout="@layout/section_divider"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:contentDescription="@string/sofascore_logo"
+                android:src="@drawable/logo_main"
+                app:tint="?attr/primary_default"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

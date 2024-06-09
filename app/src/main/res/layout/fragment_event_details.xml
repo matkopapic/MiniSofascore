@@ -1,22 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/surface_0"
     tools:context=".ui.event_details.EventDetailsFragment">
 
-    <TextView
-        android:id="@+id/text_notifications"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:id="@+id/app_bar_layout"
+        android:background="?attr/surface_1">
+        
+        <Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/toolbar"
+            android:contentInsetStart="4dp">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/back_arrow"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="?attr/on_surface_lv1"
+                android:padding="12dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/back_arrow"/>
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:contentDescription="@string/tournament_logo"
+                android:src="@drawable/ic_football"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/tournament_logo"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="260dp"
+                tools:text="Football, Spain, LaLiga, Round 15"
+                android:textSize="12sp"
+                android:textColor="?attr/on_surface_lv2"
+                android:id="@+id/tournament_round_text"/>
+        </Toolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/main_info_layout"
+                app:layout_constraintStart_toEndOf="@id/home_layout"
+                app:layout_constraintEnd_toStartOf="@id/away_layout"
+                app:layout_constraintTop_toTopOf="parent"
+                android:gravity="center">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/score_layout"
+                    android:paddingTop="16dp"
+                    android:visibility="visible"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@+id/minus"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/team_home_score"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        android:textColor="?attr/on_surface_lv2"
+                        tools:text="1"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        android:text="@string/minus"
+                        android:id="@+id/minus"
+                        android:paddingHorizontal="4dp"
+                        android:textColor="?attr/on_surface_lv2"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/minus"
+                        android:id="@+id/team_away_score"
+                        android:textColor="?attr/on_surface_lv2"
+                        tools:text="0"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Tue, 13.04.2023"
+                    android:textColor="?attr/on_surface_lv1"
+                    android:textSize="12sp"
+                    android:id="@+id/start_date"
+                    android:paddingTop="24dp"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="?attr/on_surface_lv1"
+                android:text="@string/full_time"
+                android:paddingTop="4dp"
+                android:id="@+id/start_time"
+                app:layout_constraintStart_toStartOf="@+id/main_info_layout"
+                app:layout_constraintEnd_toEndOf="@+id/main_info_layout"
+                app:layout_constraintTop_toBottomOf="@id/main_info_layout"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/main_info_layout"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="16dp"
+                android:gravity="center"
+                tools:ignore="UseCompoundDrawables"
+                android:id="@+id/home_layout">
+                
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="@string/team_home_logo"
+                    android:src="@drawable/ic_football"
+                    android:id="@+id/team_home_logo"/>
+
+                <TextView
+                    android:layout_width="96dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    tools:text="Team Home"
+                    android:textColor="?attr/on_surface_lv1"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:maxWidth="96dp"
+                    android:id="@+id/team_home_name"
+                    android:textAlignment="center"
+                    android:ellipsize="end"
+                    android:maxLines="2"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/main_info_layout"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/away_layout"
+                android:padding="16dp"
+                android:gravity="center"
+                tools:ignore="UseCompoundDrawables"
+               >
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="@string/team_away_logo"
+                    android:src="@drawable/ic_football"
+                    android:id="@+id/team_away_logo"/>
+
+                <TextView
+                    android:layout_width="96dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    tools:text="Team Away"
+                    android:textColor="?attr/on_surface_lv1"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:id="@+id/team_away_name"/>
+
+            </LinearLayout>
+                
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/incident_recycler_view"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="?attr/actionBarSize"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="32dp"
+        android:orientation="vertical"
+        android:background="?attr/surface_1"
+        android:id="@+id/not_started_layout"
+        android:visibility="gone"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            android:backgroundTint="?attr/surface_2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_results_yet"
+                android:padding="16dp"
+                android:layout_gravity="center"
+                android:textSize="14sp"
+                android:textColor="?attr/on_surface_lv2"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:textColor="?attr/primary_default"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/button_border"
+            android:id="@+id/button_view_tournament_details"
+            android:text="@string/view_tournament_details"/>
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:layout="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="16dp">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/coach_image"
+        layout:layout_constraintStart_toStartOf="parent"
+        layout:layout_constraintTop_toTopOf="parent"
+        layout:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_anonymous"
+        android:id="@+id/player_image"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout:layout_constraintStart_toEndOf="@+id/player_image"
+        layout:layout_constraintTop_toTopOf="@+id/player_image"
+        tools:text="Player Name"
+        android:textSize="14sp"
+        android:textColor="?attr/on_surface_lv1"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:id="@+id/player_name"/>
+
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:contentDescription="@string/country_logo"
+        android:id="@+id/player_country_logo"
+        layout:layout_constraintStart_toStartOf="@+id/player_name"
+        layout:layout_constraintBottom_toBottomOf="@+id/player_image"
+        android:layout_marginBottom="2dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Coach Country"
+        android:textColor="?attr/on_surface_lv2"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:id="@+id/player_country_name"
+        android:layout_marginStart="4dp"
+        layout:layout_constraintStart_toEndOf="@+id/player_country_logo"
+        layout:layout_constraintBottom_toBottomOf="@+id/player_country_logo"
+        layout:layout_constraintTop_toTopOf="@+id/player_country_logo"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_team_details"
+    app:startDestination="@id/fragmentTeamViewPager">
+
+    <fragment
+        android:id="@+id/fragmentTeamViewPager"
+        android:name="com.example.minisofascore.ui.team_details_viewpager.ViewPagerTeamDetailsFragment"
+        tools:layout="@layout/fragment_view_pager_team_details">
+
+        <action
+            android:id="@+id/action_fragmentTeamViewPager_to_fragmentEventDetails"
+            app:destination="@id/fragmentEventDetails"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+            android:id="@+id/action_fragmentTeamViewPager_to_fragmentPlayerDetails"
+            app:destination="@id/fragmentPlayerDetails"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentEventDetails"
+        android:name="com.example.minisofascore.ui.event_details.EventDetailsFragment"
+        tools:layout="@layout/fragment_event_details">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentPlayerDetails"
+        android:name="com.example.minisofascore.ui.player_details.PlayerDetailsFragment"
+        tools:layout="@layout/fragment_player_details">
+
+        <action
+            android:id="@+id/action_fragmentPlayerDetails_to_fragmentEventDetails"
+            app:destination="@id/fragmentEventDetails"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+</navigation>

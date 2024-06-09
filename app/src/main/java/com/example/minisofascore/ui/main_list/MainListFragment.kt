@@ -1,6 +1,8 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore.ui.main_list
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +11,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.minisofascore.MainActivity
 import com.example.minisofascore.R
+import com.example.minisofascore.TournamentActivity
+import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.databinding.FragmentMainListBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.databinding.TabItemSportBinding
+import com.example.minisofascore.ui.leagues.LeaguesFragment
 import com.example.minisofascore.ui.main_list.adapters.EventAdapter
+import com.example.minisofascore.ui.settings.DateFormat
+import com.example.minisofascore.ui.settings.SettingsFragment
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -28,6 +34,7 @@ class MainListFragment : Fragment() {
 
     private var _binding: FragmentMainListBinding? = null
     private val mainListViewModel by viewModels<MainListViewModel>()
+    private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(requireContext()) }
     private val binding get() = _binding!!
 
     private var selectedTabDateIndex = 0
@@ -39,13 +46,32 @@ class MainListFragment : Fragment() {
     ): View {
         _binding = FragmentMainListBinding.inflate(inflater, container, false)
 
-        val eventAdapter = EventAdapter(requireContext()) {
+        val dateFormat = preferences.getString(SettingsFragment.DATE_FORMAT, DateFormat.EUROPEAN.formatString)
+
+        val eventAdapter = EventAdapter(requireContext(),
+            onEventClick = {
+                findNavController().navigate(
+                    R.id.action_navigation_main_list_to_navigation_event_details,
+                    Bundle().apply {
+                        putSerializable(EVENT_INFO, it)
+                    }
+                )
+            },
+            onTournamentClick = {
+                startActivity(TournamentActivity.newInstance(requireContext(), it))
+            }
+        )
+
+        binding.tournamentIcon.setOnClickListener {
             findNavController().navigate(
-                R.id.action_navigation_main_list_to_navigation_event_details,
+                R.id.action_navigation_main_list_to_navigation_leagues,
                 Bundle().apply {
-                    putSerializable(EVENT_INFO, it)
-                }
-            )
+                    putSerializable(LeaguesFragment.SPORT_TYPE, mainListViewModel.selectedSport)
+                })
+        }
+
+        binding.settingsIcon.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_main_list_to_navigation_settings)
         }
 
         binding.eventRecyclerView.apply {
@@ -55,18 +81,12 @@ class MainListFragment : Fragment() {
         }
 
         val tabLayoutSports = binding.tabLayoutSports
-        for (tabNumber in MainActivity.sports.indices) {
+        SportType.entries.forEach { sportType ->
             val newTab = tabLayoutSports.newTab()
             val tabBinding = TabItemSportBinding.inflate(layoutInflater)
-            tabBinding.tabText.text = MainActivity.sports[tabNumber].name
-            tabBinding.tabIcon.setImageResource(
-                when (tabNumber) {
-                    0 -> R.drawable.ic_football
-                    1 -> R.drawable.ic_basketball
-                    else -> R.drawable.ic_american_football
-                }
-            )
-            if (MainActivity.sports[tabNumber] == mainListViewModel.selectedSport) {
+            tabBinding.tabText.text = getString(sportType.stringRes)
+            tabBinding.tabIcon.setImageResource(sportType.drawableRes)
+            if (sportType == mainListViewModel.selectedSport) {
                 newTab.select()
             }
             newTab.setCustomView(tabBinding.root)
@@ -75,7 +95,7 @@ class MainListFragment : Fragment() {
 
         tabLayoutSports.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(p0: TabLayout.Tab?) {
-                mainListViewModel.selectedSport = MainActivity.sports[tabLayoutSports.selectedTabPosition]
+                mainListViewModel.selectedSport = SportType.entries.toTypedArray()[tabLayoutSports.selectedTabPosition]
                 mainListViewModel.getEventsBySportAndDate()
                 startLoadingAnimations()
             }
@@ -100,7 +120,7 @@ class MainListFragment : Fragment() {
             } else {
                 tabBinding.dayOfWeek.text = tabDate.format(DateTimeFormatter.ofPattern("EEE"))
             }
-            tabBinding.date.text = tabDate.format(DateTimeFormatter.ofPattern("dd.MM."))
+            tabBinding.date.text = tabDate.format(DateTimeFormatter.ofPattern(dateFormat))
             if (tabDate == mainListViewModel.selectedDate) {
                 newTab.select()
                 selectedTabDateIndex = tabNumber.toInt()

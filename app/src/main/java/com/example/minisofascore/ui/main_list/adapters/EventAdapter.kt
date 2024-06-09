@@ -1,33 +1,40 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore.ui.main_list.adapters
 
 import android.content.Context
 import android.graphics.Color
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import coil.load
 import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Event
 import com.example.minisofascore.data.models.EventStatus
 import com.example.minisofascore.data.models.Score
+import com.example.minisofascore.data.models.TeamSide
 import com.example.minisofascore.data.models.Tournament
-import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.databinding.DayInfoLayoutBinding
-import com.example.minisofascore.databinding.EndDividerBinding
 import com.example.minisofascore.databinding.EventItemLayoutBinding
 import com.example.minisofascore.databinding.SectionDividerBinding
 import com.example.minisofascore.databinding.TournamentHeaderLayoutBinding
+import com.example.minisofascore.ui.settings.DateFormat
+import com.example.minisofascore.ui.settings.SettingsFragment
+import com.example.minisofascore.util.getLocalDateTime
+import com.example.minisofascore.util.loadTeamLogo
+import com.example.minisofascore.util.loadTournamentLogo
 import com.google.android.material.color.MaterialColors
-import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-class EventAdapter(private val context: Context, private val onEventClick: (Event) -> Unit) : RecyclerView.Adapter<ViewHolder>() {
+class EventAdapter(
+    private val context: Context,
+    private val onEventClick: (Event) -> Unit,
+    private val onTournamentClick: (Tournament) -> Unit
+) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items = mutableListOf<EventListItem>()
 
@@ -60,31 +67,26 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
             }
         }
 
-        // empty space at the end of recycler view
-        eventListItems.add(EventListItem.EndDivider)
-
         val diffResult = DiffUtil.calculateDiff(EventDiffCallBack(items, eventListItems))
         items = eventListItems
         diffResult.dispatchUpdatesTo(this)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            0 -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context, onEventClick)
-            1 -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            2 -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            3 -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
-            4 -> EndDividerViewHolder(EndDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            EventInfoViewHolder.TYPE -> EventInfoViewHolder(EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context, onEventClick)
+            TournamentHeaderViewHolder.TYPE -> TournamentHeaderViewHolder(TournamentHeaderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), onTournamentClick)
+            SectionDividerViewHolder.TYPE -> SectionDividerViewHolder(SectionDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            DayInfoViewHolder.TYPE -> DayInfoViewHolder(DayInfoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), context)
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when(items[position]) {
-            is EventListItem.EventItem -> 0
-            is EventListItem.TournamentHeaderItem -> 1
-            is EventListItem.SectionDivider -> 2
-            is EventListItem.DayInfoItem -> 3
-            is EventListItem.EndDivider -> 4
+            is EventListItem.EventItem -> EventInfoViewHolder.TYPE
+            is EventListItem.TournamentHeaderItem -> TournamentHeaderViewHolder.TYPE
+            is EventListItem.SectionDivider -> SectionDividerViewHolder.TYPE
+            is EventListItem.DayInfoItem -> DayInfoViewHolder.TYPE
         }
     }
 
@@ -96,7 +98,6 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
             is EventListItem.TournamentHeaderItem -> (holder as TournamentHeaderViewHolder).bind(item.tournament)
             is EventListItem.SectionDivider -> {}
             is EventListItem.DayInfoItem -> (holder as DayInfoViewHolder).bind(item.date, item.numOfEvents)
-            is EventListItem.EndDivider -> {}
         }
     }
 
@@ -106,12 +107,18 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
         private val onEventClick: (Event) -> Unit
     ): ViewHolder(binding.root) {
 
+        companion object {
+            const val TYPE = 0
+        }
+
         private val winnerTextColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv1, Color.BLACK)
         private val normalTextColor = MaterialColors.getColor(binding.root, R.attr.on_surface_lv2, Color.BLACK)
         private val liveColor = MaterialColors.getColor(binding.root, R.attr.live, Color.RED)
+        private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
+        private val dateFormat = preferences.getString(SettingsFragment.DATE_FORMAT, DateFormat.EUROPEAN.formatString)
         fun bind(event: Event) {
-            val startDateTime = Instant.ofEpochMilli(event.startDate.time).atZone(ZoneId.systemDefault()).toLocalDateTime()
-            val startDate = startDateTime.format(DateTimeFormatter.ofPattern("dd.MM.yy."))
+            val startDateTime = event.startDate.getLocalDateTime()
+            val startDate = startDateTime.format(DateTimeFormatter.ofPattern("${dateFormat}yy."))
             val startTime = startDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
             val isStartTimeToday = LocalDate.now() == startDateTime.toLocalDate()
 
@@ -122,8 +129,8 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
             binding.teamHomeName.text = event.homeTeam.name
             binding.teamAwayName.text = event.awayTeam.name
 
-            binding.teamHomeLogo.load(Repository.getTeamLogoUrl(event.homeTeam.id))
-            binding.teamAwayLogo.load(Repository.getTeamLogoUrl(event.awayTeam.id))
+            binding.teamHomeLogo.loadTeamLogo(event.homeTeam.id)
+            binding.teamAwayLogo.loadTeamLogo(event.awayTeam.id)
 
             when (event.status) {
                 EventStatus.NOT_STARTED -> {
@@ -147,7 +154,8 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
                 EventStatus.IN_PROGRESS -> {
 
                     binding.startTime.text = startTime
-                    val elapsedMinutesString = "${ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime)}'"
+
+                    val elapsedMinutesString = "${ChronoUnit.MINUTES.between(startDateTime, LocalDateTime.now())}'"
                     binding.eventTime.text = elapsedMinutesString
                     binding.eventTime.setTextColor(liveColor)
 
@@ -171,10 +179,10 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
                     binding.eventTime.setTextColor(normalTextColor)
                     var teamHomeColor: Int = normalTextColor
                     var teamAwayColor: Int = normalTextColor
-                    if (event.winnerCode == "home") {
+                    if (event.winnerCode == TeamSide.HOME) {
                         teamHomeColor = winnerTextColor
                     }
-                    if (event.winnerCode == "away") {
+                    if (event.winnerCode == TeamSide.AWAY) {
                         teamAwayColor = winnerTextColor
                     }
 
@@ -192,39 +200,53 @@ class EventAdapter(private val context: Context, private val onEventClick: (Even
     }
 
     class TournamentHeaderViewHolder(
-        private val binding: TournamentHeaderLayoutBinding
+        private val binding: TournamentHeaderLayoutBinding,
+        private val onTournamentClick: (Tournament) -> Unit
     ): ViewHolder(binding.root) {
 
+        companion object {
+            const val TYPE = 1
+        }
+
         fun bind(tournament: Tournament) {
+            binding.root.setOnClickListener {
+                onTournamentClick(tournament)
+            }
             binding.countryName.text = tournament.country.name
             binding.tournamentName.text = tournament.name
-            binding.tournamentLogo.load(Repository.getTournamentLogoUrl(tournament.id))
+            binding.tournamentLogo.loadTournamentLogo(tournament.id)
         }
     }
 
     class SectionDividerViewHolder(
         binding: SectionDividerBinding
-    ): ViewHolder(binding.root)
+    ): ViewHolder(binding.root) {
+        companion object {
+            const val TYPE = 2
+        }
+    }
 
     class DayInfoViewHolder(
         private val binding: DayInfoLayoutBinding,
         private val context: Context
     ): ViewHolder(binding.root) {
+
+        companion object {
+            const val TYPE = 3
+        }
+        private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
+        private val dateFormat = preferences.getString(SettingsFragment.DATE_FORMAT, DateFormat.EUROPEAN.formatString)
         fun bind(date: LocalDate, numOfEvents: Int) {
             val isStartTimeToday = LocalDate.now() == date
 
             binding.dayInfoDate.text =
                 if (isStartTimeToday) context.getString(R.string.today)
-                else date.format(DateTimeFormatter.ofPattern("EEE, dd.MM.yyyy."))
+                else date.format(DateTimeFormatter.ofPattern("EEE, ${dateFormat}yyyy.")).replaceFirstChar { it.uppercase() }
 
             binding.dayInfoEvents.text = context.resources.getQuantityString(R.plurals.numOfEvents, numOfEvents, numOfEvents)
 
         }
     }
-
-    class EndDividerViewHolder(
-        binding: EndDividerBinding
-    ): ViewHolder(binding.root)
 }
 
 class EventDiffCallBack(
