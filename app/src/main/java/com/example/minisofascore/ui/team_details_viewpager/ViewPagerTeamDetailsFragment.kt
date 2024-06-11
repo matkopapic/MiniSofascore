@@ -40,23 +40,27 @@ class ViewPagerTeamDetailsFragment : Fragment() {
 
         val team = requireArguments().getSerializable(TeamDetailsActivity.TEAM_DETAILS) as Team
 
-        binding.toolbarBackArrow.backArrow.setOnClickListener {
-            activity?.finish()
+        binding.run {
+            toolbarBackArrow.backArrow.setOnClickListener {
+                activity?.finish()
+            }
+
+            toolbarBackArrow.toolbarName.text = team.name
+
+            // animating text opacity in toolbar when scrolling
+            appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+                val totalScrollRange = appBarLayout.totalScrollRange
+                val percentage = abs(verticalOffset).toFloat() / totalScrollRange.toFloat()
+                toolbarBackArrow.toolbarName.alpha = percentage
+            }
+
+            toolbarImageText.name.text = team.name
+            toolbarImageText.mainLogo.loadTeamLogo(team.id)
+            toolbarImageText.countryName.text = team.country.name
+            toolbarImageText.countryLogo.loadFlag(team.country.name)
         }
 
-        binding.toolbarBackArrow.toolbarName.text = team.name
 
-        // animating text opacity in toolbar when scrolling
-        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val totalScrollRange = appBarLayout.totalScrollRange
-            val percentage = abs(verticalOffset).toFloat() / totalScrollRange.toFloat()
-            binding.toolbarBackArrow.toolbarName.alpha = percentage
-        }
-
-        binding.toolbarImageText.name.text = team.name
-        binding.toolbarImageText.mainLogo.loadTeamLogo(team.id)
-        binding.toolbarImageText.countryName.text = team.country.name
-        binding.toolbarImageText.countryLogo.loadFlag(team.country.name)
 
 
         val viewpager = binding.viewpager

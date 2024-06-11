@@ -52,34 +52,39 @@ class TeamDetailsFragment : Fragment() {
 
     private fun populateTeamDetails(details: TeamDetails) {
         val coachText = "${requireContext().getString(R.string.coach)}: ${details.team.managerName ?: ""}"
-        binding.coachLayout.playerImage.loadPlayerImage(0)
-        binding.coachLayout.playerName.text = coachText
-        binding.coachLayout.playerCountryName.text = details.team.country.name
-        binding.coachLayout.playerCountryLogo.loadFlag(details.team.country.name)
+        binding.run {
 
-        val totalPlayers = details.players.size
-        binding.totalPlayers.text = totalPlayers.toString()
-
-        val foreignPlayers = details.players.count { it.country.id != details.team.country.id }
-        binding.foreignPlayersGraph.setProgress((100f * foreignPlayers / totalPlayers).toInt())
-        binding.foreignPlayers.text = foreignPlayers.toString()
-        binding.foreignPlayersGraph.animate(1500)
-
-        binding.teamTournamentsLayout.removeAllViews()
-        details.tournaments.forEach { tournament ->
-            val tournamentItemLayout = TournamentItemLayoutBinding.inflate(layoutInflater)
-            tournamentItemLayout.tournamentLogo.loadTournamentLogo(tournament.id)
-            tournamentItemLayout.tournamentName.text = tournament.name
-            binding.teamTournamentsLayout.post {
-                binding.teamTournamentsLayout.addView(tournamentItemLayout.root)
-                tournamentItemLayout.root.layoutParams.width = binding.teamTournamentsLayout.width / 3
-                tournamentItemLayout.root.setOnClickListener {
-                    val intent = TournamentActivity.newInstance(requireContext(), tournament)
-                    startActivity(intent)
-                }
+            coachLayout.run {
+                playerImage.loadPlayerImage(0)
+                playerName.text = coachText
+                playerCountryName.text = details.team.country.name
+                playerCountryLogo.loadFlag(details.team.country.name)
             }
+            val totalPlayersCount = details.players.size
+            totalPlayers.text = totalPlayersCount.toString()
 
+            val foreignPlayersCount = details.players.count { it.country.id != details.team.country.id }
+            foreignPlayersGraph.setProgress((100f * foreignPlayersCount / totalPlayersCount).toInt())
+            foreignPlayers.text = foreignPlayers.toString()
+            foreignPlayersGraph.animate(1500)
+
+            teamTournamentsLayout.removeAllViews()
+            details.tournaments.forEach { tournament ->
+                val tournamentItemLayout = TournamentItemLayoutBinding.inflate(layoutInflater)
+                tournamentItemLayout.tournamentLogo.loadTournamentLogo(tournament.id)
+                tournamentItemLayout.tournamentName.text = tournament.name
+                teamTournamentsLayout.post {
+                    teamTournamentsLayout.addView(tournamentItemLayout.root)
+                    tournamentItemLayout.root.layoutParams.width = binding.teamTournamentsLayout.width / 3
+                    tournamentItemLayout.root.setOnClickListener {
+                        val intent = TournamentActivity.newInstance(requireContext(), tournament)
+                        startActivity(intent)
+                    }
+                }
+
+            }
         }
+
         val nextMatch = details.nextMatches.sortedBy { it.startDate }[0]
 
         binding.venueName.text = details.team.venue ?: ""

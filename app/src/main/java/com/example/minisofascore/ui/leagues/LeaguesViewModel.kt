@@ -3,6 +3,7 @@ package com.example.minisofascore.ui.leagues
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.minisofascore.data.models.SportType
@@ -12,7 +13,7 @@ import com.example.minisofascore.data.repository.Repository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class LeaguesViewModel : ViewModel() {
+class LeaguesViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
     private val repo = Repository()
 
@@ -23,7 +24,15 @@ class LeaguesViewModel : ViewModel() {
 
     private var currentlyLoadingJob: Job? = null
 
+    init {
+        val sportType: SportType? = savedStateHandle[LeaguesFragment.SPORT_TYPE]
+        sportType?.let {
+            getLeaguesBySport(sportType)
+        } ?: getLeaguesBySport()
+    }
+
     fun getLeaguesBySport(sportType: SportType = selectedSport) {
+        selectedSport = sportType
         currentlyLoadingJob?.cancel()
         currentlyLoadingJob = viewModelScope.launch {
             when(val response = repo.getLeaguesBySport(sportType)) {

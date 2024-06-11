@@ -25,10 +25,12 @@ class LeaguesAdapter(
         private val onTournamentClick: (Tournament) -> Unit
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(tournament: Tournament) {
-            binding.logo.loadTournamentLogo(tournament.id)
-            binding.name.text = tournament.name
-            binding.root.setOnClickListener {
-                onTournamentClick(tournament)
+            binding.run {
+                logo.loadTournamentLogo(tournament.id)
+                name.text = tournament.name
+                root.setOnClickListener {
+                    onTournamentClick(tournament)
+                }
             }
         }
     }
