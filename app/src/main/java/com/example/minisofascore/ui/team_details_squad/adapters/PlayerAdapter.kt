@@ -2,6 +2,7 @@ package com.example.minisofascore.ui.team_details_squad.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.minisofascore.data.models.Player
 import com.example.minisofascore.databinding.DayInfoLayoutBinding
@@ -10,6 +11,7 @@ import com.example.minisofascore.databinding.SectionDividerBinding
 import com.example.minisofascore.ui.main_list.adapters.EventAdapter.SectionDividerViewHolder
 import com.example.minisofascore.util.loadFlag
 import com.example.minisofascore.util.loadPlayerImage
+import com.google.android.material.color.MaterialColors
 
 class PlayerAdapter(
     private val onPlayerClick: (Player) -> Unit
@@ -19,8 +21,9 @@ class PlayerAdapter(
 
     fun updateItems(newItems: List<PlayerListItem>) {
 
-        items = newItems
-        notifyDataSetChanged()
+        val result = DiffUtil.calculateDiff(PlayerDiffCallback(items, newList))
+        items = newList
+        result.dispatchUpdatesTo(this)
 
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -77,9 +80,31 @@ class PlayerAdapter(
 
         fun bind(text: String) {
             binding.dayInfoDate.text = text
+            binding.root.setBackgroundColor(MaterialColors.getColor(binding.root, R.attr.surface_1))
         }
 
     }
 
+
+}
+
+class PlayerDiffCallback(
+    private val oldList: List<PlayerListItem>,
+    private val newList: List<PlayerListItem>
+) : DiffUtil.Callback() {
+    override fun getOldListSize() = oldList.size
+    override fun getNewListSize() = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+        return oldItem == newItem
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+        return oldItem == newItem
+    }
 
 }

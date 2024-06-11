@@ -104,9 +104,9 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        val dateFormat = preferences.getString(DATE_FORMAT, DateFormat.EUROPEAN.name)
+        val dateFormat = preferences.getString(DATE_FORMAT, DateFormat.EUROPEAN.formatString)
         when (dateFormat) {
-            DateFormat.EUROPEAN.name -> binding.buttonFormatEuropean.isChecked = true
+            DateFormat.EUROPEAN.formatString -> binding.buttonFormatEuropean.isChecked = true
             else -> binding.buttonFormatAmerican.isChecked = true
         }
 
