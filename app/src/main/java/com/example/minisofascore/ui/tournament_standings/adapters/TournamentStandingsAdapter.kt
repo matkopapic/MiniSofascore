@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.minisofascore.R
 import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.data.models.StandingsRow
+import com.example.minisofascore.data.models.Team
 import com.example.minisofascore.data.models.TournamentStandings
 import com.example.minisofascore.databinding.AmFootballStandingsHeaderLayoutBinding
 import com.example.minisofascore.databinding.AmFootballStandingsItemLayoutBinding
@@ -13,9 +15,15 @@ import com.example.minisofascore.databinding.BasketballStadingsHeaderLayoutBindi
 import com.example.minisofascore.databinding.BasketballStandingsItemLayoutBinding
 import com.example.minisofascore.databinding.FootballStandingsHeaderLayoutBinding
 import com.example.minisofascore.databinding.FootballStandingsItemLayoutBinding
+import com.google.android.material.color.MaterialColors
 import java.util.Locale
 
-class TournamentStandingsAdapter(private val standings: TournamentStandings, private val sportType: SportType) : RecyclerView.Adapter<ViewHolder>(){
+class TournamentStandingsAdapter(
+    private val standings: TournamentStandings,
+    private val sportType: SportType,
+    private val highlightedTeam: Team?,
+    private val onTeamClick: (Team) -> Unit
+) : RecyclerView.Adapter<ViewHolder>(){
 
     companion object {
         private const val TYPE_HEADER = 0
@@ -30,9 +38,9 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
                 SportType.AMERICAN_FOOTBALL -> AmericanFootballHeaderViewHolder.create(parent)
             }
             else -> when(sportType) {
-                SportType.FOOTBALL -> FootballItemViewHolder.create(parent,standings)
-                SportType.BASKETBALL -> BasketballItemViewHolder.create(parent,standings)
-                SportType.AMERICAN_FOOTBALL -> AmericanFootballItemViewHolder.create(parent,standings)
+                SportType.FOOTBALL -> FootballItemViewHolder.create(parent,standings, onTeamClick)
+                SportType.BASKETBALL -> BasketballItemViewHolder.create(parent,standings, onTeamClick)
+                SportType.AMERICAN_FOOTBALL -> AmericanFootballItemViewHolder.create(parent,standings, onTeamClick)
             }
         }
     }
@@ -47,9 +55,9 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
                 SportType.AMERICAN_FOOTBALL -> (holder as AmericanFootballHeaderViewHolder).bind()
             }
             else -> when (sportType) {
-                SportType.FOOTBALL -> (holder as FootballItemViewHolder).bind(standings.sortedStandingsRows[position-1])
-                SportType.BASKETBALL -> (holder as BasketballItemViewHolder).bind(standings.sortedStandingsRows[position-1])
-                SportType.AMERICAN_FOOTBALL -> (holder as AmericanFootballItemViewHolder).bind(standings.sortedStandingsRows[position-1])
+                SportType.FOOTBALL -> (holder as FootballItemViewHolder).bind(standings.sortedStandingsRows[position-1], highlightedTeam)
+                SportType.BASKETBALL -> (holder as BasketballItemViewHolder).bind(standings.sortedStandingsRows[position-1], highlightedTeam)
+                SportType.AMERICAN_FOOTBALL -> (holder as AmericanFootballItemViewHolder).bind(standings.sortedStandingsRows[position-1], highlightedTeam)
             }
         }
     }
@@ -73,13 +81,14 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
 
     class FootballItemViewHolder (
         private val binding: FootballStandingsItemLayoutBinding,
-        private val standings: TournamentStandings
+        private val standings: TournamentStandings,
+        private val onTeamClick: (Team) -> Unit
     ): ViewHolder(binding.root) {
         companion object {
-            fun create(parent:ViewGroup, standings: TournamentStandings) = FootballItemViewHolder(FootballStandingsItemLayoutBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false), standings)
+            fun create(parent:ViewGroup, standings: TournamentStandings, onTeamClick: (Team) -> Unit) = FootballItemViewHolder(FootballStandingsItemLayoutBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false), standings, onTeamClick)
         }
-        fun bind(row: StandingsRow) {
+        fun bind(row: StandingsRow, highlightedTeam: Team?) {
             val position = standings.sortedStandingsRows.indexOf(row) + 1
             binding.position.text = position.toString()
             binding.name.text = row.team.name
@@ -90,6 +99,18 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
             val goalDiff = "${row.scoresFor}:${row.scoresAgainst}"
             binding.goalDiff.text = goalDiff
             binding.points.text = (row.points ?: 0).toString()
+
+            binding.root.setOnClickListener {
+                onTeamClick(row.team)
+            }
+
+            highlightedTeam?.let {
+                if (it == row.team) {
+                    binding.root.setBackgroundColor(MaterialColors.getColor(binding.root, R.attr.primary_highlight))
+                } else {
+                    binding.root.setBackgroundColor(MaterialColors.getColor(binding.root, R.attr.surface_1))
+                }
+            }
         }
     }
 
@@ -105,17 +126,18 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
 
     class BasketballItemViewHolder(
         private val binding: BasketballStandingsItemLayoutBinding,
-        private val standings: TournamentStandings
+        private val standings: TournamentStandings,
+        private val onTeamClick: (Team) -> Unit
     ): ViewHolder(binding.root) {
 
         companion object {
-            fun create(parent:ViewGroup, standings: TournamentStandings) = BasketballItemViewHolder(
-                BasketballStandingsItemLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false), standings)
+            fun create(parent:ViewGroup, standings: TournamentStandings, onTeamClick: (Team) -> Unit) = BasketballItemViewHolder(
+                BasketballStandingsItemLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false), standings, onTeamClick)
         }
 
         private val gamesDiffLeader = standings.sortedStandingsRows[0].wins - standings.sortedStandingsRows[0].losses
 
-        fun bind(row: StandingsRow) {
+        fun bind(row: StandingsRow, highlightedTeam: Team?) {
             val position = standings.sortedStandingsRows.indexOf(row) + 1
             binding.position.text = position.toString()
             binding.name.text = row.team.name
@@ -134,6 +156,18 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
             }
             val percentage = row.wins.toFloat() / (row.wins + row.losses)
             binding.percentage.text = String.format(Locale.getDefault(),"%.3f", percentage)
+
+            binding.root.setOnClickListener {
+                onTeamClick(row.team)
+            }
+
+            highlightedTeam?.let {
+                if (it == row.team) {
+                    binding.root.setBackgroundColor(MaterialColors.getColor(binding.root, R.attr.primary_highlight))
+                } else {
+                    binding.root.setBackgroundColor(MaterialColors.getColor(binding.root, R.attr.surface_1))
+                }
+            }
         }
     }
 
@@ -149,13 +183,14 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
 
     class AmericanFootballItemViewHolder(
         private val binding: AmFootballStandingsItemLayoutBinding,
-        private val standings: TournamentStandings
+        private val standings: TournamentStandings,
+        private val onTeamClick: (Team) -> Unit
     ): ViewHolder(binding.root) {
         companion object {
-            fun create(parent: ViewGroup, standings: TournamentStandings) = AmericanFootballItemViewHolder(
-                AmFootballStandingsItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), standings)
+            fun create(parent: ViewGroup, standings: TournamentStandings, onTeamClick: (Team) -> Unit) = AmericanFootballItemViewHolder(
+                AmFootballStandingsItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), standings, onTeamClick)
         }
-        fun bind(row: StandingsRow) {
+        fun bind(row: StandingsRow, highlightedTeam: Team?) {
             val position = standings.sortedStandingsRows.indexOf(row) + 1
             binding.position.text = position.toString()
             binding.name.text = row.team.name
@@ -165,6 +200,18 @@ class TournamentStandingsAdapter(private val standings: TournamentStandings, pri
             binding.losses.text = row.losses.toString()
             val percentage = row.wins.toFloat() / (row.wins + row.losses)
             binding.percentage.text = String.format(Locale.getDefault(),"%.3f", percentage)
+
+            binding.root.setOnClickListener {
+                onTeamClick(row.team)
+            }
+
+            highlightedTeam?.let {
+                if (it == row.team) {
+                    binding.root.setBackgroundColor(MaterialColors.getColor(binding.root, R.attr.primary_highlight))
+                } else {
+                    binding.root.setBackgroundColor(MaterialColors.getColor(binding.root, R.attr.surface_1))
+                }
+            }
         }
     }
 }

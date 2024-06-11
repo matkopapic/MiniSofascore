@@ -1,3 +1,4 @@
+@file:Suppress("deprecation")
 package com.example.minisofascore.ui.tournament_standings
 
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.minisofascore.TeamDetailsActivity
 import com.example.minisofascore.data.models.Tournament
 import com.example.minisofascore.data.models.getSportType
 import com.example.minisofascore.databinding.FragmentTournamentStandingsBinding
@@ -43,7 +45,10 @@ class TournamentStandingsFragment : Fragment() {
         viewModel.standings.observe(viewLifecycleOwner){
             binding.recyclerView.apply {
                 layoutManager = LinearLayoutManager(requireContext())
-                adapter = TournamentStandingsAdapter(it, tournament.sport.getSportType())
+                adapter = TournamentStandingsAdapter(it, tournament.sport.getSportType(), null) {
+                    val intent = TeamDetailsActivity.newInstance(requireContext(), it)
+                    startActivity(intent)
+                }
             }
         }
         return binding.root

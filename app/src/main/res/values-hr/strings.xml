@@ -4,7 +4,7 @@
     <string name="title_dashboard">Nadzorna Ploča</string>
     <string name="title_notifications">Obavijesti</string>
     <string name="settings">Postavke</string>
-    <string name="tournaments">turniri</string>
+    <string name="tournaments">Turniri</string>
     <string name="fulltime">FT</string>
     <string name="team_home">Domaći Tim</string>
     <string name="team_away">Gostujući Tim</string>
@@ -65,4 +65,23 @@
         <item quantity="few">%d Događaja</item>
         <item quantity="other">%d Događaja</item>
     </plurals>
+    <string name="details">Detalji</string>
+    <string name="squad">Momčad</string>
+    <string name="team_info">Tim Info</string>
+    <string name="coach_image">slika trenera</string>
+    <string name="team_players_image">igrači tima slika</string>
+    <string name="foreign_players_graph">graf stranih igrača</string>
+    <string name="total_players">Ukupno igrača</string>
+    <string name="foreign_players">Stranih igrača</string>
+    <string name="venue">Stadion</string>
+    <string name="stadium">Stadion</string>
+    <string name="next_match">Sljedeća utakmica</string>
+    <string name="manager">Trener</string>
+    <string name="coach">Trener</string>
+    <string name="players">Igrači</string>
+    <string name="nationality">Nacionalnost</string>
+    <string name="position">Pozicija</string>
+    <string name="team_logo">tim logo</string>
+    <string name="playerDOB">9 Ruj 1985</string>
+    <string name="playerAge">37 God</string>
 </resources>

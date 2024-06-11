@@ -41,7 +41,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="?attr/surface_1"
-            tools:text="Barcelona"
+            tools:text="Name"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/name"/>
@@ -62,7 +62,7 @@
             android:textSize="14sp"
             android:textColor="?attr/surface_1"
             android:textStyle="bold"
-            tools:text="Spain"
+            tools:text="Country"
             android:layout_marginStart="4dp"
             android:id="@+id/country_name"
             app:layout_constraintStart_toEndOf="@+id/country_logo"

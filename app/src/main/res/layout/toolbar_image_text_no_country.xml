@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:background="?attr/primary_default"
+    android:paddingStart="12dp"
+    android:paddingBottom="12dp"
+    android:gravity="center_vertical"
+    tools:ignore="RtlSymmetry"
+    app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"
+    >
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="?attr/on_color_primary"
+        android:backgroundTint="?attr/on_color_primary"
+        android:padding="8dp"
+        app:cardCornerRadius="8dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/organization_logo"
+            android:src="@drawable/ic_football"
+            android:layout_gravity="center"
+            android:id="@+id/main_logo"/>
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="?attr/surface_1"
+        tools:text="Name"
+        android:layout_gravity="center"
+        android:id="@+id/name"
+        android:layout_marginStart="16dp"/>
+
+
+</LinearLayout>

@@ -5,18 +5,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.insertSeparators
 import androidx.paging.map
-import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.ui.main_list.adapters.EventListItem
-import com.example.minisofascore.ui.tournament_matches.adapters.EventPagingSource
+import com.example.minisofascore.ui.tournament_matches.adapters.TournamentPagingSource
 import kotlinx.coroutines.flow.map
 
 class TournamentMatchesViewModel : ViewModel() {
     companion object {
         const val NETWORK_PAGE_SIZE = 30
     }
-
-    private val repository = Repository()
-
 
     fun getEventPageFlow(tournamentId: Int) =
         Pager(
@@ -25,7 +21,7 @@ class TournamentMatchesViewModel : ViewModel() {
                 enablePlaceholders = false
                 )
         ) {
-            EventPagingSource(tournamentId, repository)
+            TournamentPagingSource(tournamentId)
         }.flow
             .map { pagingData -> pagingData.map { EventListItem.EventItem(it) } }
             .map {

@@ -20,7 +20,8 @@ class EventPagingAdapter(
     private val context: Context,
     private val onEventClick: (Event) -> Unit
 ) : PagingDataAdapter<EventListItem, ViewHolder>(EventListItemComparator),
- StickyHeaderItemDecorator.StickyHeaderInterface{
+ StickyHeaderItemDecorator.StickyHeaderInterface
+{
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -48,7 +49,6 @@ class EventPagingAdapter(
         } catch (exception: IndexOutOfBoundsException) {
             return -1
         }
-
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val item = getItem(position)) {

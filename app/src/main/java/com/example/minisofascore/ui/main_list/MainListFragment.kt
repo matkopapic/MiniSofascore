@@ -17,6 +17,7 @@ import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.databinding.FragmentMainListBinding
 import com.example.minisofascore.databinding.TabItemDateBinding
 import com.example.minisofascore.databinding.TabItemSportBinding
+import com.example.minisofascore.ui.leagues.LeaguesFragment
 import com.example.minisofascore.ui.main_list.adapters.EventAdapter
 import com.example.minisofascore.ui.settings.DateFormat
 import com.example.minisofascore.ui.settings.SettingsFragment
@@ -27,7 +28,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 const val EVENT_INFO = "event_info"
-const val SPORT_TYPE_INFO = "sport_info"
 const val NUM_OF_DATE_TABS = 7 + 1 + 7 // 1 week before + today + 1 week after
 
 class MainListFragment : Fragment() {
@@ -54,7 +54,6 @@ class MainListFragment : Fragment() {
                     R.id.action_navigation_main_list_to_navigation_event_details,
                     Bundle().apply {
                         putSerializable(EVENT_INFO, it)
-                        putSerializable(SPORT_TYPE_INFO, mainListViewModel.selectedSport)
                     }
                 )
             },
@@ -62,6 +61,14 @@ class MainListFragment : Fragment() {
                 startActivity(TournamentActivity.newInstance(requireContext(), it))
             }
         )
+
+        binding.tournamentIcon.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_navigation_main_list_to_navigation_leagues,
+                Bundle().apply {
+                    putSerializable(LeaguesFragment.SPORT_TYPE, mainListViewModel.selectedSport)
+                })
+        }
 
         binding.settingsIcon.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_main_list_to_navigation_settings)
@@ -74,22 +81,12 @@ class MainListFragment : Fragment() {
         }
 
         val tabLayoutSports = binding.tabLayoutSports
-        for (tabNumber in SportType.entries.indices) {
+        SportType.entries.forEach { sportType ->
             val newTab = tabLayoutSports.newTab()
             val tabBinding = TabItemSportBinding.inflate(layoutInflater)
-            tabBinding.tabText.text = when (tabNumber) {
-                0 -> getString(R.string.football)
-                1 -> getString(R.string.basketball)
-                else -> getString(R.string.am_football)
-            }
-            tabBinding.tabIcon.setImageResource(
-                when (tabNumber) {
-                    0 -> R.drawable.ic_football
-                    1 -> R.drawable.ic_basketball
-                    else -> R.drawable.ic_american_football
-                }
-            )
-            if (SportType.entries.toTypedArray()[tabNumber] == mainListViewModel.selectedSport) {
+            tabBinding.tabText.text = getString(sportType.stringRes)
+            tabBinding.tabIcon.setImageResource(sportType.drawableRes)
+            if (sportType == mainListViewModel.selectedSport) {
                 newTab.select()
             }
             newTab.setCustomView(tabBinding.root)

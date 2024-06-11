@@ -11,14 +11,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.R
+import com.example.minisofascore.TeamDetailsActivity
 import com.example.minisofascore.TournamentActivity
 import com.example.minisofascore.data.models.Event
 import com.example.minisofascore.data.models.EventStatus
-import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.data.models.TeamSide
+import com.example.minisofascore.data.models.getSportType
 import com.example.minisofascore.databinding.FragmentEventDetailsBinding
 import com.example.minisofascore.ui.main_list.EVENT_INFO
-import com.example.minisofascore.ui.main_list.SPORT_TYPE_INFO
 import com.example.minisofascore.ui.main_list.adapters.getTotalAsString
 import com.example.minisofascore.ui.settings.DateFormat
 import com.example.minisofascore.ui.settings.SettingsFragment
@@ -36,6 +36,7 @@ class EventDetailsFragment : Fragment() {
     private val eventDetailsViewModel by viewModels<EventDetailsViewModel>()
     private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
     private val binding get() = _binding!!
+    private var currentEvent: Event? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,7 +46,8 @@ class EventDetailsFragment : Fragment() {
         _binding = FragmentEventDetailsBinding.inflate(inflater, container, false)
 
         var event = (requireArguments().getSerializable(EVENT_INFO)) as Event
-        val sportType = (requireArguments().getSerializable(SPORT_TYPE_INFO)) as SportType
+        currentEvent = event
+        val sportType = event.tournament.sport.getSportType()
 
         val incidentAdapter = IncidentAdapter(requireContext(), sportType, event.status == EventStatus.IN_PROGRESS)
 
@@ -59,6 +61,16 @@ class EventDetailsFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        binding.homeLayout.setOnClickListener {
+            val intent = TeamDetailsActivity.newInstance(requireContext(), event.homeTeam)
+            startActivity(intent)
+        }
+
+        binding.awayLayout.setOnClickListener {
+            val intent = TeamDetailsActivity.newInstance(requireContext(), event.awayTeam)
+            startActivity(intent)
+        }
+
         binding.buttonViewTournamentDetails.setOnClickListener {
             if (activity is TournamentActivity) {
                 findNavController().popBackStack()
@@ -69,26 +81,16 @@ class EventDetailsFragment : Fragment() {
 
         }
 
-        // we request EventStatus updates if the game is live or it's 5 minutes before startTime
-        val startDateTime = event.startDate.getLocalDateTime()
-        if (event.status == EventStatus.IN_PROGRESS ||
-            (
-                event.status == EventStatus.NOT_STARTED
-                        &&
-                ChronoUnit.MINUTES.between(LocalDateTime.now(), startDateTime) < 5)
-            ) {
-            eventDetailsViewModel.startEventUpdates(event.id)
-            eventDetailsViewModel.eventStatus.observe(viewLifecycleOwner) {
-                if (it.status != event.status) {
-                    event = it
-                    setupHeaderWithEvent(event)
-                    incidentAdapter.refreshEventStatus(it.status)
-                    eventDetailsViewModel.getIncidents(event.id)
-                    if (it.status == EventStatus.FINISHED) eventDetailsViewModel.stopEventUpdates()
-                } else {
-                    // game is live so we still want incident updates
-                    eventDetailsViewModel.getIncidents(event.id)
-                }
+        eventDetailsViewModel.eventStatus.observe(viewLifecycleOwner) {
+            if (it.status != event.status) {
+                event = it
+                setupHeaderWithEvent(event)
+                incidentAdapter.refreshEventStatus(it.status)
+                eventDetailsViewModel.getIncidents(event.id)
+                if (it.status == EventStatus.FINISHED) eventDetailsViewModel.stopEventUpdates()
+            } else {
+                // game is live so we still want incident updates
+                eventDetailsViewModel.getIncidents(event.id)
             }
         }
 
@@ -180,9 +182,27 @@ class EventDetailsFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    private fun requestEventUpdates(event: Event){
+        // we start EventStatus updates if the game is live or it's 5 minutes before startTime
+        val startDateTime = event.startDate.getLocalDateTime()
+        if (event.status == EventStatus.IN_PROGRESS ||
+            (event.status == EventStatus.NOT_STARTED
+                    &&
+            ChronoUnit.MINUTES.between(startDateTime, LocalDateTime.now()) < 5)
+        ) {
+            eventDetailsViewModel.startEventUpdates(event.id)
+        }
+    }
+
+    override fun onPause() {
         eventDetailsViewModel.stopEventUpdates()
-        _binding = null
+        super.onPause()
+    }
+
+    override fun onResume() {
+        currentEvent?.let {
+            requestEventUpdates(it)
+        }
+        super.onResume()
     }
 }

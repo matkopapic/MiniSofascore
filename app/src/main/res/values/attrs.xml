@@ -23,4 +23,13 @@
         <attr name="elevation_1" format="reference|color"/>
         <attr name="elevation_2" format="reference|color"/>
     </declare-styleable>
+
+    <declare-styleable name="CircularGraphView">
+        <attr
+            name="nonHighlightColor"
+            format="color|reference"/>
+        <attr
+            name="highlightColor"
+            format="color|reference"/>
+    </declare-styleable>
 </resources>

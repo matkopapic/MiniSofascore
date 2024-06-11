@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.minisofascore.data.models.Event
 import com.example.minisofascore.data.models.Incident
 import com.example.minisofascore.data.remote.Result
-import com.example.minisofascore.data.repository.Repository
+import com.example.minisofascore.data.repository.EventRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 private const val LENGTH_BETWEEN_API_CALLS = 10000L // 10 seconds
 class EventDetailsViewModel : ViewModel() {
 
-    private val repo = Repository()
 
     private val _incidents = MutableLiveData<List<Incident>>()
     val incidents: LiveData<List<Incident>> = _incidents
@@ -31,7 +30,7 @@ class EventDetailsViewModel : ViewModel() {
         eventUpdater = viewModelScope.launch {
             while (true) {
                 delay(LENGTH_BETWEEN_API_CALLS)
-                when (val response = repo.getEvent(eventId)) {
+                when (val response = EventRepository.getEvent(eventId)) {
                     is Result.Success -> _eventStatus.value = response.data
                     is Result.Error -> Log.e("aaaa", response.error.toString())
                 }
@@ -46,7 +45,7 @@ class EventDetailsViewModel : ViewModel() {
 
     fun getIncidents(eventId: Int){
         viewModelScope.launch {
-            when (val response = repo.getIncidentsForEvent(eventId)) {
+            when (val response = EventRepository.getIncidentsForEvent(eventId)) {
                 is Result.Error -> Log.e("aaaa", response.error.toString())
                 is Result.Success -> _incidents.value = response.data
             }
