@@ -20,21 +20,9 @@ class PlayerAdapter(
 
     private var items = listOf<PlayerListItem>()
 
-    fun updateItems(newItems: List<Player>, coachName: String) {
-        val newList = mutableListOf<PlayerListItem>()
-        newList.add(PlayerListItem.HeaderItem(context.getString(R.string.coach)))
+    fun updateItems(newItems: List<PlayerListItem>) {
 
-        // creates empty player object for coaching since we only have the name
-        newList.add(PlayerListItem.PlayerInfoItem(Player(0, coachName, "", newItems[0].country, "")))
-
-        newItems.forEachIndexed { index, player ->
-            newList.add(when (index) {
-                0 -> PlayerListItem.HeaderItem(context.getString(R.string.players))
-                else -> PlayerListItem.SectionDivider
-            })
-            newList.add(PlayerListItem.PlayerInfoItem(player))
-        }
-        items = newList
+        items = newItems
         notifyDataSetChanged()
 
     }

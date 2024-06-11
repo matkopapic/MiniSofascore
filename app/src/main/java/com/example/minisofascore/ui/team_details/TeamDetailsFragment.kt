@@ -65,7 +65,7 @@ class TeamDetailsFragment : Fragment() {
 
             val foreignPlayersCount = details.players.count { it.country.id != details.team.country.id }
             foreignPlayersGraph.setProgress((100f * foreignPlayersCount / totalPlayersCount).toInt())
-            foreignPlayers.text = foreignPlayers.toString()
+            foreignPlayers.text = foreignPlayersCount.toString()
             foreignPlayersGraph.animate(1500)
 
             teamTournamentsLayout.removeAllViews()
