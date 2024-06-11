@@ -1,11 +1,9 @@
 package com.example.minisofascore.ui.team_details_squad.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Player
 import com.example.minisofascore.databinding.DayInfoLayoutBinding
 import com.example.minisofascore.databinding.PlayerItemLayoutBinding
@@ -16,27 +14,13 @@ import com.example.minisofascore.util.loadPlayerImage
 import com.google.android.material.color.MaterialColors
 
 class PlayerAdapter(
-    private val context: Context,
     private val onPlayerClick: (Player) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items = listOf<PlayerListItem>()
 
-    fun updateItems(newItems: List<Player>, coachName: String) {
-        val newList = mutableListOf<PlayerListItem>()
-        newList.add(PlayerListItem.HeaderItem(context.getString(R.string.coach)))
+    fun updateItems(newItems: List<PlayerListItem>) {
 
-        // creates empty player object for coaching since we only have the name
-        newList.add(PlayerListItem.PlayerInfoItem(Player(0, coachName, "", newItems[0].country, "")))
-        newList.add(PlayerListItem.SectionDivider)
-
-        newItems.forEachIndexed { index, player ->
-            newList.add(when (index) {
-                0 -> PlayerListItem.HeaderItem(context.getString(R.string.players))
-                else -> PlayerListItem.SectionDivider
-            })
-            newList.add(PlayerListItem.PlayerInfoItem(player))
-        }
         val result = DiffUtil.calculateDiff(PlayerDiffCallback(items, newList))
         items = newList
         result.dispatchUpdatesTo(this)

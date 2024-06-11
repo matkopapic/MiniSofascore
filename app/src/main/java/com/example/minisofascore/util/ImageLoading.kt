@@ -3,20 +3,22 @@ package com.example.minisofascore.util
 import android.widget.ImageView
 import coil.load
 import com.example.minisofascore.R
-import com.example.minisofascore.data.repository.Repository
+import com.example.minisofascore.data.repository.PlayerRepository
+import com.example.minisofascore.data.repository.TeamRepository
+import com.example.minisofascore.data.repository.TournamentRepository
 import java.util.Locale
 
 
 fun ImageView.loadTeamLogo(teamId: Int){
-    load(Repository.getTeamLogoUrl(teamId))
+    load(TeamRepository.getTeamLogoUrl(teamId))
 }
 
 fun ImageView.loadTournamentLogo(tournamentId: Int) {
-    load(Repository.getTournamentLogoUrl(tournamentId))
+    load(TournamentRepository.getTournamentLogoUrl(tournamentId))
 }
 
 fun ImageView.loadPlayerImage(playerId: Int) {
-    load(Repository.getPlayerImageUrl(playerId)) {
+    load(PlayerRepository.getPlayerImageUrl(playerId)) {
         placeholder(R.drawable.ic_anonymous)
         error(R.drawable.ic_anonymous)
     }
@@ -24,7 +26,9 @@ fun ImageView.loadPlayerImage(playerId: Int) {
 
 fun ImageView.loadFlag(countryName: String) {
     val countryCode = FlagUtil.getCountryCode(countryName) ?: ""
-    load(Repository.getFlagUrl(countryCode)){
+    val flagUrl = "https://flagsapi.com/${countryCode}/flat/64.png"
+
+    load(flagUrl){
         error(R.drawable.ic_question_mark)
     }
 

@@ -5,7 +5,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.insertSeparators
 import androidx.paging.map
-import com.example.minisofascore.data.repository.Repository
 import com.example.minisofascore.ui.main_list.adapters.EventListItem
 import com.example.minisofascore.ui.player_details.adapters.PlayerPagingSource
 import kotlinx.coroutines.flow.map
@@ -15,9 +14,6 @@ class PlayerDetailsViewModel : ViewModel() {
         const val NETWORK_PAGE_SIZE = 30
     }
 
-    private val repository = Repository()
-
-
     fun getEventPageFlow(teamId: Int) =
         Pager(
             PagingConfig(
@@ -25,7 +21,7 @@ class PlayerDetailsViewModel : ViewModel() {
                 enablePlaceholders = false
             )
         ) {
-            PlayerPagingSource(repository, teamId)
+            PlayerPagingSource(teamId)
         }.flow
             .map { pagingData -> pagingData.map { EventListItem.EventItem(it) } }
             .map {

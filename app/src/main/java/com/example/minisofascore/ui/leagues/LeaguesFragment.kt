@@ -1,12 +1,12 @@
-@file:Suppress("deprecation")
 package com.example.minisofascore.ui.leagues
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minisofascore.TournamentActivity
@@ -32,17 +32,12 @@ class LeaguesFragment : Fragment() {
     ): View {
         _binding = FragmentLeaguesBinding.inflate(layoutInflater, container, false)
 
-        val initialSportType = requireArguments().getSerializable(SPORT_TYPE) as SportType
-        leaguesViewModel.selectedSport = initialSportType
-        leaguesViewModel.getLeaguesBySport()
-
         binding.toolbar.backArrow.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        val tabLayoutSports = binding.tabLayoutSports
         SportType.entries.forEach { sportType ->
-            val newTab = tabLayoutSports.newTab()
+            val newTab = binding.tabLayoutSports.newTab()
             val tabBinding = TabItemSportBinding.inflate(layoutInflater)
             tabBinding.tabText.text = getString(sportType.stringRes)
             tabBinding.tabIcon.setImageResource(sportType.drawableRes)
@@ -50,13 +45,12 @@ class LeaguesFragment : Fragment() {
                 newTab.select()
             }
             newTab.setCustomView(tabBinding.root)
-            tabLayoutSports.addTab(newTab)
+            binding.tabLayoutSports.addTab(newTab)
         }
-        tabLayoutSports.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.tabLayoutSports.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(p0: TabLayout.Tab?) {
-                leaguesViewModel.selectedSport = SportType.entries.toTypedArray()[tabLayoutSports.selectedTabPosition]
-                leaguesViewModel.getLeaguesBySport()
-                startLoadingAnimations()
+                leaguesViewModel.getLeaguesBySport(SportType.entries[binding.tabLayoutSports.selectedTabPosition])
+                enableLoadingAnimations(true)
             }
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
@@ -78,19 +72,15 @@ class LeaguesFragment : Fragment() {
 
         leaguesViewModel.leagues.observe(viewLifecycleOwner) {
             leaguesAdapter.updateItems(it)
-            endLoadingAnimations()
+            enableLoadingAnimations(false)
         }
         return binding.root
     }
-
-    fun startLoadingAnimations() {
-        binding.loadingIndicator.visibility = View.VISIBLE
-        binding.recyclerView.visibility = View.GONE
-    }
-
-    private fun endLoadingAnimations() {
-        binding.loadingIndicator.visibility = View.GONE
-        binding.recyclerView.visibility = View.VISIBLE
+    fun enableLoadingAnimations(isLoading: Boolean) {
+        binding.run {
+            loadingIndicator.isVisible = isLoading
+            recyclerView.isVisible = !isLoading
+        }
     }
 
     override fun onDestroy() {
