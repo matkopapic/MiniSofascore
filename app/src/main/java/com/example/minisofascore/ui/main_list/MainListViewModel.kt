@@ -8,14 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.minisofascore.data.models.Event
 import com.example.minisofascore.data.models.SportType
 import com.example.minisofascore.data.remote.Result
-import com.example.minisofascore.data.repository.Repository
+import com.example.minisofascore.data.repository.EventRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class MainListViewModel : ViewModel() {
 
-    private val repo = Repository()
 
     private val _events = MutableLiveData<List<Event>>()
     val events: LiveData<List<Event>> = _events
@@ -33,7 +32,7 @@ class MainListViewModel : ViewModel() {
     fun getEventsBySportAndDate(sportSlug: String = selectedSport.slug, date: LocalDate = selectedDate) {
         currentlyLoadingJob?.cancel()
         currentlyLoadingJob = viewModelScope.launch {
-            when(val response = repo.getEventsBySportAndDate(sportSlug, date)) {
+            when(val response = EventRepository.getEventsBySportAndDate(sportSlug, date)) {
                 is Result.Error -> Log.e("aaaa", "error:${response.error}")
                 is Result.Success -> _events.value = response.data
             }

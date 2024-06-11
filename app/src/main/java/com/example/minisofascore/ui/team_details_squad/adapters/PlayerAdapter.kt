@@ -1,10 +1,8 @@
 package com.example.minisofascore.ui.team_details_squad.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Player
 import com.example.minisofascore.databinding.DayInfoLayoutBinding
 import com.example.minisofascore.databinding.PlayerItemLayoutBinding
@@ -14,7 +12,6 @@ import com.example.minisofascore.util.loadFlag
 import com.example.minisofascore.util.loadPlayerImage
 
 class PlayerAdapter(
-    private val context: Context,
     private val onPlayerClick: (Player) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

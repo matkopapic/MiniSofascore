@@ -42,7 +42,7 @@ class TeamDetailsSquadFragment : Fragment() {
 
         val team = requireArguments().getSerializable(TeamDetailsActivity.TEAM_DETAILS) as Team
 
-        val playerAdapter = PlayerAdapter(requireContext()){
+        val playerAdapter = PlayerAdapter{
             findNavController().navigate(
                 R.id.action_fragmentTeamViewPager_to_fragmentPlayerDetails,
                 Bundle().apply {
