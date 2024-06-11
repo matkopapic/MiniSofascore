@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.minisofascore.R
 import com.example.minisofascore.data.models.Player
 import com.example.minisofascore.databinding.DayInfoLayoutBinding
 import com.example.minisofascore.databinding.PlayerItemLayoutBinding
@@ -21,8 +22,8 @@ class PlayerAdapter(
 
     fun updateItems(newItems: List<PlayerListItem>) {
 
-        val result = DiffUtil.calculateDiff(PlayerDiffCallback(items, newList))
-        items = newList
+        val result = DiffUtil.calculateDiff(PlayerDiffCallback(items, newItems))
+        items = newItems
         result.dispatchUpdatesTo(this)
 
     }
